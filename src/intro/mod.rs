@@ -29,8 +29,16 @@ impl IntroApp {
 
     pub fn run(&mut self) -> io::Result<IntroAction> {
         let _stdout = stdout().into_raw_mode()?;
+        let mut last_size = terminal_size()?;
         
         loop {
+            // Check for terminal resize and re-render if needed
+            let current_size = terminal_size()?;
+            if current_size != last_size {
+                print!("{}", clear::All);
+                last_size = current_size;
+            }
+            
             self.render()?;
             
             for c in io::stdin().keys() {
@@ -104,6 +112,7 @@ impl IntroApp {
 
     fn render(&self) -> io::Result<()> {
         print!("{}{}", clear::All, cursor::Goto(1, 1));
+        stdout().flush()?;  // Ensure clear is flushed before rendering
         
         match self.current_screen {
             IntroScreen::Welcome => self.render_welcome_screen()?,
@@ -125,71 +134,81 @@ impl IntroApp {
     }
 
     fn render_swarm_banner(&self, cols: u16, rows: u16) -> io::Result<()> {
-        let banner_lines = vec![
-            " ╔═╗ ┬ ┬ ┌─┐ ┬─┐ ┌┬┐ ",
-            " ╚═╗ ││││ ├─┤ ├┬┘ ││││ ",
-            " ╚═╝ └┴┘ ┴ ┴ ┴└─ ┴ ┴ ",
+        // LARGE - Proper FIGlet-style SWARM banner (105+ cols, 7 lines)
+        let large_banner_lines = vec![
+            " ░▒▓███████▓▒░ ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░  ░▒▓██████▓▒░  ░▒▓███████▓▒░  ░▒▓██████████████▓▒░",
+            "░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░",
+            "░▒▓█▓▒░        ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░",
+            " ░▒▓██████▓▒░  ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ░▒▓████████▓▒░ ░▒▓███████▓▒░  ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░",
+            "       ░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░",
+            "       ░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░",
+            "░▒▓███████▓▒░   ░▒▓█████████████▓▒░   ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░░▒▓█▓▒░░▒▓█▓▒░",
         ];
 
+        // MEDIUM - Readable SWARM in blocks (42 cols)
         let medium_banner_lines = vec![
-            "▄▄▄ █ █ ▄▄▄ ▄▄▄ ▄▄▄",
-            "▀▀▀ █▀█ ███ ██▀ █▀█",
-            "▄▄▄ ▀ ▀ ▀ ▀ ▀▀▀ ▀ ▀",
+            "███ █ █ ███ ███ █ █",
+            "█   █ █ █ █ █ █ ███",
+            "███ ███ ███ ██  █ █",
+            "  █ █ █ █ █ █ █ █ █",
+            "███ █ █ █ █ █ █ █ █",
+            "",
         ];
 
-        let small_banner_lines = vec!["[ S W A R M ]"];
+        // SMALL - Compact SWARM (25+ cols)
+        let small_banner_lines = vec![
+            "███ █ █ ███ ███ █ █",
+            "█   █ █ █ █ █ █ ███",
+            "███ ███ ███ ██  ███",
+            "  █ █ █ █ █ █ █ █ █",
+            "███ █ █ █ █ █ █ █ █",
+            "",
+        ];
+
+        // MICRO - Minimal (under 30 cols)
+        let micro_banner_lines = vec![
+            "[ S W A R M ]",
+            "",
+        ];
         
-        let (lines_to_use, start_row) = if cols >= 30 && rows >= 10 {
-            (&banner_lines, 2)
-        } else if cols >= 20 && rows >= 8 {
-            (&medium_banner_lines, 3)
-        } else {
-            (&small_banner_lines, 4)
-        };
+        // Center banner vertically - use more space from top
+        let banner_start_row = (rows as usize).saturating_sub(20).max(2) / 2;
+        let (lines_to_use, start_row) = (&large_banner_lines, banner_start_row);  // Always use large banner
         
         // Calculate the maximum line width for proper centering
         let max_width = lines_to_use.iter().map(|line| line.len()).max().unwrap_or(0);
         
-        // Only render if the banner fits in the terminal width
-        if max_width <= cols as usize {
-            for (i, line) in lines_to_use.iter().enumerate() {
-                let col = (cols as usize).saturating_sub(line.len()) / 2;
-                print!("{}\x1b[96m{}\x1b[0m", 
-                       cursor::Goto((col + 1) as u16, (start_row + i) as u16), 
-                       line);
-            }
-        } else {
-            // Fallback to simple text if banner is too wide
-            let fallback = "SWARM";
-            let col = (cols as usize).saturating_sub(fallback.len()) / 2;
-            print!("{}\x1b[96;1m{}\x1b[0m", 
-                   cursor::Goto((col + 1) as u16, start_row as u16), 
-                   fallback);
+        // Always display the banner, properly centered
+        for (i, line) in lines_to_use.iter().enumerate() {
+            let line_width = line.chars().count(); // Use char count for proper width
+            let col = if line_width <= cols as usize {
+                (cols as usize - line_width) / 2
+            } else {
+                0
+            };
+            print!("{}\x1b[96m{}\x1b[0m", 
+                   cursor::Goto((col + 1) as u16, (start_row + i) as u16), 
+                   line);
         }
         
-        // Subtitle
+        // Subtitle - always show, properly centered
         let subtitle = "Terminal Workspace for Developers";
-        let subtitle_row = start_row + lines_to_use.len() + 1;
-        
-        // Only show subtitle if it fits
-        if subtitle.len() <= cols as usize {
-            let subtitle_col = (cols as usize).saturating_sub(subtitle.len()) / 2;
-            print!("{}\x1b[37m{}\x1b[0m", 
-                   cursor::Goto((subtitle_col + 1) as u16, subtitle_row as u16), 
-                   subtitle);
-        }
+        let subtitle_row = start_row + lines_to_use.len() + 3;
+        let subtitle_width = subtitle.chars().count();
+        let subtitle_col = if subtitle_width <= cols as usize {
+            (cols as usize - subtitle_width) / 2
+        } else {
+            0
+        };
+        print!("{}\x1b[37m{}\x1b[0m", 
+               cursor::Goto((subtitle_col + 1) as u16, subtitle_row as u16), 
+               subtitle);
         
         Ok(())
     }
 
     fn render_welcome_menu(&self, cols: u16, rows: u16) -> io::Result<()> {
-        let banner_height = if cols >= 30 && rows >= 10 {
-            6  // 3 lines for banner + 3 for spacing and subtitle
-        } else if cols >= 20 && rows >= 8 {
-            6  // 3 lines for banner + 3 for spacing and subtitle
-        } else {
-            4  // 1 line for banner + 3 for spacing and subtitle
-        };
+        let banner_height = 14;  // Push menu further down (7 lines + 7 for spacing/subtitle)
         let menu_start_row = 2 + banner_height;
         
         let menu_items = vec![
@@ -201,7 +220,12 @@ impl IntroApp {
         
         // Menu title
         let title = "Welcome to Swarm! Choose an option:";
-        let title_col = (cols as usize).saturating_sub(title.len()) / 2;
+        let title_width = title.chars().count();
+        let title_col = if title_width <= cols as usize {
+            (cols as usize - title_width) / 2
+        } else {
+            0
+        };
         print!("{}\x1b[1;37m{}\x1b[0m", 
                cursor::Goto((title_col + 1) as u16, menu_start_row as u16), 
                title);
@@ -209,7 +233,12 @@ impl IntroApp {
         // Menu items
         for (i, item) in menu_items.iter().enumerate() {
             let row = menu_start_row + 2 + i;
-            let col = (cols as usize).saturating_sub(item.len()) / 2;
+            let item_width = item.chars().count();
+            let col = if item_width <= cols as usize {
+                (cols as usize - item_width) / 2
+            } else {
+                0
+            };
             
             if i == self.selected_option {
                 print!("{}\x1b[1;96m> {}\x1b[0m", 
@@ -232,7 +261,12 @@ impl IntroApp {
         let instr_start_row = menu_start_row + menu_items.len() + 4;
         for (i, instr) in instructions.iter().enumerate() {
             if !instr.is_empty() {
-                let col = (cols as usize).saturating_sub(instr.len()) / 2;
+                let instr_width = instr.chars().count();
+                let col = if instr_width <= cols as usize {
+                    (cols as usize - instr_width) / 2
+                } else {
+                    0
+                };
                 print!("{}\x1b[90m{}\x1b[0m", 
                        cursor::Goto((col + 1) as u16, (instr_start_row + i) as u16), 
                        instr);
