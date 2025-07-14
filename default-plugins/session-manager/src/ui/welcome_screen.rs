@@ -27,29 +27,50 @@ static MEDIUM_BANNER: &str = "
 
 pub fn render_banner(x: usize, y: usize, rows: usize, cols: usize) {
     if rows >= 8 {
+        let banner_y = y + rows.saturating_sub(8) / 2;
+        
         if cols > 100 {
-            println!("\u{1b}[{}H", y + rows.saturating_sub(8) / 2);
-            for line in BANNER.lines() {
-                println!("\u{1b}[{}C{}", x.saturating_sub(1), line);
+            for (i, line) in BANNER.lines().enumerate() {
+                if !line.trim().is_empty() {
+                    let line_width = line.chars().count();
+                    let x_center = x + if line_width <= cols {
+                        (cols - line_width) / 2
+                    } else {
+                        0
+                    };
+                    print!("\u{1b}[{};{}H\u{1b}[94m{}\u{1b}[0m", banner_y + i + 1, x_center + 1, line);
+                }
             }
-        } else if cols > 63 {
-            println!("\u{1b}[{}H", y + rows.saturating_sub(8) / 2);
-            let x = (cols.saturating_sub(63) as f64 / 2.0) as usize;
-            for line in MEDIUM_BANNER.lines() {
-                println!("\u{1b}[{}C{}", x, line);
+        } else if cols > 45 {
+            for (i, line) in MEDIUM_BANNER.lines().enumerate() {
+                if !line.trim().is_empty() {
+                    let line_width = line.chars().count();
+                    let x_center = x + if line_width <= cols {
+                        (cols - line_width) / 2
+                    } else {
+                        0
+                    };
+                    print!("\u{1b}[{};{}H\u{1b}[94m{}\u{1b}[0m", banner_y + i + 1, x_center + 1, line);
+                }
             }
         } else {
-            println!("\u{1b}[{}H", y + rows.saturating_sub(8) / 2);
-            let x = (cols.saturating_sub(18) as f64 / 2.0) as usize;
-            for line in SMALL_BANNER.lines() {
-                println!("\u{1b}[{}C{}", x, line);
+            for (i, line) in SMALL_BANNER.lines().enumerate() {
+                if !line.trim().is_empty() {
+                    let line_width = line.chars().count();
+                    let x_center = x + if line_width <= cols {
+                        (cols - line_width) / 2
+                    } else {
+                        0
+                    };
+                    print!("\u{1b}[{};{}H\u{1b}[94m{}\u{1b}[0m", banner_y + i + 1, x_center + 1, line);
+                }
             }
         }
     } else if rows > 2 {
-        println!(
-            "\u{1b}[{};{}H\u{1b}[1mSWARM",
+        print!(
+            "\u{1b}[{};{}H\u{1b}[94m\u{1b}[1mSWARM\u{1b}[0m",
             (y + rows / 2) + 1,
-            (x + cols.saturating_sub(5) / 2).saturating_sub(1)
+            x + (cols.saturating_sub(5) / 2) + 1
         );
     }
 }

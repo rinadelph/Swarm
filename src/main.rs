@@ -5,6 +5,7 @@ mod tests;
 
 use clap::Parser;
 use intro::{IntroApp, IntroAction};
+use std::io::{stdout, Write};
 use zellij_utils::{
     cli::{CliAction, CliArgs, Command, Sessions},
     consts::{create_config_and_cache_folders, VERSION},
@@ -15,9 +16,35 @@ use zellij_utils::{
     shared::web_server_base_url_from_config,
 };
 
+fn clear_terminal() {
+    print!("\x1b[2J");        // Clear entire screen
+    print!("\x1b[3J");        // Clear scrollback buffer
+    print!("\x1b[H");         // Move cursor to home position
+    print!("\x1b[0m");        // Reset all formatting
+    print!("\x1bc");          // Full terminal reset
+    stdout().flush().ok();
+}
+
+fn setup_signal_handlers() {
+    use std::sync::atomic::{AtomicBool, Ordering};
+    use std::sync::Arc;
+    
+    let running = Arc::new(AtomicBool::new(true));
+    let r = running.clone();
+    
+    ctrlc::set_handler(move || {
+        clear_terminal();
+        std::process::exit(0);
+    }).expect("Error setting Ctrl-C handler");
+}
+
 fn main() {
     configure_logger();
     create_config_and_cache_folders();
+    
+    // Setup signal handlers for clean terminal exit
+    setup_signal_handlers();
+    
     let opts = CliArgs::parse();
 
     {
@@ -330,8 +357,9 @@ fn main() {
             let mut intro_app = IntroApp::new();
             match intro_app.run() {
                 Ok(IntroAction::StartTerminal) => {
-                    // User chose to start terminal, proceed with normal startup
-                    commands::start_client(opts);
+                    // User chose to exit to terminal, clear screen and exit cleanly
+                    clear_terminal();
+                    std::process::exit(0);
                 }
                 Ok(IntroAction::SessionManager) => {
                     // User chose session manager, start with session manager layout

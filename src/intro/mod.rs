@@ -29,7 +29,16 @@ impl IntroApp {
 
     pub fn run(&mut self) -> io::Result<IntroAction> {
         let _stdout = stdout().into_raw_mode()?;
+        
+        // Clear entire terminal immediately when intro starts
+        print!("\x1b[2J");        // Clear entire screen
+        print!("\x1b[3J");        // Clear scrollback buffer
+        print!("\x1b[H");         // Move cursor to home position
+        print!("\x1b[0m");        // Reset all formatting
+        stdout().flush()?;
+        
         let mut last_size = terminal_size()?;
+        let mut exit_action: Option<IntroAction> = None;
         
         loop {
             // Check for terminal resize and re-render if needed
@@ -46,7 +55,10 @@ impl IntroApp {
                 match c? {
                     Key::Esc => {
                         match self.current_screen {
-                            IntroScreen::Welcome => return Ok(IntroAction::StartTerminal),
+                            IntroScreen::Welcome => {
+                                exit_action = Some(IntroAction::StartTerminal);
+                                break;
+                            },
                             _ => {
                                 self.current_screen = IntroScreen::Welcome;
                                 self.selected_option = 0;
@@ -73,8 +85,14 @@ impl IntroApp {
                                 match self.selected_option {
                                     0 => self.current_screen = IntroScreen::GettingStarted,
                                     1 => self.current_screen = IntroScreen::KeyBindings,
-                                    2 => return Ok(IntroAction::SessionManager),
-                                    3 => return Ok(IntroAction::StartTerminal),
+                                    2 => {
+                                        exit_action = Some(IntroAction::SessionManager);
+                                        break;
+                                    },
+                                    3 => {
+                                        exit_action = Some(IntroAction::StartTerminal);
+                                        break;
+                                    },
                                     _ => {}
                                 }
                             }
@@ -96,17 +114,42 @@ impl IntroApp {
                     }
                     Key::Char('3') => {
                         if matches!(self.current_screen, IntroScreen::Welcome) {
-                            return Ok(IntroAction::SessionManager);
+                            exit_action = Some(IntroAction::SessionManager);
+                            break;
                         }
                     }
                     Key::Char('4') => {
                         if matches!(self.current_screen, IntroScreen::Welcome) {
-                            return Ok(IntroAction::StartTerminal);
+                            exit_action = Some(IntroAction::StartTerminal);
+                            break;
                         }
                     }
                     _ => {}
                 }
+                if exit_action.is_some() {
+                    break;
+                }
                 self.render()?;
+            }
+            
+            if let Some(action) = exit_action {
+                // Clean up screen before exiting
+                print!("{}", clear::All);
+                stdout().flush()?;
+                print!("{}", clear::BeforeCursor);
+                stdout().flush()?;
+                print!("{}", clear::AfterCursor);
+                stdout().flush()?;
+                
+                // Reset cursor and ensure clean state
+                print!("{}{}", cursor::Goto(1, 1), cursor::Show);
+                stdout().flush()?;
+                
+                // Additional clearing
+                print!("\x1b[2J\x1b[H\x1b[3J"); // Clear screen, home cursor, clear scrollback
+                stdout().flush()?;
+                
+                return Ok(action);
             }
         }
     }
