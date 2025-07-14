@@ -30,6 +30,7 @@ suggest = { workspace = true }
 thiserror = { workspace = true }
 isahc = { workspace = true }
 termion = "2.0"
+unicode-width = "0.1"
 
 [dev-dependencies]
 insta = { version = "1.6.0", features = ["backtrace"] }

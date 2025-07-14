@@ -4,6 +4,9 @@ use termion::input::TermRead;
 use termion::raw::IntoRawMode;
 use termion::{clear, cursor, terminal_size};
 
+#[cfg(test)]
+mod test_banner;
+
 #[derive(Debug, Clone, Copy)]
 enum IntroScreen {
     Welcome,
@@ -123,25 +126,24 @@ impl IntroApp {
 
     fn render_swarm_banner(&self, cols: u16, rows: u16) -> io::Result<()> {
         let banner_lines = vec![
-            "███████╗██╗    ██╗ █████╗ ██████╗ ███╗   ███╗",
-            "██╔════╝██║    ██║██╔══██╗██╔══██╗████╗ ████║",
-            "███████╗██║ █╗ ██║███████║██████╔╝██╔████╔██║",
-            "╚════██║██║███╗██║██╔══██║██╔══██╗██║╚██╔╝██║",
-            "███████║╚███╔███╔╝██║  ██║██║  ██║██║ ╚═╝ ██║",
-            "╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝",
+            "  SSS   W   W   AAA   RRR   M   M",
+            " S   S  W   W  A   A  R  R  MM MM",
+            "  SSS   W W W  AAAAA  RRR   M M M",
+            "     S  WW WW  A   A  R R   M   M",
+            "  SSS   W   W  A   A  R  R  M   M",
         ];
 
         let medium_banner_lines = vec![
-            "███ █   █ █▀▀█ █▀▀█ █▀▄▀█",
-            "▀▀█ █▄█▄█ █▄▄█ █▄▄▀ █ ▀ █",
-            "▀▀▀ ▀ ▀ ▀ ▀  ▀ ▀ ▀▀ ▀   ▀",
+            " SSS  W W  AAA  RRR  M M",
+            "S     W W A   A R R  M M",
+            " SSS  WWW AAAAA RRR  M M",
         ];
 
         let small_banner_lines = vec!["S W A R M"];
         
-        let (lines_to_use, start_row) = if cols >= 50 && rows >= 12 {
+        let (lines_to_use, start_row) = if cols >= 40 && rows >= 10 {
             (&banner_lines, 2)
-        } else if cols >= 30 && rows >= 8 {
+        } else if cols >= 25 && rows >= 8 {
             (&medium_banner_lines, 3)
         } else {
             (&small_banner_lines, 4)
@@ -183,9 +185,9 @@ impl IntroApp {
     }
 
     fn render_welcome_menu(&self, cols: u16, rows: u16) -> io::Result<()> {
-        let banner_height = if cols >= 50 && rows >= 12 {
-            8  // 6 lines for banner + 2 for spacing and subtitle
-        } else if cols >= 30 && rows >= 8 {
+        let banner_height = if cols >= 40 && rows >= 10 {
+            8  // 5 lines for banner + 3 for spacing and subtitle
+        } else if cols >= 25 && rows >= 8 {
             6  // 3 lines for banner + 3 for spacing and subtitle
         } else {
             4  // 1 line for banner + 3 for spacing and subtitle
