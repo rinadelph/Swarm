@@ -35,7 +35,8 @@ impl IntroApp {
             // Check for terminal resize and re-render if needed
             let current_size = terminal_size()?;
             if current_size != last_size {
-                print!("{}", clear::All);
+                print!("{}{}", clear::All, clear::AfterCursor);
+                stdout().flush()?;
                 last_size = current_size;
             }
             
@@ -111,7 +112,8 @@ impl IntroApp {
     }
 
     fn render(&self) -> io::Result<()> {
-        print!("{}{}", clear::All, cursor::Goto(1, 1));
+        // More aggressive screen clearing
+        print!("{}{}{}", clear::All, clear::AfterCursor, cursor::Goto(1, 1));
         stdout().flush()?;  // Ensure clear is flushed before rendering
         
         match self.current_screen {
