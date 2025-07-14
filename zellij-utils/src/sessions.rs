@@ -464,6 +464,25 @@ pub fn generate_unique_session_name() -> Option<String> {
         return None;
     };
 
+    // Try to use current directory name first
+    if let Some(dir_name) = get_current_directory_name() {
+        let mut candidate = dir_name.clone();
+        
+        // Check if the directory name is unique
+        if !sessions.contains(&candidate) && !dead_sessions.contains(&candidate) {
+            return Some(candidate);
+        }
+        
+        // If not unique, try adding a number suffix
+        for i in 1..=100 {
+            candidate = format!("{}-{}", dir_name, i);
+            if !sessions.contains(&candidate) && !dead_sessions.contains(&candidate) {
+                return Some(candidate);
+            }
+        }
+    }
+
+    // Fall back to random name generation if directory-based naming fails
     let name = get_name_generator()
         .take(1000)
         .find(|name| !sessions.contains(name) && !dead_sessions.contains(name));
@@ -473,6 +492,30 @@ pub fn generate_unique_session_name() -> Option<String> {
     } else {
         return None;
     }
+}
+
+/// Get the current directory name for use as a session name
+///
+/// Returns the name of the current working directory, sanitized for use as a session name.
+/// Returns None if the directory cannot be determined or is invalid.
+fn get_current_directory_name() -> Option<String> {
+    use std::env;
+    
+    let current_dir = env::current_dir().ok()?;
+    let dir_name = current_dir.file_name()?.to_string_lossy();
+    
+    // Sanitize the directory name to be safe for session names
+    let sanitized = dir_name
+        .chars()
+        .filter(|c| c.is_alphanumeric() || *c == '-' || *c == '_')
+        .collect::<String>();
+    
+    // Ensure the name is not empty and not too long
+    if sanitized.is_empty() || sanitized.len() > 50 {
+        return None;
+    }
+    
+    Some(sanitized)
 }
 
 /// Create a new random name generator
