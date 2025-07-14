@@ -10,8 +10,6 @@ mod test_banner;
 #[derive(Debug, Clone, Copy)]
 enum IntroScreen {
     Welcome,
-    GettingStarted,
-    KeyBindings,
 }
 
 pub struct IntroApp {
@@ -72,7 +70,7 @@ impl IntroApp {
                     }
                     Key::Down => {
                         let max_options = match self.current_screen {
-                            IntroScreen::Welcome => 3,
+                            IntroScreen::Welcome => 2,
                             _ => 0,
                         };
                         if self.selected_option < max_options {
@@ -83,20 +81,23 @@ impl IntroApp {
                         match self.current_screen {
                             IntroScreen::Welcome => {
                                 match self.selected_option {
-                                    0 => self.current_screen = IntroScreen::GettingStarted,
-                                    1 => self.current_screen = IntroScreen::KeyBindings,
-                                    2 => {
-                                        exit_action = Some(IntroAction::SessionManager);
+                                    0 => {
+                                        exit_action = Some(IntroAction::LaunchProject);
                                         break;
                                     },
-                                    3 => {
+                                    1 => {
                                         exit_action = Some(IntroAction::StartTerminal);
+                                        break;
+                                    },
+                                    2 => {
+                                        exit_action = Some(IntroAction::Settings);
                                         break;
                                     },
                                     _ => {}
                                 }
                             }
-                            IntroScreen::GettingStarted | IntroScreen::KeyBindings => {
+                            _ => {
+                                // All other screens, return to welcome
                                 self.current_screen = IntroScreen::Welcome;
                                 self.selected_option = 0;
                             }
@@ -104,23 +105,19 @@ impl IntroApp {
                     }
                     Key::Char('1') => {
                         if matches!(self.current_screen, IntroScreen::Welcome) {
-                            self.current_screen = IntroScreen::GettingStarted;
+                            exit_action = Some(IntroAction::LaunchProject);
+                            break;
                         }
                     }
                     Key::Char('2') => {
                         if matches!(self.current_screen, IntroScreen::Welcome) {
-                            self.current_screen = IntroScreen::KeyBindings;
+                            exit_action = Some(IntroAction::StartTerminal);
+                            break;
                         }
                     }
                     Key::Char('3') => {
                         if matches!(self.current_screen, IntroScreen::Welcome) {
-                            exit_action = Some(IntroAction::SessionManager);
-                            break;
-                        }
-                    }
-                    Key::Char('4') => {
-                        if matches!(self.current_screen, IntroScreen::Welcome) {
-                            exit_action = Some(IntroAction::StartTerminal);
+                            exit_action = Some(IntroAction::Settings);
                             break;
                         }
                     }
@@ -161,8 +158,7 @@ impl IntroApp {
         
         match self.current_screen {
             IntroScreen::Welcome => self.render_welcome_screen()?,
-            IntroScreen::GettingStarted => self.render_getting_started()?,
-            IntroScreen::KeyBindings => self.render_keybindings()?,
+            _ => {} // No other screens needed for simplified menu
         }
         
         stdout().flush()?;
@@ -257,10 +253,9 @@ impl IntroApp {
         let menu_start_row = 2 + banner_height;
         
         let menu_items = vec![
-            "1. Getting Started Guide",
-            "2. Key Bindings Reference", 
-            "3. Manage Sessions",
-            "4. Start New Terminal Session",
+            "1. Launch a Project",
+            "2. Launch Terminal Session",
+            "3. Settings",
         ];
         
         // Menu title
@@ -430,5 +425,6 @@ impl IntroApp {
 #[derive(Debug)]
 pub enum IntroAction {
     StartTerminal,
-    SessionManager,
+    LaunchProject,
+    Settings,
 }

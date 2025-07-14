@@ -357,12 +357,18 @@ fn main() {
             let mut intro_app = IntroApp::new();
             match intro_app.run() {
                 Ok(IntroAction::StartTerminal) => {
-                    // User chose to exit to terminal, clear screen and exit cleanly
+                    // User chose to launch terminal session, clear screen and exit cleanly
                     clear_terminal();
                     std::process::exit(0);
                 }
-                Ok(IntroAction::SessionManager) => {
-                    // User chose session manager, start with session manager layout
+                Ok(IntroAction::LaunchProject) => {
+                    // User chose to launch a project, start with project layout (file browser + neovim + terminal)
+                    let mut modified_opts = opts;
+                    modified_opts.layout = Some("project".to_string().into());
+                    commands::start_client(modified_opts);
+                }
+                Ok(IntroAction::Settings) => {
+                    // User chose settings, start with welcome layout (session manager)
                     let mut modified_opts = opts;
                     modified_opts.layout = Some("welcome".to_string().into());
                     commands::start_client(modified_opts);

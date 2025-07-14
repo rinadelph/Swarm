@@ -1,0 +1,17 @@
+layout {
+    pane size=1 borderless=true {
+        plugin location="tab-bar"
+    }
+    pane split_direction="Vertical" {
+        pane size="75%" {
+            command "nvim"
+            args "-u" "/home/alejandro/VPS/zellij/nvim-swarm-modern.lua"
+        }
+        pane size="25%" {
+            // Terminal pane
+        }
+    }
+    pane size=2 borderless=true {
+        plugin location="status-bar"
+    }
+}

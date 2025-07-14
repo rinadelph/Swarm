@@ -1447,6 +1447,11 @@ impl Layout {
                     Self::stringified_strider_swap_from_assets()?,
                 )),
             )),
+            Some("project") => Ok((
+                "Project layout".into(),
+                Self::stringified_project_from_assets()?,
+                None,
+            )),
             Some("disable-status-bar") => Ok((
                 "Disable Status Bar layout".into(),
                 Self::stringified_disable_status_from_assets()?,
@@ -1495,6 +1500,9 @@ impl Layout {
     }
     pub fn stringified_strider_swap_from_assets() -> Result<String, ConfigError> {
         Ok(String::from_utf8(setup::STRIDER_SWAP_LAYOUT.to_vec())?)
+    }
+    pub fn stringified_project_from_assets() -> Result<String, ConfigError> {
+        Ok(String::from_utf8(setup::PROJECT_LAYOUT.to_vec())?)
     }
 
     pub fn stringified_disable_status_from_assets() -> Result<String, ConfigError> {

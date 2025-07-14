@@ -1,6 +1,6 @@
 [package]
 name = "swarm"
-version = "0.0.3"
+version = "0.0.4"
 authors = ["Aram Drevekenin <aram@poor.dev>"]
 edition = "2021"
 description = "Swarm - A powerful terminal workspace for developers"
@@ -14,8 +14,8 @@ rust-version = "1.84"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-zellij-client = { path = "zellij-client/", version = "0.0.3" }
-zellij-server = { path = "zellij-server/", version = "0.0.3" }
+zellij-client = { path = "zellij-client/", version = "0.0.4" }
+zellij-server = { path = "zellij-server/", version = "0.0.4" }
 zellij-utils = { workspace = true }
 anyhow = { workspace = true }
 clap = { workspace = true }
@@ -100,7 +100,7 @@ names = { version = "0.14.0", default-features = false }
 include_dir = { version = "0.7.3", default-features = false }
 rmp-serde = { version = "1.1.0", default-features = false }
 sha2 = { version = "0.10", default-features = false }
-zellij-utils = { path = "zellij-utils/", version = "0.0.3" }
+zellij-utils = { path = "zellij-utils/", version = "0.0.4" }
 
 [profile.dev]
 # Fast development builds

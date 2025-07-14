@@ -1,0 +1,12 @@
+#!/bin/bash
+echo "🚀 Building Swarm with all plugins (debug mode for speed)..."
+cargo build && \
+pkill -f swarm 2>/dev/null || true && \
+echo "📦 Installing binary and plugins..." && \
+cp ./target/debug/swarm ~/.local/bin/swarm && \
+mkdir -p ~/.config/swarm/plugins && \
+cp ./zellij-utils/assets/plugins/*.wasm ~/.config/swarm/plugins/ && \
+chmod +x ~/.local/bin/swarm && \
+ln -sf ~/.local/bin/swarm ~/.local/bin/sm 2>/dev/null && \
+echo "✅ Swarm fully installed with all plugins!" && \
+echo "🎉 Run 'swarm' or 'sm' to start"

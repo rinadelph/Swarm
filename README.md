@@ -27,11 +27,11 @@
 
 # What is this?
 
-[Swarm](#origin-of-the-name) is a workspace aimed at developers, ops-oriented people and anyone who loves the terminal. Similar programs are sometimes called "Terminal Multiplexers".
+[Swarm](#origin-of-the-name) is a terminal workspace designed for vibecoders who thrive in command-line environments. Built on the robust foundation of Zellij, Swarm transforms your terminal into a powerful development ecosystem with modern tooling and collaborative features.
 
-Swarm is designed around the philosophy that one must not sacrifice simplicity for power, taking pride in its great experience out of the box as well as the advanced features it places at its users' fingertips.
+Swarm is crafted for developers who demand both simplicity and sophistication - delivering an exceptional out-of-the-box experience while providing advanced customization for power users. Whether you're coding solo or collaborating with a team, Swarm adapts to your workflow.
 
-Swarm is geared toward beginner and power users alike - allowing deep customizability, personal automation through layouts, true multiplayer collaboration, unique UX features such as floating and stacked panes, and a plugin system allowing one to create plugins in any language that compiles to WebAssembly.
+Swarm features include deep customizability through layouts, true multiplayer collaboration, innovative UX elements like floating and stacked panes, and an extensible plugin system supporting any language that compiles to WebAssembly. From beginners taking their first steps in terminal-based development to seasoned vibecoders orchestrating complex workflows, Swarm empowers every type of developer.
 
 You can get started by installing Swarm using our easy installation script.
 
@@ -85,6 +85,8 @@ These are issues that are either being actively worked on or are planned for the
 ## Origin of the Name
 
 Swarm represents the collaborative nature of terminal workspaces - like a swarm of efficient processes working together in harmony. Multiple panes, tabs, and plugins coordinate seamlessly to create a powerful development environment where the whole becomes greater than the sum of its parts.
+
+Built on the proven architecture of Zellij, Swarm inherits robust terminal multiplexing capabilities while adding modern enhancements and vibecoder-focused features that make terminal-based development more intuitive and productive.
 
 ## License
 

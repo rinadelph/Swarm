@@ -149,6 +149,12 @@ pub const STRIDER_SWAP_LAYOUT: &[u8] = include_bytes!(concat!(
     "assets/layouts/strider.swap.kdl"
 ));
 
+pub const PROJECT_LAYOUT: &[u8] = include_bytes!(concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/",
+    "assets/layouts/project.kdl"
+));
+
 pub const NO_STATUS_LAYOUT: &[u8] = include_bytes!(concat!(
     env!("CARGO_MANIFEST_DIR"),
     "/",
@@ -245,6 +251,7 @@ pub fn dump_default_config() -> std::io::Result<()> {
 pub fn dump_specified_layout(layout: &str) -> std::io::Result<()> {
     match layout {
         "strider" => dump_asset(STRIDER_LAYOUT),
+        "project" => dump_asset(PROJECT_LAYOUT),
         "default" => dump_asset(DEFAULT_LAYOUT),
         "compact" => dump_asset(COMPACT_BAR_LAYOUT),
         "disable-status" => dump_asset(NO_STATUS_LAYOUT),
