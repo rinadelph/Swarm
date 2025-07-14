@@ -235,6 +235,7 @@ plugins {
     configuration location="swarm:configuration"
     plugin-manager location="swarm:plugin-manager"
     about location="swarm:about"
+    intro-screen location="swarm:intro-screen"
 }
 
 // Plugins to load in the background when a new session starts

@@ -133,6 +133,7 @@ mod not_wasm {
             add_plugin!(assets, "about.wasm");
             add_plugin!(assets, "share.wasm");
             add_plugin!(assets, "multiple-select.wasm");
+            add_plugin!(assets, "intro-screen.wasm");
             assets
         };
     }

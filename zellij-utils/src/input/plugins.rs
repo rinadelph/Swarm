@@ -67,6 +67,7 @@ impl PluginConfig {
                     || tag == "about"
                     || tag == "share"
                     || tag == "multiple-select"
+                    || tag == "intro-screen"
                 {
                     Some(PluginConfig {
                         path: PathBuf::from(&tag),

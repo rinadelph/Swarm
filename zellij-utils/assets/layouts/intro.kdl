@@ -1,0 +1,7 @@
+layout {
+    pane borderless=true {
+        plugin location="swarm:intro-screen"
+    }
+}
+session_serialization false
+disable_status_bar true

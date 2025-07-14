@@ -1193,6 +1193,7 @@ impl Layout {
         available_layouts.push(LayoutInfo::BuiltIn("disable-status-bar".to_owned()));
         available_layouts.push(LayoutInfo::BuiltIn("compact".to_owned()));
         available_layouts.push(LayoutInfo::BuiltIn("classic".to_owned()));
+        available_layouts.push(LayoutInfo::BuiltIn("intro".to_owned()));
         available_layouts.sort_by(|a, b| {
             let a_name = a.name();
             let b_name = b.name();
@@ -1472,6 +1473,11 @@ impl Layout {
                 Self::stringified_welcome_from_assets()?,
                 None,
             )),
+            Some("intro") => Ok((
+                "Intro screen layout".into(),
+                Self::stringified_intro_from_assets()?,
+                None,
+            )),
             None | Some(_) => Err(ConfigError::IoPath(
                 std::io::Error::new(std::io::ErrorKind::Other, "The layout was not found"),
                 path.into(),
@@ -1513,6 +1519,10 @@ impl Layout {
 
     pub fn stringified_welcome_from_assets() -> Result<String, ConfigError> {
         Ok(String::from_utf8(setup::WELCOME_LAYOUT.to_vec())?)
+    }
+
+    pub fn stringified_intro_from_assets() -> Result<String, ConfigError> {
+        Ok(String::from_utf8(setup::INTRO_LAYOUT.to_vec())?)
     }
 
     pub fn new_tab(&self) -> (TiledPaneLayout, Vec<FloatingPaneLayout>) {

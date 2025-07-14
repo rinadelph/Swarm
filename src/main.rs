@@ -1,8 +1,10 @@
 mod commands;
+mod intro;
 #[cfg(test)]
 mod tests;
 
 use clap::Parser;
+use intro::{IntroApp, IntroAction};
 use zellij_utils::{
     cli::{CliAction, CliArgs, Command, Sessions},
     consts::{create_config_and_cache_folders, VERSION},
@@ -318,6 +320,32 @@ fn main() {
             }
         }
     } else {
-        commands::start_client(opts);
+        // Check if this is a default startup (no specific session, layout, etc.)
+        let should_show_intro = opts.session.is_none() 
+            && opts.layout.is_none() 
+            && opts.new_session_with_layout.is_none();
+            
+        if should_show_intro {
+            // Show native intro screen
+            let mut intro_app = IntroApp::new();
+            match intro_app.run() {
+                Ok(IntroAction::StartTerminal) => {
+                    // User chose to start terminal, proceed with normal startup
+                    commands::start_client(opts);
+                }
+                Ok(IntroAction::SessionManager) => {
+                    // User chose session manager, start with session manager layout
+                    let mut modified_opts = opts;
+                    modified_opts.layout = Some("welcome".to_string().into());
+                    commands::start_client(modified_opts);
+                }
+                Err(_) => {
+                    // Error or user exit, just start normal terminal
+                    commands::start_client(opts);
+                }
+            }
+        } else {
+            commands::start_client(opts);
+        }
     }
 }

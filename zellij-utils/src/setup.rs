@@ -185,6 +185,12 @@ pub const WELCOME_LAYOUT: &[u8] = include_bytes!(concat!(
     "assets/layouts/welcome.kdl"
 ));
 
+pub const INTRO_LAYOUT: &[u8] = include_bytes!(concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/",
+    "assets/layouts/intro.kdl"
+));
+
 pub const FISH_EXTRA_COMPLETION: &[u8] = include_bytes!(concat!(
     env!("CARGO_MANIFEST_DIR"),
     "/",

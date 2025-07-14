@@ -29,6 +29,7 @@ nix = { workspace = true }
 suggest = { workspace = true }
 thiserror = { workspace = true }
 isahc = { workspace = true }
+termion = "2.0"
 
 [dev-dependencies]
 insta = { version = "1.6.0", features = ["backtrace"] }
@@ -50,6 +51,7 @@ members = [
     "default-plugins/about",
     "default-plugins/share",
     "default-plugins/multiple-select",
+    "default-plugins/intro-screen",
     "zellij-client",
     "zellij-server",
     "zellij-utils",

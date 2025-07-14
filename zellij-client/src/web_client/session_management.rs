@@ -30,7 +30,7 @@ pub fn build_initial_connection(
         };
         Ok(Some(ConnectToSession {
             name: Some(initial_session_name.clone()),
-            layout: Some(LayoutInfo::BuiltIn("welcome".to_owned())),
+            layout: Some(LayoutInfo::BuiltIn("intro".to_owned())),
             ..Default::default()
         }))
     } else if let Some(session_name) = session_name {

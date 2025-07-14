@@ -1,0 +1,9 @@
+[package]
+name = "intro-screen"
+version = "0.1.0"
+authors = ["Swarm Contributors"]
+edition = "2021"
+
+[dependencies]
+zellij-tile = { path = "../../zellij-tile" }
+zellij-utils = { path = "../../zellij-utils" }
