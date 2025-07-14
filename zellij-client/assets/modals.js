@@ -1,11 +1,11 @@
 function createModalStyles() {
   if (document.querySelector('#modal-styles')) return;
   
-  const zellijGreen = '#A3BD8D';
-  const zellijGreenDark = '#7A9B6A';
-  const zellijBlue = '#7E9FBE';
-  const zellijBlueDark = '#5A7EA0';
-  const zellijYellow = '#EACB8B';
+  const swarmGreen = '#A3BD8D';
+  const swarmGreenDark = '#7A9B6A';
+  const swarmBlue = '#7E9FBE';
+  const swarmBlueDark = '#5A7EA0';
+  const swarmYellow = '#EACB8B';
   const errorRed = '#BE616B';
   const errorRedDark = '#A04E57';
   
@@ -44,7 +44,7 @@ function createModalStyles() {
       color: ${terminalText};
       padding: 24px;
       border-radius: 0;
-      border: 2px solid ${zellijGreen};
+      border: 2px solid ${swarmGreen};
       box-shadow: 0 0 20px rgba(127, 176, 105, 0.3);
       max-width: 420px;
       width: 90%;
@@ -58,14 +58,14 @@ function createModalStyles() {
       left: -2px;
       right: -2px;
       bottom: -2px;
-      background: ${zellijGreen};
+      background: ${swarmGreen};
       border-radius: 0;
       z-index: -1;
     }
     
     .security-modal h3 {
       margin: 0 0 20px 0;
-      color: ${zellijBlue};
+      color: ${swarmBlue};
       font-size: 16px;
       font-weight: 600;
       text-transform: uppercase;
@@ -102,8 +102,8 @@ function createModalStyles() {
     
     .security-modal input[type="password"]:focus {
       outline: none;
-      border-color: ${zellijBlue};
-      box-shadow: 0 0 0 1px ${zellijBlue};
+      border-color: ${swarmBlue};
+      box-shadow: 0 0 0 1px ${swarmBlue};
       background: ${terminalLight};
     }
     
@@ -132,8 +132,8 @@ function createModalStyles() {
     }
     
     .security-modal input[type="checkbox"]:checked {
-      background: ${zellijGreen};
-      border-color: ${zellijGreen};
+      background: ${swarmGreen};
+      border-color: ${swarmGreen};
     }
     
     .security-modal input[type="checkbox"]:checked::after {
@@ -176,14 +176,14 @@ function createModalStyles() {
     }
     
     .security-modal .submit-btn {
-      background: ${zellijGreen};
+      background: ${swarmGreen};
       color: ${terminalDark};
-      border-color: ${zellijGreen};
+      border-color: ${swarmGreen};
     }
     
     .security-modal .submit-btn:hover {
-      background: ${zellijGreenDark};
-      border-color: ${zellijGreenDark};
+      background: ${swarmGreenDark};
+      border-color: ${swarmGreenDark};
       color: white;
     }
     
@@ -222,7 +222,7 @@ function createModalStyles() {
       left: -2px;
       right: -2px;
       height: 3px;
-      background: ${zellijGreen};
+      background: ${swarmGreen};
     }
     
     .security-modal.error .status-bar {
@@ -237,28 +237,28 @@ function createModalStyles() {
       .security-modal-content {
         background: ${terminalLightBg};
         color: ${terminalLightText};
-        border-color: ${zellijBlueDark};
+        border-color: ${swarmBlueDark};
         box-shadow: 0 0 20px rgba(90, 126, 160, 0.3);
       }
       
       .security-modal-content::before {
-        background: ${zellijBlueDark};
+        background: ${swarmBlueDark};
       }
       
       .security-modal h3 {
-        color: ${zellijBlueDark};
+        color: ${swarmBlueDark};
         border-bottom-color: ${terminalLightMedium};
       }
       
       .security-modal input[type="password"] {
         background: white;
-        border-color: ${zellijBlueDark};
+        border-color: ${swarmBlueDark};
         color: ${terminalLightText};
       }
       
       .security-modal input[type="password"]:focus {
-        border-color: ${zellijBlueDark};
-        box-shadow: 0 0 0 1px ${zellijBlueDark};
+        border-color: ${swarmBlueDark};
+        box-shadow: 0 0 0 1px ${swarmBlueDark};
         background: ${terminalLightBg};
       }
       
@@ -268,12 +268,12 @@ function createModalStyles() {
       
       .security-modal input[type="checkbox"] {
         background: white;
-        border-color: ${zellijBlueDark};
+        border-color: ${swarmBlueDark};
       }
       
       .security-modal input[type="checkbox"]:checked {
-        background: ${zellijGreenDark};
-        border-color: ${zellijGreenDark};
+        background: ${swarmGreenDark};
+        border-color: ${swarmGreenDark};
       }
       
       .security-modal input[type="checkbox"]:checked::after {
@@ -283,7 +283,7 @@ function createModalStyles() {
       .security-modal .cancel-btn {
         background: ${terminalLightBg};
         color: ${terminalLightTextDim};
-        border-color: ${zellijBlueDark};
+        border-color: ${swarmBlueDark};
       }
       
       .security-modal .cancel-btn:hover {
@@ -292,14 +292,14 @@ function createModalStyles() {
       }
       
       .security-modal .submit-btn {
-        background: ${zellijGreenDark};
-        border-color: ${zellijGreenDark};
+        background: ${swarmGreenDark};
+        border-color: ${swarmGreenDark};
         color: white;
       }
       
       .security-modal .submit-btn:hover {
-        background: ${zellijGreen};
-        border-color: ${zellijGreen};
+        background: ${swarmGreen};
+        border-color: ${swarmGreen};
         color: ${terminalDark};
       }
       
@@ -331,7 +331,7 @@ function createModalStyles() {
       }
       
       .security-modal .status-bar {
-        background: ${zellijBlueDark};
+        background: ${swarmBlueDark};
       }
     }
   `;

@@ -17,11 +17,11 @@ use std::path::Path;
 use std::cell::RefCell;
 use std::rc::Rc;
 
-const ZELLIJ_EXECUTABLE_LOCATION: &str = "/usr/src/zellij/x86_64-unknown-linux-musl/release/zellij";
+const ZELLIJ_EXECUTABLE_LOCATION: &str = "/usr/src/swarm/x86_64-unknown-linux-musl/release/swarm";
 const SET_ENV_VARIABLES: &str = "EDITOR=/usr/bin/vi";
-const ZELLIJ_CONFIG_PATH: &str = "/usr/src/zellij/fixtures/configs";
-const ZELLIJ_DATA_DIR: &str = "/usr/src/zellij/e2e-data";
-const ZELLIJ_FIXTURE_PATH: &str = "/usr/src/zellij/fixtures";
+const ZELLIJ_CONFIG_PATH: &str = "/usr/src/swarm/fixtures/configs";
+const ZELLIJ_DATA_DIR: &str = "/usr/src/swarm/e2e-data";
+const ZELLIJ_FIXTURE_PATH: &str = "/usr/src/swarm/fixtures";
 const CONNECTION_STRING: &str = "127.0.0.1:2222";
 const CONNECTION_USERNAME: &str = "test";
 const CONNECTION_PASSWORD: &str = "test";
@@ -58,26 +58,26 @@ fn setup_remote_environment(channel: &mut ssh2::Channel, win_size: Size) {
     channel.flush().unwrap();
 }
 
-fn stop_zellij(channel: &mut ssh2::Channel) {
+fn stop_swarm(channel: &mut ssh2::Channel) {
     // here we remove the status-bar-tips cache to make sure only the quicknav tip is loaded
     channel
         .write_all(b"find /tmp | grep status-bar-tips | xargs rm\n")
         .unwrap();
-    channel.write_all(b"killall -KILL zellij\n").unwrap();
+    channel.write_all(b"killall -KILL swarm\n").unwrap();
     channel.write_all(b"rm -rf /tmp/*\n").unwrap(); // remove temporary artifacts from previous
                                                     // tests
     channel.write_all(b"rm -rf /tmp/*\n").unwrap(); // remove temporary artifacts from previous
     channel.write_all(b"rm -rf /tmp/*\n").unwrap(); // remove temporary artifacts from previous
     channel
-        .write_all(b"rm -rf ~/.cache/zellij/*/session_info\n")
+        .write_all(b"rm -rf ~/.cache/swarm/*/session_info\n")
         .unwrap();
     channel
-        .write_all(b"rm -rf ~/.cache/zellij/permissions.kdl\n")
+        .write_all(b"rm -rf ~/.cache/swarm/permissions.kdl\n")
         .unwrap();
 }
 
-fn start_zellij(channel: &mut ssh2::Channel) {
-    stop_zellij(channel);
+fn start_swarm(channel: &mut ssh2::Channel) {
+    stop_swarm(channel);
     channel
         .write_all(
             format!(
@@ -88,11 +88,11 @@ fn start_zellij(channel: &mut ssh2::Channel) {
         )
         .unwrap();
     channel.flush().unwrap();
-    std::thread::sleep(std::time::Duration::from_secs(3)); // wait until Zellij stops parsing startup ANSI codes from the terminal STDIN
+    std::thread::sleep(std::time::Duration::from_secs(3)); // wait until Swarm stops parsing startup ANSI codes from the terminal STDIN
 }
 
-fn start_zellij_mirrored_session(channel: &mut ssh2::Channel) {
-    stop_zellij(channel);
+fn start_swarm_mirrored_session(channel: &mut ssh2::Channel) {
+    stop_swarm(channel);
     channel
         .write_all(
             format!(
@@ -103,11 +103,11 @@ fn start_zellij_mirrored_session(channel: &mut ssh2::Channel) {
         )
         .unwrap();
     channel.flush().unwrap();
-    std::thread::sleep(std::time::Duration::from_secs(3)); // wait until Zellij stops parsing startup ANSI codes from the terminal STDIN
+    std::thread::sleep(std::time::Duration::from_secs(3)); // wait until Swarm stops parsing startup ANSI codes from the terminal STDIN
 }
 
-fn start_zellij_mirrored_session_with_layout(channel: &mut ssh2::Channel, layout_file_name: &str) {
-    stop_zellij(channel);
+fn start_swarm_mirrored_session_with_layout(channel: &mut ssh2::Channel, layout_file_name: &str) {
+    stop_swarm(channel);
     channel
         .write_all(
             format!(
@@ -122,14 +122,14 @@ fn start_zellij_mirrored_session_with_layout(channel: &mut ssh2::Channel, layout
         )
         .unwrap();
     channel.flush().unwrap();
-    std::thread::sleep(std::time::Duration::from_secs(3)); // wait until Zellij stops parsing startup ANSI codes from the terminal STDIN
+    std::thread::sleep(std::time::Duration::from_secs(3)); // wait until Swarm stops parsing startup ANSI codes from the terminal STDIN
 }
 
-fn start_zellij_mirrored_session_with_layout_and_viewport_serialization(
+fn start_swarm_mirrored_session_with_layout_and_viewport_serialization(
     channel: &mut ssh2::Channel,
     layout_file_name: &str,
 ) {
-    stop_zellij(channel);
+    stop_swarm(channel);
     channel
         .write_all(
             format!(
@@ -144,11 +144,11 @@ fn start_zellij_mirrored_session_with_layout_and_viewport_serialization(
         )
         .unwrap();
     channel.flush().unwrap();
-    std::thread::sleep(std::time::Duration::from_secs(3)); // wait until Zellij stops parsing startup ANSI codes from the terminal STDIN
+    std::thread::sleep(std::time::Duration::from_secs(3)); // wait until Swarm stops parsing startup ANSI codes from the terminal STDIN
 }
 
-fn start_zellij_in_session(channel: &mut ssh2::Channel, session_name: &str, mirrored: bool) {
-    stop_zellij(channel);
+fn start_swarm_in_session(channel: &mut ssh2::Channel, session_name: &str, mirrored: bool) {
+    stop_swarm(channel);
     channel
         .write_all(
             format!(
@@ -163,7 +163,7 @@ fn start_zellij_in_session(channel: &mut ssh2::Channel, session_name: &str, mirr
         )
         .unwrap();
     channel.flush().unwrap();
-    std::thread::sleep(std::time::Duration::from_secs(3)); // wait until Zellij stops parsing startup ANSI codes from the terminal STDIN
+    std::thread::sleep(std::time::Duration::from_secs(3)); // wait until Swarm stops parsing startup ANSI codes from the terminal STDIN
 }
 
 fn attach_to_existing_session(channel: &mut ssh2::Channel, session_name: &str) {
@@ -177,11 +177,11 @@ fn attach_to_existing_session(channel: &mut ssh2::Channel, session_name: &str) {
         )
         .unwrap();
     channel.flush().unwrap();
-    std::thread::sleep(std::time::Duration::from_secs(3)); // wait until Zellij stops parsing startup ANSI codes from the terminal STDIN
+    std::thread::sleep(std::time::Duration::from_secs(3)); // wait until Swarm stops parsing startup ANSI codes from the terminal STDIN
 }
 
-fn start_zellij_without_frames(channel: &mut ssh2::Channel) {
-    stop_zellij(channel);
+fn start_swarm_without_frames(channel: &mut ssh2::Channel) {
+    stop_swarm(channel);
     channel
         .write_all(
             format!(
@@ -192,11 +192,11 @@ fn start_zellij_without_frames(channel: &mut ssh2::Channel) {
         )
         .unwrap();
     channel.flush().unwrap();
-    std::thread::sleep(std::time::Duration::from_secs(3)); // wait until Zellij stops parsing startup ANSI codes from the terminal STDIN
+    std::thread::sleep(std::time::Duration::from_secs(3)); // wait until Swarm stops parsing startup ANSI codes from the terminal STDIN
 }
 
-fn start_zellij_with_config(channel: &mut ssh2::Channel, config_path: &str) {
-    stop_zellij(channel);
+fn start_swarm_with_config(channel: &mut ssh2::Channel, config_path: &str) {
+    stop_swarm(channel);
     channel
         .write_all(
             format!(
@@ -211,7 +211,7 @@ fn start_zellij_with_config(channel: &mut ssh2::Channel, config_path: &str) {
         )
         .unwrap();
     channel.flush().unwrap();
-    std::thread::sleep(std::time::Duration::from_secs(3)); // wait until Zellij stops parsing startup ANSI codes from the terminal STDIN
+    std::thread::sleep(std::time::Duration::from_secs(3)); // wait until Swarm stops parsing startup ANSI codes from the terminal STDIN
 }
 
 fn read_from_channel(
@@ -402,7 +402,7 @@ impl RemoteTerminal {
             )
             .unwrap();
         channel.flush().unwrap();
-        std::thread::sleep(std::time::Duration::from_secs(1)); // wait until Zellij stops parsing startup ANSI codes from the terminal STDIN
+        std::thread::sleep(std::time::Duration::from_secs(1)); // wait until Swarm stops parsing startup ANSI codes from the terminal STDIN
     }
     pub fn send_command_through_the_cli(&mut self, command: &str) {
         let mut channel = self.channel.lock().unwrap();
@@ -464,7 +464,7 @@ impl RemoteRunner {
             logical_position: None,
         };
         setup_remote_environment(&mut channel, win_size);
-        start_zellij(&mut channel);
+        start_swarm(&mut channel);
         let channel = Arc::new(Mutex::new(channel));
         let last_snapshot = Arc::new(Mutex::new(String::new()));
         let cursor_coordinates = Arc::new(Mutex::new((0, 0)));
@@ -502,7 +502,7 @@ impl RemoteRunner {
             logical_position: None,
         };
         setup_remote_environment(&mut channel, win_size);
-        start_zellij_mirrored_session(&mut channel);
+        start_swarm_mirrored_session(&mut channel);
         let channel = Arc::new(Mutex::new(channel));
         let last_snapshot = Arc::new(Mutex::new(String::new()));
         let cursor_coordinates = Arc::new(Mutex::new((0, 0)));
@@ -540,7 +540,7 @@ impl RemoteRunner {
             logical_position: None,
         };
         setup_remote_environment(&mut channel, win_size);
-        start_zellij_mirrored_session_with_layout(&mut channel, layout_file_name);
+        start_swarm_mirrored_session_with_layout(&mut channel, layout_file_name);
         let channel = Arc::new(Mutex::new(channel));
         let last_snapshot = Arc::new(Mutex::new(String::new()));
         let cursor_coordinates = Arc::new(Mutex::new((0, 0)));
@@ -581,7 +581,7 @@ impl RemoteRunner {
             logical_position: None,
         };
         setup_remote_environment(&mut channel, win_size);
-        start_zellij_mirrored_session_with_layout_and_viewport_serialization(
+        start_swarm_mirrored_session_with_layout_and_viewport_serialization(
             &mut channel,
             layout_file_name,
         );
@@ -609,7 +609,7 @@ impl RemoteRunner {
         let sess = ssh_connect();
         let mut channel = sess.channel_session().unwrap();
         setup_remote_environment(&mut channel, win_size);
-        start_zellij(&mut channel);
+        start_swarm(&mut channel);
     }
     pub fn new_with_session_name(win_size: Size, session_name: &str, mirrored: bool) -> Self {
         // notice that this method does not have a timeout, so use with caution!
@@ -629,7 +629,7 @@ impl RemoteRunner {
             logical_position: None,
         };
         setup_remote_environment(&mut channel, win_size);
-        start_zellij_in_session(&mut channel, session_name, mirrored);
+        start_swarm_in_session(&mut channel, session_name, mirrored);
         let channel = Arc::new(Mutex::new(channel));
         let last_snapshot = Arc::new(Mutex::new(String::new()));
         let cursor_coordinates = Arc::new(Mutex::new((0, 0)));
@@ -705,7 +705,7 @@ impl RemoteRunner {
             logical_position: None,
         };
         setup_remote_environment(&mut channel, win_size);
-        start_zellij_without_frames(&mut channel);
+        start_swarm_without_frames(&mut channel);
         let channel = Arc::new(Mutex::new(channel));
         let last_snapshot = Arc::new(Mutex::new(String::new()));
         let cursor_coordinates = Arc::new(Mutex::new((0, 0)));
@@ -744,7 +744,7 @@ impl RemoteRunner {
             logical_position: None,
         };
         setup_remote_environment(&mut channel, win_size);
-        start_zellij_with_config(&mut channel, &remote_path.to_string_lossy());
+        start_swarm_with_config(&mut channel, &remote_path.to_string_lossy());
         let channel = Arc::new(Mutex::new(channel));
         let last_snapshot = Arc::new(Mutex::new(String::new()));
         let cursor_coordinates = Arc::new(Mutex::new((0, 0)));

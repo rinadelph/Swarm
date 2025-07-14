@@ -79,23 +79,23 @@ fn workspace_members() -> &'static Vec<WorkspaceMember> {
                 build: true,
             },
             WorkspaceMember {
-                crate_name: "zellij-utils",
+                crate_name: "swarm-utils",
                 build: false,
             },
             WorkspaceMember {
-                crate_name: "zellij-tile-utils",
+                crate_name: "swarm-tile-utils",
                 build: false,
             },
             WorkspaceMember {
-                crate_name: "zellij-tile",
+                crate_name: "swarm-tile",
                 build: false,
             },
             WorkspaceMember {
-                crate_name: "zellij-client",
+                crate_name: "swarm-client",
                 build: false,
             },
             WorkspaceMember {
-                crate_name: "zellij-server",
+                crate_name: "swarm-server",
                 build: false,
             },
             WorkspaceMember {
@@ -146,7 +146,7 @@ fn project_root() -> PathBuf {
 }
 
 fn asset_dir() -> PathBuf {
-    crate::project_root().join("zellij-utils").join("assets")
+    crate::project_root().join("swarm-utils").join("assets")
 }
 
 pub fn cargo() -> anyhow::Result<PathBuf> {
@@ -162,7 +162,7 @@ pub fn status(msg: &str) {
 
 fn deprecation_notice() -> anyhow::Result<()> {
     Err(anyhow::anyhow!(
-        " !!! cargo make has been deprecated by zellij !!!
+        " !!! cargo make has been deprecated by swarm !!!
 
 Our build system is now `cargo xtask`. Don't worry, you won't have to install
 anything!

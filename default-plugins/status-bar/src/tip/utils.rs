@@ -2,7 +2,7 @@ use std::path::PathBuf;
 
 use rand::prelude::{IteratorRandom, SliceRandom};
 
-use zellij_tile::prelude::get_zellij_version;
+use zellij_tile::prelude::get_swarm_version;
 
 use super::cache::LocalCache;
 use super::consts::{DEFAULT_CACHE_FILE_PATH, MAX_CACHE_HITS};
@@ -43,9 +43,9 @@ pub fn get_cached_tip_name() -> String {
         Ok(cache) => cache,
     };
 
-    let zellij_version = get_zellij_version();
-    if zellij_version.ne(local_cache.get_version()) {
-        local_cache.set_version(zellij_version);
+    let swarm_version = get_swarm_version();
+    if swarm_version.ne(local_cache.get_version()) {
+        local_cache.set_version(swarm_version);
         local_cache.clear().unwrap();
     }
 

@@ -5,7 +5,7 @@ use crate::web_client::control_message::{
 use crate::web_client::message_handlers::{
     parse_stdin, render_to_client, send_control_messages_to_client,
 };
-use crate::web_client::server_listener::zellij_server_listener;
+use crate::web_client::server_listener::swarm_server_listener;
 use crate::web_client::types::{AppState, TerminalParams};
 
 use axum::{
@@ -132,7 +132,7 @@ async fn handle_ws_terminal(
         .unwrap()
         .add_client_terminal_tx(&web_client_id, stdout_channel_tx);
 
-    zellij_server_listener(
+    swarm_server_listener(
         os_input.clone(),
         state.connection_table.clone(),
         session_name.map(|p| p.0),

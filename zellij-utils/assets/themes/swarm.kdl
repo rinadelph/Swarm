@@ -1,0 +1,15 @@
+themes {
+    swarm {
+        fg 139 233 253      // Light cyan for text
+        bg 16 24 32         // Dark blue background
+        red 255 85 85       // Keep red
+        green 63 158 141    // Teal green
+        yellow 63 158 141   // Teal (same as blue)
+        blue 63 158 141     // Main teal color
+        magenta 139 233 253 // Light cyan
+        orange 255 184 108  // Keep orange accent
+        cyan 139 233 253    // Light cyan for highlights
+        black 0 0 0         // Pure black
+        white 255 255 255   // Pure white
+    }
+}

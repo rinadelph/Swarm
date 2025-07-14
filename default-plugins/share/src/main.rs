@@ -24,7 +24,7 @@ struct App {
 
 register_plugin!(App);
 
-impl ZellijPlugin for App {
+impl SwarmPlugin for App {
     fn load(&mut self, _configuration: BTreeMap<String, String>) {
         self.initialize();
     }
@@ -374,7 +374,7 @@ impl App {
     }
 
     fn render_no_capability_message(&self, rows: usize, cols: usize) {
-        let full_text = "This version of Zellij was compiled without web sharing capabilities";
+        let full_text = "This version of Swarm was compiled without web sharing capabilities";
         let short_text = "No web server capabilities";
         let text = if cols >= full_text.chars().count() {
             full_text

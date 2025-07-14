@@ -36,7 +36,7 @@ use crate::{panes::PaneId, screen::ScreenInstruction};
 
 use prost::Message;
 use zellij_utils::{
-    consts::{VERSION, ZELLIJ_SESSION_INFO_CACHE_DIR, ZELLIJ_SOCK_DIR},
+    consts::{VERSION, SWARM_SESSION_INFO_CACHE_DIR, SWARM_SOCK_DIR},
     data::{
         CommandToRun, Direction, Event, EventType, FileToOpen, InputMode, PluginCommand, PluginIds,
         PluginMessage, Resize, ResizeStrategy,
@@ -49,7 +49,7 @@ use zellij_utils::{
     },
     plugin_api::{
         plugin_command::ProtobufPluginCommand,
-        plugin_ids::{ProtobufPluginIds, ProtobufZellijVersion},
+        plugin_ids::{ProtobufPluginIds, ProtobufSwarmVersion},
     },
 };
 
@@ -81,7 +81,7 @@ macro_rules! apply_action {
 
 pub fn zellij_exports(linker: &mut Linker<PluginEnv>) {
     linker
-        .func_wrap("zellij", "host_run_plugin_command", host_run_plugin_command)
+        .func_wrap("swarm", "host_run_plugin_command", host_run_plugin_command)
         .unwrap();
 }
 
@@ -101,7 +101,7 @@ fn host_run_plugin_command(mut caller: Caller<'_, PluginEnv>) {
                     PluginCommand::Unsubscribe(event_list) => unsubscribe(env, event_list)?,
                     PluginCommand::SetSelectable(selectable) => set_selectable(env, selectable),
                     PluginCommand::GetPluginIds => get_plugin_ids(env),
-                    PluginCommand::GetZellijVersion => get_zellij_version(env),
+                    PluginCommand::GetSwarmVersion => get_swarm_version(env),
                     PluginCommand::OpenFile(file_to_open, context) => {
                         open_file(env, file_to_open, context)
                     },
@@ -214,7 +214,7 @@ fn host_run_plugin_command(mut caller: Caller<'_, PluginEnv>) {
                     PluginCommand::ToggleActiveTabSync => toggle_active_tab_sync(env),
                     PluginCommand::CloseFocusedTab => close_focused_tab(env),
                     PluginCommand::UndoRenameTab => undo_rename_tab(env),
-                    PluginCommand::QuitZellij => quit_zellij(env),
+                    PluginCommand::QuitSwarm => quit_swarm(env),
                     PluginCommand::PreviousSwapLayout => previous_swap_layout(env),
                     PluginCommand::NextSwapLayout => next_swap_layout(env),
                     PluginCommand::GoToTabName(tab_name) => go_to_tab_name(env, tab_name),
@@ -549,7 +549,7 @@ fn cli_pipe_output(env: &PluginEnv, pipe_name: String, output: String) -> Result
 }
 
 fn message_to_plugin(env: &PluginEnv, mut message_to_plugin: MessageToPlugin) -> Result<()> {
-    if message_to_plugin.plugin_url.as_ref().map(|s| s.as_str()) == Some("zellij:OWN_URL") {
+    if message_to_plugin.plugin_url.as_ref().map(|s| s.as_str()) == Some("swarm:OWN_URL") {
         message_to_plugin.plugin_url = Some(env.plugin.location.display());
     }
     env.senders
@@ -617,7 +617,7 @@ fn request_permission(env: &PluginEnv, permissions: Vec<PermissionType>) -> Resu
 fn get_plugin_ids(env: &PluginEnv) {
     let ids = PluginIds {
         plugin_id: env.plugin_id,
-        zellij_pid: process::id(),
+        swarm_pid: process::id(),
         initial_cwd: env.plugin_cwd.clone(),
         client_id: env.client_id,
     };
@@ -636,14 +636,14 @@ fn get_plugin_ids(env: &PluginEnv) {
         .non_fatal();
 }
 
-fn get_zellij_version(env: &PluginEnv) {
-    let protobuf_zellij_version = ProtobufZellijVersion {
+fn get_swarm_version(env: &PluginEnv) {
+    let protobuf_swarm_version = ProtobufSwarmVersion {
         version: VERSION.to_owned(),
     };
-    wasi_write_object(env, &protobuf_zellij_version.encode_to_vec())
+    wasi_write_object(env, &protobuf_swarm_version.encode_to_vec())
         .with_context(|| {
             format!(
-                "failed to request zellij version from host for plugin {}",
+                "failed to request swarm version from host for plugin {}",
                 env.name()
             )
         })
@@ -1596,14 +1596,14 @@ fn switch_session(
 }
 
 fn delete_dead_session(session_name: String) -> Result<()> {
-    std::fs::remove_dir_all(&*ZELLIJ_SESSION_INFO_CACHE_DIR.join(&session_name))
+    std::fs::remove_dir_all(&*SWARM_SESSION_INFO_CACHE_DIR.join(&session_name))
         .with_context(|| format!("Failed to delete dead session: {:?}", &session_name))
 }
 
 fn delete_all_dead_sessions() -> Result<()> {
     use std::os::unix::fs::FileTypeExt;
     let mut live_sessions = vec![];
-    if let Ok(files) = std::fs::read_dir(&*ZELLIJ_SOCK_DIR) {
+    if let Ok(files) = std::fs::read_dir(&*SWARM_SOCK_DIR) {
         files.for_each(|file| {
             if let Ok(file) = file {
                 if let Ok(file_name) = file.file_name().into_string() {
@@ -1614,7 +1614,7 @@ fn delete_all_dead_sessions() -> Result<()> {
             }
         });
     }
-    let dead_sessions: Vec<String> = match std::fs::read_dir(&*ZELLIJ_SESSION_INFO_CACHE_DIR) {
+    let dead_sessions: Vec<String> = match std::fs::read_dir(&*SWARM_SESSION_INFO_CACHE_DIR) {
         Ok(files_in_session_info_folder) => {
             let files_that_are_folders = files_in_session_info_folder
                 .filter_map(|f| f.ok().map(|f| f.path()))
@@ -1771,8 +1771,8 @@ fn undo_rename_tab(env: &PluginEnv) {
     apply_action!(action, error_msg, env);
 }
 
-fn quit_zellij(env: &PluginEnv) {
-    let error_msg = || format!("failed to quit zellij in plugin {}", env.name());
+fn quit_swarm(env: &PluginEnv) {
+    let error_msg = || format!("failed to quit swarm in plugin {}", env.name());
     let action = Action::Quit;
     apply_action!(action, error_msg, env);
 }
@@ -1889,7 +1889,7 @@ fn disconnect_other_clients(env: &PluginEnv) {
 
 fn kill_sessions(session_names: Vec<String>) {
     for session_name in session_names {
-        let path = &*ZELLIJ_SOCK_DIR.join(&session_name);
+        let path = &*SWARM_SOCK_DIR.join(&session_name);
         match LocalSocketStream::connect(path) {
             Ok(stream) => {
                 let _ = IpcSenderWithContext::new(stream).send(ClientToServerMsg::KillSession);
@@ -2181,7 +2181,7 @@ fn load_new_plugin(
     load_in_background: bool,
     skip_plugin_cache: bool,
 ) {
-    let url = if &url == "zellij:OWN_URL" {
+    let url = if &url == "swarm:OWN_URL" {
         env.plugin.location.display()
     } else {
         url
@@ -2244,13 +2244,13 @@ fn stop_web_server(_env: &PluginEnv) {
     #[cfg(feature = "web_server_capability")]
     let _ = shutdown_all_webserver_instances();
     #[cfg(not(feature = "web_server_capability"))]
-    log::error!("This instance of Zellij was compiled without web server capabilities");
+    log::error!("This instance of Swarm was compiled without web server capabilities");
 }
 
 fn query_web_server_status(env: &PluginEnv) {
     let _ = env
         .senders
-        .send_to_background_jobs(BackgroundJob::QueryZellijWebServerStatus);
+        .send_to_background_jobs(BackgroundJob::QuerySwarmWebServerStatus);
 }
 
 fn share_current_session(env: &PluginEnv) {
@@ -2343,7 +2343,7 @@ fn generate_web_login_token(env: &PluginEnv, token_label: Option<String>) {
 
 #[cfg(not(feature = "web_server_capability"))]
 fn generate_web_login_token(env: &PluginEnv, _token_label: Option<String>) {
-    log::error!("This version of Zellij was compiled without the web server capabilities!");
+    log::error!("This version of Swarm was compiled without the web server capabilities!");
     let empty_vec: Vec<&str> = vec![];
     let _ = wasi_write_object(env, &empty_vec);
 }
@@ -2369,7 +2369,7 @@ fn revoke_web_login_token(env: &PluginEnv, token_label: String) {
 
 #[cfg(not(feature = "web_server_capability"))]
 fn revoke_web_login_token(env: &PluginEnv, _token_label: String) {
-    log::error!("This version of Zellij was compiled without the web server capabilities!");
+    log::error!("This version of Swarm was compiled without the web server capabilities!");
     let empty_vec: Vec<&str> = vec![];
     let _ = wasi_write_object(env, &empty_vec);
 }
@@ -2391,7 +2391,7 @@ fn revoke_all_web_login_tokens(env: &PluginEnv) {
 
 #[cfg(not(feature = "web_server_capability"))]
 fn revoke_all_web_login_tokens(env: &PluginEnv) {
-    log::error!("This version of Zellij was compiled without the web server capabilities!");
+    log::error!("This version of Swarm was compiled without the web server capabilities!");
     let empty_vec: Vec<&str> = vec![];
     let _ = wasi_write_object(env, &empty_vec);
 }
@@ -2413,7 +2413,7 @@ fn rename_web_login_token(env: &PluginEnv, old_name: String, new_name: String) {
 
 #[cfg(not(feature = "web_server_capability"))]
 fn rename_web_login_token(env: &PluginEnv, _old_name: String, _new_name: String) {
-    log::error!("This version of Zellij was compiled without the web server capabilities!");
+    log::error!("This version of Swarm was compiled without the web server capabilities!");
     let empty_vec: Vec<&str> = vec![];
     let _ = wasi_write_object(env, &empty_vec);
 }
@@ -2437,7 +2437,7 @@ fn list_web_login_tokens(env: &PluginEnv) {
 
 #[cfg(not(feature = "web_server_capability"))]
 fn list_web_login_tokens(env: &PluginEnv) {
-    log::error!("This version of Zellij was compiled without the web server capabilities!");
+    log::error!("This version of Swarm was compiled without the web server capabilities!");
     let empty_vec: Vec<&str> = vec![];
     let _ = wasi_write_object(env, &empty_vec);
 }
@@ -2619,7 +2619,7 @@ fn check_command_permission(
         | PluginCommand::ToggleActiveTabSync
         | PluginCommand::CloseFocusedTab
         | PluginCommand::UndoRenameTab
-        | PluginCommand::QuitZellij
+        | PluginCommand::QuitSwarm
         | PluginCommand::PreviousSwapLayout
         | PluginCommand::NextSwapLayout
         | PluginCommand::GoToTabName(..)

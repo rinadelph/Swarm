@@ -19,7 +19,7 @@ use zellij_utils::input::mouse::{MouseEvent, MouseEventType};
 use zellij_utils::pane_size::Offset;
 use zellij_utils::{
     data::{
-        BareKey, InputMode, KeyWithModifier, Palette, PaletteColor, PaneId as ZellijUtilsPaneId,
+        BareKey, InputMode, KeyWithModifier, Palette, PaletteColor, PaneId as SwarmUtilsPaneId,
         Style, Styling,
     },
     errors::prelude::*,
@@ -90,20 +90,20 @@ pub enum PaneId {
 }
 
 // because crate architecture and reasons...
-impl From<ZellijUtilsPaneId> for PaneId {
-    fn from(zellij_utils_pane_id: ZellijUtilsPaneId) -> Self {
-        match zellij_utils_pane_id {
-            ZellijUtilsPaneId::Terminal(id) => PaneId::Terminal(id),
-            ZellijUtilsPaneId::Plugin(id) => PaneId::Plugin(id),
+impl From<SwarmUtilsPaneId> for PaneId {
+    fn from(swarm_utils_pane_id: SwarmUtilsPaneId) -> Self {
+        match swarm_utils_pane_id {
+            SwarmUtilsPaneId::Terminal(id) => PaneId::Terminal(id),
+            SwarmUtilsPaneId::Plugin(id) => PaneId::Plugin(id),
         }
     }
 }
 
-impl Into<ZellijUtilsPaneId> for PaneId {
-    fn into(self) -> ZellijUtilsPaneId {
+impl Into<SwarmUtilsPaneId> for PaneId {
+    fn into(self) -> SwarmUtilsPaneId {
         match self {
-            PaneId::Terminal(id) => ZellijUtilsPaneId::Terminal(id),
-            PaneId::Plugin(id) => ZellijUtilsPaneId::Plugin(id),
+            PaneId::Terminal(id) => SwarmUtilsPaneId::Terminal(id),
+            PaneId::Plugin(id) => SwarmUtilsPaneId::Plugin(id),
         }
     }
 }
@@ -222,7 +222,7 @@ impl Pane for TerminalPane {
 
         self.reset_selection(client_id);
         if !self.grid.bracketed_paste_mode {
-            // Zellij itself operates in bracketed paste mode, so the terminal sends these
+            // Swarm itself operates in bracketed paste mode, so the terminal sends these
             // instructions (bracketed paste start and bracketed paste end respectively)
             // when pasting input. We only need to make sure not to send them to terminal
             // panes who do not work in this mode

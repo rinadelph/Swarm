@@ -256,7 +256,7 @@ fn create_new_screen(size: Size, advanced_mouse_actions: bool) -> Screen {
     };
     let max_panes = None;
     let mut mode_info = ModeInfo::default();
-    mode_info.session_name = Some("zellij-test".into());
+    mode_info.session_name = Some("swarm-test".into());
     let draw_pane_frames = false;
     let auto_layout = true;
     let session_is_mirrored = true;
@@ -356,7 +356,7 @@ impl MockScreen {
         let screen_thread = std::thread::Builder::new()
             .name("screen_thread".to_string())
             .spawn(move || {
-                set_var("ZELLIJ_SESSION_NAME", "zellij-test");
+                set_var("ZELLIJ_SESSION_NAME", "swarm-test");
                 screen_thread_main(
                     screen_bus,
                     None,
@@ -437,7 +437,7 @@ impl MockScreen {
         let screen_thread = std::thread::Builder::new()
             .name("screen_thread".to_string())
             .spawn(move || {
-                set_var("ZELLIJ_SESSION_NAME", "zellij-test");
+                set_var("ZELLIJ_SESSION_NAME", "swarm-test");
                 screen_thread_main(
                     screen_bus,
                     None,
@@ -1343,7 +1343,7 @@ fn update_screen_pixel_dimensions() {
 
 #[test]
 fn attach_after_first_tab_closed() {
-    // ensure https://github.com/zellij-org/zellij/issues/1645 is fixed
+    // ensure https://github.com/swarm-org/swarm/issues/1645 is fixed
     let size = Size {
         cols: 121,
         rows: 20,

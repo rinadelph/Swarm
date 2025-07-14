@@ -2940,8 +2940,8 @@ impl Tab {
                 Ok(_) => {
                     self.swap_layouts.set_is_tiled_damaged();
                 },
-                Err(err) => match err.downcast_ref::<ZellijError>() {
-                    Some(ZellijError::CantResizeFixedPanes { pane_ids }) => {
+                Err(err) => match err.downcast_ref::<SwarmError>() {
+                    Some(SwarmError::CantResizeFixedPanes { pane_ids }) => {
                         let mut pane_ids_to_error = vec![];
                         for (id, is_terminal) in pane_ids {
                             if *is_terminal {
@@ -5137,8 +5137,8 @@ impl Tab {
                 .resize_pane_with_id(strategy, pane_id, None)
             {
                 Ok(_) => {},
-                Err(err) => match err.downcast_ref::<ZellijError>() {
-                    Some(ZellijError::CantResizeFixedPanes { pane_ids }) => {
+                Err(err) => match err.downcast_ref::<SwarmError>() {
+                    Some(SwarmError::CantResizeFixedPanes { pane_ids }) => {
                         let mut pane_ids_to_error = vec![];
                         for (id, is_terminal) in pane_ids {
                             if *is_terminal {

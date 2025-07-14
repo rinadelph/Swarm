@@ -29,7 +29,7 @@ use crate::{
 use termwiz::input::InputEvent;
 use zellij_utils::{
     channels::{self, ChannelWithContext, SenderWithContext},
-    consts::{set_permissions, ZELLIJ_SOCK_DIR},
+    consts::{set_permissions, SWARM_SOCK_DIR},
     data::{ClientId, ConnectToSession, KeyWithModifier, Style},
     envs,
     errors::{ClientContext, ContextType, ErrorInstruction},
@@ -130,7 +130,7 @@ fn spawn_web_server(opts: &CliArgs) -> Result<String, String> {
                 config_file_path.display()
             ));
         }
-        // this is so that if Zellij itself was started with a different config file, we'll use it
+        // this is so that if Swarm itself was started with a different config file, we'll use it
         // to start the webserver
         cmd.arg("--config");
         cmd.arg(format!("{}", config_file_path.display()));
@@ -153,7 +153,7 @@ fn spawn_web_server(opts: &CliArgs) -> Result<String, String> {
 #[cfg(not(feature = "web_server_capability"))]
 fn spawn_web_server(_opts: &CliArgs) -> Result<String, String> {
     log::error!(
-        "This version of Zellij was compiled without web server support, cannot run web server!"
+        "This version of Swarm was compiled without web server support, cannot run web server!"
     );
     Ok("".to_owned())
 }
@@ -222,7 +222,7 @@ pub fn start_client(
         start_server_detached(os_input, opts, config, config_options, info, layout);
         return None;
     }
-    info!("Starting Zellij client!");
+    info!("Starting Swarm client!");
 
     let explicitly_disable_kitty_keyboard_protocol = config_options
         .support_kitty_keyboard_protocol
@@ -255,7 +255,7 @@ pub fn start_client(
                 .unwrap();
         }
     }
-    envs::set_zellij("0".to_string());
+    envs::set_swarm("0".to_string());
     config.env.set_vars();
 
     let palette = config
@@ -280,7 +280,7 @@ pub fn start_client(
     let enforce_https_for_localhost = config_options.enforce_https_for_localhost.unwrap_or(false);
 
     let create_ipc_pipe = || -> std::path::PathBuf {
-        let mut sock_dir = ZELLIJ_SOCK_DIR.clone();
+        let mut sock_dir = SWARM_SOCK_DIR.clone();
         std::fs::create_dir_all(&sock_dir).unwrap();
         set_permissions(&sock_dir, 0o700).unwrap();
         sock_dir.push(envs::get_session_name().unwrap());
@@ -508,7 +508,7 @@ pub fn start_client(
 
     let mut stdout = os_input.get_stdout_writer();
     stdout
-        .write_all("\u{1b}[1m\u{1b}[HLoading Zellij\u{1b}[m\n\r".as_bytes())
+        .write_all("\u{1b}[1m\u{1b}[HLoading Swarm\u{1b}[m\n\r".as_bytes())
         .expect("cannot write to stdout");
     stdout.flush().expect("could not flush");
 
@@ -688,7 +688,7 @@ pub fn start_server_detached(
     info: ClientInfo,
     layout: Option<Layout>,
 ) {
-    envs::set_zellij("0".to_string());
+    envs::set_swarm("0".to_string());
     config.env.set_vars();
 
     let should_start_web_server = config_options.web_server.map(|w| w).unwrap_or(false);
@@ -708,7 +708,7 @@ pub fn start_server_detached(
     };
 
     let create_ipc_pipe = || -> std::path::PathBuf {
-        let mut sock_dir = ZELLIJ_SOCK_DIR.clone();
+        let mut sock_dir = SWARM_SOCK_DIR.clone();
         std::fs::create_dir_all(&sock_dir).unwrap();
         set_permissions(&sock_dir, 0o700).unwrap();
         sock_dir.push(envs::get_session_name().unwrap());

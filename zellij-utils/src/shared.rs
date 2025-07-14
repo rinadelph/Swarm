@@ -57,7 +57,7 @@ pub fn make_terminal_title(pane_title: &str) -> String {
     // if we receive a title, we display it, otherwise we display the session name
     if pane_title.is_empty() {
         format!(
-            "\u{1b}]0;Zellij {}\u{07}",
+            "\u{1b}]0;Swarm {}\u{07}",
             get_session_name()
                 .map(|n| format!("({}) ", n))
                 .unwrap_or_default()

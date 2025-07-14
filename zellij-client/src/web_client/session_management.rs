@@ -146,15 +146,15 @@ fn spawn_new_session(
     envs::set_session_name(name.to_owned());
     os_input.update_session_name(name.to_owned());
 
-    let zellij_ipc_pipe: PathBuf = {
-        let mut sock_dir = zellij_utils::consts::ZELLIJ_SOCK_DIR.clone();
+    let swarm_ipc_pipe: PathBuf = {
+        let mut sock_dir = zellij_utils::consts::SWARM_SOCK_DIR.clone();
         fs::create_dir_all(&sock_dir).unwrap();
         zellij_utils::shared::set_permissions(&sock_dir, 0o700).unwrap();
         sock_dir.push(name);
         sock_dir
     };
 
-    spawn_server(&*zellij_ipc_pipe, debug).unwrap();
+    spawn_server(&*swarm_ipc_pipe, debug).unwrap();
 
     let successfully_written_config = Config::write_config_to_disk_if_it_does_not_exist(
         config.to_string(true),
@@ -177,7 +177,7 @@ fn spawn_new_session(
             should_launch_setup_wizard,
             is_web_client,
         ),
-        zellij_ipc_pipe,
+        swarm_ipc_pipe,
     )
 }
 
@@ -188,8 +188,8 @@ fn ipc_pipe_and_first_message_for_existing_session(
     config_options: &Options,
     is_web_client: bool,
 ) -> (ClientToServerMsg, PathBuf) {
-    let zellij_ipc_pipe: PathBuf = {
-        let mut sock_dir = zellij_utils::consts::ZELLIJ_SOCK_DIR.clone();
+    let swarm_ipc_pipe: PathBuf = {
+        let mut sock_dir = zellij_utils::consts::SWARM_SOCK_DIR.clone();
         fs::create_dir_all(&sock_dir).unwrap();
         zellij_utils::shared::set_permissions(&sock_dir, 0o700).unwrap();
         sock_dir.push(session_name);
@@ -203,5 +203,5 @@ fn ipc_pipe_and_first_message_for_existing_session(
         None,
         is_web_client,
     );
-    (first_message, zellij_ipc_pipe)
+    (first_message, swarm_ipc_pipe)
 }

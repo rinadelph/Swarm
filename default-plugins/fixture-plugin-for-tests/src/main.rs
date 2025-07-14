@@ -3,7 +3,7 @@ use std::collections::BTreeMap;
 use std::io::prelude::*;
 use zellij_tile::prelude::*;
 
-// This is a fixture plugin used only for tests in Zellij
+// This is a fixture plugin used only for tests in Swarm
 // it is not (and should not!) be included in the mainline executable
 // it's included here for convenience so that it will be built by the CI
 
@@ -20,7 +20,7 @@ struct TestWorker {
     number_of_messages_received: usize,
 }
 
-impl<'de> ZellijWorker<'de> for TestWorker {
+impl<'de> SwarmWorker<'de> for TestWorker {
     fn on_message(&mut self, message: String, payload: String) {
         if message == "ping" {
             self.number_of_messages_received += 1;
@@ -42,7 +42,7 @@ register_plugin!(State);
 register_worker!(TestWorker, test_worker, TEST_WORKER);
 
 #[cfg(target_family = "wasm")]
-impl ZellijPlugin for State {
+impl SwarmPlugin for State {
     fn load(&mut self, configuration: BTreeMap<String, String>) {
         request_permission(&[
             PermissionType::ChangeApplicationState,
@@ -147,7 +147,7 @@ impl ZellijPlugin for State {
                 BareKey::Char('5') if key.has_no_modifiers() => toggle_active_tab_sync(),
                 BareKey::Char('6') if key.has_no_modifiers() => close_focused_tab(),
                 BareKey::Char('7') if key.has_no_modifiers() => undo_rename_tab(),
-                BareKey::Char('8') if key.has_no_modifiers() => quit_zellij(),
+                BareKey::Char('8') if key.has_no_modifiers() => quit_swarm(),
                 BareKey::Char('a') if key.has_modifiers(&[KeyModifier::Ctrl]) => {
                     previous_swap_layout()
                 },
@@ -442,7 +442,7 @@ impl ZellijPlugin for State {
                     let load_in_background = true;
                     let skip_plugin_cache = true;
                     load_new_plugin(
-                        "zellij:OWN_URL",
+                        "swarm:OWN_URL",
                         config,
                         load_in_background,
                         skip_plugin_cache,

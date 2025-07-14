@@ -1,5 +1,5 @@
 // ############################################################
-// ###   ###  Alt-centered configuration for Zellij  ###   ####
+// ###   ###  Alt-centered configuration for Swarm  ###   ####
 // ############################################################
 // - 1 prefix key (Alt) for most common actions in normal mode
 // - Less common actions require switching mode or are removed
@@ -11,7 +11,7 @@
 // 3. .. move, 4. .. tab, 5. .. scroll,
 // 6. in scroll mode s to type text, 7. enter to search.
 //
-// Run `zellij setup --check` for troubleshooting and inspecting
+// Run `swarm setup --check` for troubleshooting and inspecting
 // current config locations and features that are enabled.
 
 keybinds {
@@ -143,15 +143,15 @@ keybinds {
     tmux clear-defaults=true {}
 }
 
-// Choose what to do when zellij receives SIGTERM, SIGINT, SIGQUIT or SIGHUP
-// eg. when terminal window with an active zellij session is closed
+// Choose what to do when swarm receives SIGTERM, SIGINT, SIGQUIT or SIGHUP
+// eg. when terminal window with an active swarm session is closed
 // Options:
 //   - detach (Default)
 //   - quit
 on_force_close "quit"
 // Request simplified ui (without arrow fonts) of plugins
 simplified_ui true
-// Choose the path to the default shell that zellij will use for opening new panes
+// Choose the path to the default shell that swarm will use for opening new panes
 // Default: $SHELL
 //default_shell "fish"
 // remove pane frame
@@ -189,7 +189,7 @@ scroll_buffer_size 100000
 // or should each user have their own cursor (false)
 // Default: false
 //mirror_session true
-// The folder in which Zellij will look for layouts
+// The folder in which Swarm will look for layouts
 //layout_dir /path/to/my/layout_dir
-// The folder in which Zellij will look for themes
+// The folder in which Swarm will look for themes
 //theme_dir "/path/to/my/theme_dir"

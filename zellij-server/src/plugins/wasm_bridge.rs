@@ -20,7 +20,7 @@ use std::{
     sync::{Arc, Mutex},
 };
 use wasmtime::{Engine, Module};
-use zellij_utils::consts::{ZELLIJ_CACHE_DIR, ZELLIJ_TMP_DIR};
+use zellij_utils::consts::{SWARM_CACHE_DIR, SWARM_TMP_DIR};
 use zellij_utils::data::{
     FloatingPaneCoordinates, InputMode, PermissionStatus, PermissionType, PipeMessage, PipeSource,
 };
@@ -97,7 +97,7 @@ pub struct WasmBridge {
     pending_plugin_reloads: HashSet<RunPlugin>,
     path_to_default_shell: PathBuf,
     watcher: Option<Debouncer<RecommendedWatcher, FileIdMap>>,
-    zellij_cwd: PathBuf,
+    swarm_cwd: PathBuf,
     capabilities: PluginCapabilities,
     client_attributes: ClientAttributes,
     default_shell: Option<TerminalAction>,
@@ -119,7 +119,7 @@ impl WasmBridge {
         engine: Engine,
         plugin_dir: PathBuf,
         path_to_default_shell: PathBuf,
-        zellij_cwd: PathBuf,
+        swarm_cwd: PathBuf,
         capabilities: PluginCapabilities,
         client_attributes: ClientAttributes,
         default_shell: Option<TerminalAction>,
@@ -133,7 +133,7 @@ impl WasmBridge {
         let plugin_cache: Arc<Mutex<HashMap<PathBuf, Module>>> =
             Arc::new(Mutex::new(HashMap::new()));
         let watcher = None;
-        let downloader = Downloader::new(ZELLIJ_CACHE_DIR.to_path_buf());
+        let downloader = Downloader::new(SWARM_CACHE_DIR.to_path_buf());
         WasmBridge {
             connected_clients,
             senders,
@@ -150,7 +150,7 @@ impl WasmBridge {
             cached_worker_messages: HashMap::new(),
             loading_plugins: HashMap::new(),
             pending_plugin_reloads: HashSet::new(),
-            zellij_cwd,
+            swarm_cwd,
             capabilities,
             client_attributes,
             default_shell,
@@ -213,7 +213,7 @@ impl WasmBridge {
                     let plugin_map = self.plugin_map.clone();
                     let connected_clients = self.connected_clients.clone();
                     let path_to_default_shell = self.path_to_default_shell.clone();
-                    let zellij_cwd = cwd.unwrap_or_else(|| self.zellij_cwd.clone());
+                    let swarm_cwd = cwd.unwrap_or_else(|| self.swarm_cwd.clone());
                     let capabilities = self.capabilities.clone();
                     let client_attributes = self.client_attributes.clone();
                     let default_shell = self.default_shell.clone();
@@ -246,7 +246,7 @@ impl WasmBridge {
                             // if the url is already in cache, we'll use that version, otherwise
                             // we'll download it, place it in cache and then use it
                             match downloader.download(url, Some(&file_name)).await {
-                                Ok(_) => plugin.path = ZELLIJ_CACHE_DIR.join(&file_name),
+                                Ok(_) => plugin.path = SWARM_CACHE_DIR.join(&file_name),
                                 Err(e) => handle_plugin_loading_failure(
                                     &senders,
                                     plugin_id,
@@ -271,7 +271,7 @@ impl WasmBridge {
                             connected_clients.clone(),
                             &mut loading_indication,
                             path_to_default_shell,
-                            zellij_cwd.clone(),
+                            swarm_cwd.clone(),
                             capabilities,
                             client_attributes,
                             default_shell,
@@ -478,7 +478,7 @@ impl WasmBridge {
             let plugin_map = self.plugin_map.clone();
             let connected_clients = self.connected_clients.clone();
             let path_to_default_shell = self.path_to_default_shell.clone();
-            let zellij_cwd = self.zellij_cwd.clone();
+            let swarm_cwd = self.swarm_cwd.clone();
             let capabilities = self.capabilities.clone();
             let client_attributes = self.client_attributes.clone();
             let default_shell = self.default_shell.clone();
@@ -520,7 +520,7 @@ impl WasmBridge {
                                 connected_clients.clone(),
                                 &mut loading_indication,
                                 path_to_default_shell.clone(),
-                                zellij_cwd.clone(),
+                                swarm_cwd.clone(),
                                 capabilities.clone(),
                                 client_attributes.clone(),
                                 default_shell.clone(),
@@ -579,7 +579,7 @@ impl WasmBridge {
             self.connected_clients.clone(),
             &mut loading_indication,
             self.path_to_default_shell.clone(),
-            self.zellij_cwd.clone(),
+            self.swarm_cwd.clone(),
             self.capabilities.clone(),
             self.client_attributes.clone(),
             self.default_shell.clone(),
@@ -844,7 +844,7 @@ impl WasmBridge {
                             &new_host_dir,
                             &plugin_env.plugin_own_data_dir,
                             &plugin_env.plugin_own_cache_dir,
-                            &ZELLIJ_TMP_DIR,
+                            &SWARM_TMP_DIR,
                             &plugin_env.plugin.location.to_string(),
                             plugin_env.plugin_id,
                             stdin_pipe.clone(),
@@ -1343,7 +1343,7 @@ impl WasmBridge {
     }
     pub fn start_fs_watcher_if_not_started(&mut self) {
         if self.watcher.is_none() {
-            self.watcher = match watch_filesystem(self.senders.clone(), &self.zellij_cwd) {
+            self.watcher = match watch_filesystem(self.senders.clone(), &self.swarm_cwd) {
                 Ok(watcher) => Some(watcher),
                 Err(e) => {
                     log::error!("Failed to watch filesystem: {:?}", e);

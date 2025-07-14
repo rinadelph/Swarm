@@ -45,28 +45,28 @@ impl Page {
     pub fn tip_1(link_executable: Rc<RefCell<String>>) -> Self {
         Page::new()
             .main_screen()
-            .with_title(Text::new("Zellij Tip #1").color_range(0, ..))
+            .with_title(Text::new("Swarm Tip #1").color_range(0, ..))
             .with_paragraph(vec![
                 ComponentLine::new(vec![
                     ActiveComponent::new(TextOrCustomRender::Text(
-                            Text::new("Check out the Zellij screencasts/tutorials to learn how to better take advantage")
+                            Text::new("Check out the Swarm screencasts/tutorials to learn how to better take advantage")
                     ))
                 ]),
                 ComponentLine::new(vec![
                     ActiveComponent::new(TextOrCustomRender::Text(
-                            Text::new("of all the Zellij features. Learn about basic usage, layouts, sessions and more!")
+                            Text::new("of all the Swarm features. Learn about basic usage, layouts, sessions and more!")
                     ))
                 ])
             ])
             .with_paragraph(vec![ComponentLine::new(vec![
                 ActiveComponent::new(TextOrCustomRender::Text(Text::new("Follow this link: ").color_range(2, ..))),
-                ActiveComponent::new(TextOrCustomRender::Text(Text::new("https://zellij.dev/screencasts")))
+                ActiveComponent::new(TextOrCustomRender::Text(Text::new("https://swarm.dev/screencasts")))
                 .with_hover(TextOrCustomRender::CustomRender(
                     Box::new(screencasts_link_selected()),
                     Box::new(screencasts_link_selected_len()),
                 ))
                 .with_left_click_action(ClickAction::new_open_link(
-                    format!("https://zellij.dev/screencasts"),
+                    format!("https://swarm.dev/screencasts"),
                     link_executable.clone(),
                 )),
             ])])
@@ -89,7 +89,7 @@ impl Page {
     pub fn tip_2(link_executable: Rc<RefCell<String>>, base_mode: Rc<RefCell<InputMode>>) -> Self {
         Page::new()
             .main_screen()
-            .with_title(Text::new("Zellij Tip #2").color_range(0, ..))
+            .with_title(Text::new("Swarm Tip #2").color_range(0, ..))
             .with_paragraph(vec![
                 ComponentLine::new(vec![
                     ActiveComponent::new(TextOrCustomRender::Text(
@@ -140,7 +140,7 @@ impl Page {
     pub fn tip_3(link_executable: Rc<RefCell<String>>) -> Self {
         Page::new()
             .main_screen()
-            .with_title(Text::new("Zellij Tip #3").color_range(0, ..))
+            .with_title(Text::new("Swarm Tip #3").color_range(0, ..))
             .with_paragraph(vec![
                 ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
                     Text::new("Want to make your floating pane bigger?"),
@@ -172,7 +172,7 @@ impl Page {
     fn tip_4(link_executable: Rc<RefCell<String>>, base_mode: Rc<RefCell<InputMode>>) -> Page {
         Page::new()
             .main_screen()
-            .with_title(Text::new("Zellij tip #4").color_range(0, ..))
+            .with_title(Text::new("Swarm tip #4").color_range(0, ..))
             .with_paragraph(vec![
                 ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
                     Text::new("It's possible to \"pin\" a floating pane so that it will always"),
@@ -230,7 +230,7 @@ impl Page {
     pub fn tip_5(link_executable: Rc<RefCell<String>>) -> Page {
         Page::new()
             .main_screen()
-            .with_title(Text::new("Zellij Tip #5").color_range(0, ..))
+            .with_title(Text::new("Swarm Tip #5").color_range(0, ..))
             .with_paragraph(vec![
                 ComponentLine::new(vec![
                     ActiveComponent::new(TextOrCustomRender::Text(Text::new("Panes can be resized into stacks to be managed easier."))),
@@ -265,7 +265,7 @@ impl Page {
             .with_paragraph(vec![
                 ComponentLine::new(vec![
                     ActiveComponent::new(TextOrCustomRender::Text(
-                            Text::new("To disable this behavior, add stacked_resize false to the Zellij Configuration")
+                            Text::new("To disable this behavior, add stacked_resize false to the Swarm Configuration")
                                 .color_range(3, 30..=49)
                     )),
                 ])
@@ -276,9 +276,9 @@ impl Page {
                         Text::new("For more details, see: ")
                             .color_range(2, ..)
                     )),
-                    ActiveComponent::new(TextOrCustomRender::Text(Text::new("https://zellij.dev/tutorials/stacked-resize")))
+                    ActiveComponent::new(TextOrCustomRender::Text(Text::new("https://swarm.dev/tutorials/stacked-resize")))
                         .with_hover(TextOrCustomRender::CustomRender(Box::new(stacked_resize_screencast_link_selected), Box::new(stacked_resize_screencast_link_selected_len)))
-                        .with_left_click_action(ClickAction::new_open_link("https://zellij.dev/tutorials/stacked-resize".to_owned(), link_executable.clone()))
+                        .with_left_click_action(ClickAction::new_open_link("https://swarm.dev/tutorials/stacked-resize".to_owned(), link_executable.clone()))
                 ])
             ])
             .with_paragraph(vec![ComponentLine::new(vec![
@@ -300,10 +300,10 @@ impl Page {
     pub fn tip_6(link_executable: Rc<RefCell<String>>, base_mode: Rc<RefCell<InputMode>>) -> Page {
         Page::new()
             .main_screen()
-            .with_title(Text::new("Zellij Tip #6").color_range(0, ..))
+            .with_title(Text::new("Swarm Tip #6").color_range(0, ..))
             .with_paragraph(vec![
                 ComponentLine::new(vec![
-                    ActiveComponent::new(TextOrCustomRender::Text(Text::new("Are the Zellij keybindings colliding with other applications for you?")))
+                    ActiveComponent::new(TextOrCustomRender::Text(Text::new("Are the Swarm keybindings colliding with other applications for you?")))
                 ]),
             ])
             .with_bulletin_list(BulletinList::new(Text::new("Check out the non-colliding keybindings preset:"))
@@ -311,12 +311,12 @@ impl Page {
                     ActiveComponent::new(TextOrCustomRender::Text(
                             match *base_mode.borrow() {
                                 InputMode::Locked => {
-                                    Text::new("Open the Zellij configuration with Ctrl g + o + c")
+                                    Text::new("Open the Swarm configuration with Ctrl g + o + c")
                                         .color_range(3, 35..=40)
                                         .color_indices(3, vec![44, 48])
                                 },
                                 _ => {
-                                    Text::new("Open the Zellij configuration with Ctrl o + c")
+                                    Text::new("Open the Swarm configuration with Ctrl o + c")
                                         .color_range(3, 35..=40)
                                         .color_indices(3, vec![44])
                                 }
@@ -339,9 +339,9 @@ impl Page {
                         Text::new("For more details, see: ")
                             .color_range(2, ..)
                     )),
-                    ActiveComponent::new(TextOrCustomRender::Text(Text::new("https://zellij.dev/tutorials/colliding-keybindings")))
+                    ActiveComponent::new(TextOrCustomRender::Text(Text::new("https://swarm.dev/tutorials/colliding-keybindings")))
                         .with_hover(TextOrCustomRender::CustomRender(Box::new(colliding_keybindings_link_selected), Box::new(colliding_keybindings_link_selected_len)))
-                        .with_left_click_action(ClickAction::new_open_link("https://zellij.dev/tutorials/colliding-keybindings".to_owned(), link_executable.clone()))
+                        .with_left_click_action(ClickAction::new_open_link("https://swarm.dev/tutorials/colliding-keybindings".to_owned(), link_executable.clone()))
                 ])
             ])
             .with_paragraph(vec![ComponentLine::new(vec![
@@ -363,10 +363,10 @@ impl Page {
     pub fn tip_7(link_executable: Rc<RefCell<String>>) -> Page {
         Page::new()
             .main_screen()
-            .with_title(Text::new("Zellij Tip #7").color_range(0, ..))
+            .with_title(Text::new("Swarm Tip #7").color_range(0, ..))
             .with_paragraph(vec![ComponentLine::new(vec![ActiveComponent::new(
                 TextOrCustomRender::Text(Text::new(
-                    "Want to customize the appearance and colors of Zellij?",
+                    "Want to customize the appearance and colors of Swarm?",
                 )),
             )])])
             .with_paragraph(vec![
@@ -375,14 +375,14 @@ impl Page {
                         Text::new("Check out the built-in themes: ").color_range(2, ..),
                     )),
                     ActiveComponent::new(TextOrCustomRender::Text(Text::new(
-                        "https://zellij.dev/documentation/theme-list",
+                        "https://swarm.dev/documentation/theme-list",
                     )))
                     .with_hover(TextOrCustomRender::CustomRender(
                         Box::new(theme_list_selected),
                         Box::new(theme_list_selected_len),
                     ))
                     .with_left_click_action(ClickAction::new_open_link(
-                        "https://zellij.dev/documentation/theme-list".to_owned(),
+                        "https://swarm.dev/documentation/theme-list".to_owned(),
                         link_executable.clone(),
                     )),
                 ]),
@@ -391,14 +391,14 @@ impl Page {
                         Text::new("Or create your own theme: ").color_range(2, ..),
                     )),
                     ActiveComponent::new(TextOrCustomRender::Text(Text::new(
-                        "https://zellij.dev/documentation/themes",
+                        "https://swarm.dev/documentation/themes",
                     )))
                     .with_hover(TextOrCustomRender::CustomRender(
                         Box::new(theme_link_selected),
                         Box::new(theme_link_selected_len),
                     ))
                     .with_left_click_action(ClickAction::new_open_link(
-                        "https://zellij.dev/documentation/themes".to_owned(),
+                        "https://swarm.dev/documentation/themes".to_owned(),
                         link_executable.clone(),
                     )),
                 ]),
@@ -422,7 +422,7 @@ impl Page {
     pub fn tip_8(link_executable: Rc<RefCell<String>>) -> Page {
         Page::new()
             .main_screen()
-            .with_title(Text::new("Zellij Tip #8").color_range(0, ..))
+            .with_title(Text::new("Swarm Tip #8").color_range(0, ..))
             .with_paragraph(vec![
                 ComponentLine::new(vec![
                     ActiveComponent::new(TextOrCustomRender::Text(
@@ -456,7 +456,7 @@ impl Page {
     pub fn tip_9(link_executable: Rc<RefCell<String>>) -> Page {
         Page::new()
             .main_screen()
-            .with_title(Text::new("Zellij Tip #9").color_range(0, ..))
+            .with_title(Text::new("Swarm Tip #9").color_range(0, ..))
             .with_paragraph(vec![
                 ComponentLine::new(vec![
                     ActiveComponent::new(TextOrCustomRender::Text(
@@ -465,16 +465,16 @@ impl Page {
                 ]),
                 ComponentLine::new(vec![
                     ActiveComponent::new(TextOrCustomRender::Text(
-                        Text::new("Awesome-zellij repository: ")
+                        Text::new("Awesome-swarm repository: ")
                             .color_range(2, ..=39)
                     )),
-                    ActiveComponent::new(TextOrCustomRender::Text(Text::new("https://github.com/zellij-org/awesome-zellij")))
+                    ActiveComponent::new(TextOrCustomRender::Text(Text::new("https://github.com/swarm-org/awesome-swarm")))
                         .with_hover(TextOrCustomRender::CustomRender(
-                            Box::new(awesome_zellij_link_text_selected),
-                            Box::new(awesome_zellij_link_text_selected_len),
+                            Box::new(awesome_swarm_link_text_selected),
+                            Box::new(awesome_swarm_link_text_selected_len),
                         ))
                         .with_left_click_action(ClickAction::new_open_link(
-                            "https://github.com/zellij-org/awesome-zellij".to_owned(),
+                            "https://github.com/swarm-org/awesome-swarm".to_owned(),
                             link_executable.clone(),
                         )),
                 ]),
@@ -500,13 +500,13 @@ impl Page {
                 ]),
                 ComponentLine::new(vec![
                     ActiveComponent::new(TextOrCustomRender::Text(Text::new("Matrix: "))),
-                    ActiveComponent::new(TextOrCustomRender::Text(Text::new("https://matrix.to/#/#zellij_general:matrix.org")))
+                    ActiveComponent::new(TextOrCustomRender::Text(Text::new("https://matrix.to/#/#swarm_general:matrix.org")))
                         .with_hover(TextOrCustomRender::CustomRender(
                             Box::new(matrix_link_text_selected),
                             Box::new(matrix_link_text_selected_len),
                         ))
                         .with_left_click_action(ClickAction::new_open_link(
-                            "https://matrix.to/#/#zellij_general:matrix.org".to_owned(),
+                            "https://matrix.to/#/#swarm_general:matrix.org".to_owned(),
                             link_executable.clone(),
                         )),
                 ])
@@ -530,10 +530,10 @@ impl Page {
     pub fn tip_10(link_executable: Rc<RefCell<String>>, base_mode: Rc<RefCell<InputMode>>) -> Page {
         Page::new()
             .main_screen()
-            .with_title(Text::new("Zellij Tip #10").color_range(0, ..))
+            .with_title(Text::new("Swarm Tip #10").color_range(0, ..))
             .with_bulletin_list(
                 BulletinList::new(
-                    Text::new("The Zellij session-manager can:").color_range(2, 11..=25),
+                    Text::new("The Swarm session-manager can:").color_range(2, 11..=24),
                 )
                 .with_items(vec![
                     ActiveComponent::new(TextOrCustomRender::Text(Text::new(
@@ -565,7 +565,7 @@ impl Page {
             )])])
             .with_paragraph(vec![ComponentLine::new(vec![ActiveComponent::new(
                 TextOrCustomRender::Text(
-                    Text::new("You can also use it as a welcome screen with: zellij -l welcome")
+                    Text::new("You can also use it as a welcome screen with: swarm -l welcome")
                         .color_range(0, 46..=62),
                 ),
             )])])
@@ -588,7 +588,7 @@ impl Page {
     pub fn tip_11(link_executable: Rc<RefCell<String>>) -> Page {
         Page::new()
             .main_screen()
-            .with_title(Text::new("Zellij Tip #11").color_range(0, ..))
+            .with_title(Text::new("Swarm Tip #11").color_range(0, ..))
             .with_paragraph(vec![
                 ComponentLine::new(vec![
                     ActiveComponent::new(TextOrCustomRender::Text(
@@ -641,11 +641,11 @@ impl Page {
     pub fn tip_12(link_executable: Rc<RefCell<String>>, base_mode: Rc<RefCell<InputMode>>) -> Page {
         Page::new()
             .main_screen()
-            .with_title(Text::new("Zellij Tip #12").color_range(0, ..))
+            .with_title(Text::new("Swarm Tip #12").color_range(0, ..))
             .with_paragraph(vec![
                 ComponentLine::new(vec![
                     ActiveComponent::new(TextOrCustomRender::Text(
-                        Text::new("Zellij plugins can be loaded, reloaded and tracked from the plugin-manager.")
+                        Text::new("Swarm plugins can be loaded, reloaded and tracked from the plugin-manager.")
                     )),
                 ]),
                 ComponentLine::new(vec![
@@ -667,13 +667,13 @@ impl Page {
             ])
             .with_paragraph(vec![ComponentLine::new(vec![
                 ActiveComponent::new(TextOrCustomRender::Text(Text::new("To learn more about plugins: ").color_range(2, ..))),
-                ActiveComponent::new(TextOrCustomRender::Text(Text::new("https://zellij.dev/documentation/plugins")))
+                ActiveComponent::new(TextOrCustomRender::Text(Text::new("https://swarm.dev/documentation/plugins")))
                     .with_hover(TextOrCustomRender::CustomRender(
                         Box::new(plugin_docs_link_text_selected),
                         Box::new(plugin_docs_link_text_selected_len),
                     ))
                     .with_left_click_action(ClickAction::new_open_link(
-                        "https://zellij.dev/documentation/plugins".to_owned(),
+                        "https://swarm.dev/documentation/plugins".to_owned(),
                         link_executable.clone(),
                     )),
             ])])
@@ -714,7 +714,7 @@ fn sponsors_link_text_selected_len() -> usize {
 
 fn plugin_docs_link_text_selected(x: usize, y: usize) -> usize {
     print!(
-        "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://zellij.dev/documentation/plugins",
+        "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://swarm.dev/documentation/plugins",
         y + 1,
         x + 1
     );
@@ -725,16 +725,16 @@ fn plugin_docs_link_text_selected_len() -> usize {
     40
 }
 
-fn awesome_zellij_link_text_selected(x: usize, y: usize) -> usize {
+fn awesome_swarm_link_text_selected(x: usize, y: usize) -> usize {
     print!(
-        "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://github.com/zellij-org/awesome-zellij",
+        "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://github.com/swarm-org/awesome-swarm",
         y + 1,
         x + 1
     );
     44
 }
 
-fn awesome_zellij_link_text_selected_len() -> usize {
+fn awesome_swarm_link_text_selected_len() -> usize {
     44
 }
 
@@ -753,7 +753,7 @@ fn discord_link_text_selected_len() -> usize {
 
 fn matrix_link_text_selected(x: usize, y: usize) -> usize {
     print!(
-        "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://matrix.to/#/#zellij_general:matrix.org",
+        "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://matrix.to/#/#swarm_general:matrix.org",
         y + 1,
         x + 1
     );
@@ -766,7 +766,7 @@ fn matrix_link_text_selected_len() -> usize {
 
 fn stacked_resize_screencast_link_selected(x: usize, y: usize) -> usize {
     print!(
-        "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://zellij.dev/tutorials/stacked-resize",
+        "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://swarm.dev/tutorials/stacked-resize",
         y + 1,
         x + 1
     );
@@ -779,7 +779,7 @@ fn stacked_resize_screencast_link_selected_len() -> usize {
 
 fn colliding_keybindings_link_selected(x: usize, y: usize) -> usize {
     print!(
-        "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://zellij.dev/tutorials/colliding-keybindings",
+        "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://swarm.dev/tutorials/colliding-keybindings",
         y + 1,
         x + 1
     );
@@ -792,7 +792,7 @@ fn colliding_keybindings_link_selected_len() -> usize {
 
 fn theme_link_selected(x: usize, y: usize) -> usize {
     print!(
-        "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://zellij.dev/documentation/themes",
+        "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://swarm.dev/documentation/themes",
         y + 1,
         x + 1
     );
@@ -804,7 +804,7 @@ fn theme_link_selected_len() -> usize {
 
 fn theme_list_selected(x: usize, y: usize) -> usize {
     print!(
-        "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://zellij.dev/documentation/theme-list",
+        "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://swarm.dev/documentation/theme-list",
         y + 1,
         x + 1
     );
@@ -815,14 +815,14 @@ fn theme_list_selected_len() -> usize {
 }
 
 fn support_the_developer_text() -> Text {
-    let support_text = format!("Please support the Zellij developer <3: ");
+    let support_text = format!("Please support the Swarm developer <3: ");
     Text::new(support_text).color_range(3, ..)
 }
 
 fn screencasts_link_selected() -> Box<dyn Fn(usize, usize) -> usize> {
     Box::new(move |x, y| {
         print!(
-            "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://zellij.dev/screencasts",
+            "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://swarm.dev/screencasts",
             y + 1,
             x + 1,
         );

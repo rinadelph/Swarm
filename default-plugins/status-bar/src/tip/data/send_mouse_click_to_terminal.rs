@@ -22,7 +22,7 @@ macro_rules! strings {
 }
 
 pub fn mouse_click_to_terminal_full(help: &ModeInfo) -> LinePart {
-    // Tip: SHIFT + <mouse-click> bypasses Zellij and sends the mouse click directly to the terminal
+    // Tip: SHIFT + <mouse-click> bypasses Swarm and sends the mouse click directly to the terminal
     let green_color = palette_match!(help.style.colors.text_unselected.emphasis_2);
     let orange_color = palette_match!(help.style.colors.text_unselected.emphasis_0);
 
@@ -31,7 +31,7 @@ pub fn mouse_click_to_terminal_full(help: &ModeInfo) -> LinePart {
         Style::new().fg(orange_color).bold().paint("Shift"),
         Style::new().paint(" + <"),
         Style::new().fg(green_color).bold().paint("mouse-click"),
-        Style::new().paint("> bypasses Zellij and sends the mouse click directly to the terminal."),
+        Style::new().paint("> bypasses Swarm and sends the mouse click directly to the terminal."),
     ])
 }
 

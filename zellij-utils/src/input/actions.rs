@@ -100,7 +100,7 @@ impl FromStr for SearchOption {
 /// Actions that can be bound to keys.
 #[derive(Clone, Debug, PartialEq, Eq, Deserialize, Serialize)]
 pub enum Action {
-    /// Quit Zellij.
+    /// Quit Swarm.
     Quit,
     /// Write to the terminal.
     Write(Option<KeyWithModifier>, Vec<u8>, bool), // bool -> is_kitty_keyboard_protocol

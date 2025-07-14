@@ -2,7 +2,7 @@
 //! # This module contain everything you'll need to access local system paths
 //! containing configuration and layouts
 
-use crate::consts::{SYSTEM_DEFAULT_DATA_DIR_PREFIX, ZELLIJ_PROJ_DIR};
+use crate::consts::{SYSTEM_DEFAULT_DATA_DIR_PREFIX, SWARM_PROJ_DIR};
 
 #[cfg(not(test))]
 use crate::consts::SYSTEM_DEFAULT_CONFIG_DIR;
@@ -10,7 +10,7 @@ use crate::consts::SYSTEM_DEFAULT_CONFIG_DIR;
 use directories::BaseDirs;
 use std::{path::Path, path::PathBuf};
 
-pub(crate) const CONFIG_LOCATION: &str = ".config/zellij";
+pub(crate) const CONFIG_LOCATION: &str = ".config/swarm";
 
 #[cfg(not(test))]
 /// Goes through a predefined list and checks for an already
@@ -43,7 +43,7 @@ pub(crate) fn default_config_dirs() -> Vec<Option<PathBuf>> {
 pub fn get_default_data_dir() -> PathBuf {
     [
         xdg_data_dir(),
-        Path::new(SYSTEM_DEFAULT_DATA_DIR_PREFIX).join("share/zellij"),
+        Path::new(SYSTEM_DEFAULT_DATA_DIR_PREFIX).join("share/swarm"),
     ]
     .into_iter()
     .find(|p| p.exists())
@@ -51,11 +51,11 @@ pub fn get_default_data_dir() -> PathBuf {
 }
 
 pub fn xdg_config_dir() -> PathBuf {
-    ZELLIJ_PROJ_DIR.config_dir().to_owned()
+    SWARM_PROJ_DIR.config_dir().to_owned()
 }
 
 pub fn xdg_data_dir() -> PathBuf {
-    ZELLIJ_PROJ_DIR.data_dir().to_owned()
+    SWARM_PROJ_DIR.data_dir().to_owned()
 }
 
 pub fn home_config_dir() -> Option<PathBuf> {

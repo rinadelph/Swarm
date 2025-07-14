@@ -1,7 +1,7 @@
 use async_std::task;
 use zellij_utils::consts::{
     session_info_cache_file_name, session_info_folder_for_session, session_layout_cache_file_name,
-    VERSION, ZELLIJ_SESSION_INFO_CACHE_DIR, ZELLIJ_SOCK_DIR,
+    VERSION, SWARM_SESSION_INFO_CACHE_DIR, SWARM_SOCK_DIR,
 };
 use zellij_utils::data::{Event, HttpVerb, SessionInfo, WebServerStatus};
 use zellij_utils::errors::{prelude::*, BackgroundJobContext, ContextType};
@@ -57,7 +57,7 @@ pub enum BackgroundJob {
     ),
     HighlightPanesWithMessage(Vec<PaneId>, String),
     RenderToClients,
-    QueryZellijWebServerStatus,
+    QuerySwarmWebServerStatus,
     Exit,
 }
 
@@ -81,8 +81,8 @@ impl From<&BackgroundJob> for BackgroundJobContext {
             BackgroundJob::HighlightPanesWithMessage(..) => {
                 BackgroundJobContext::HighlightPanesWithMessage
             },
-            BackgroundJob::QueryZellijWebServerStatus => {
-                BackgroundJobContext::QueryZellijWebServerStatus
+            BackgroundJob::QuerySwarmWebServerStatus => {
+                BackgroundJobContext::QuerySwarmWebServerStatus
             },
             BackgroundJob::Exit => BackgroundJobContext::Exit,
         }
@@ -376,7 +376,7 @@ pub(crate) fn background_jobs_main(
                     }
                 });
             },
-            BackgroundJob::QueryZellijWebServerStatus => {
+            BackgroundJob::QuerySwarmWebServerStatus => {
                 if !cfg!(feature = "web_server_capability") {
                     // no web server capability, no need to query
                     continue;
@@ -600,7 +600,7 @@ fn read_other_live_session_states(current_session_name: &str) -> BTreeMap<String
     let mut session_infos_on_machine = BTreeMap::new();
     // we do this so that the session infos will be actual and we're
     // reasonably sure their session is running
-    if let Ok(files) = fs::read_dir(&*ZELLIJ_SOCK_DIR) {
+    if let Ok(files) = fs::read_dir(&*SWARM_SOCK_DIR) {
         files.for_each(|file| {
             if let Ok(file) = file {
                 if let Ok(file_name) = file.file_name().into_string() {
@@ -628,7 +628,7 @@ fn read_other_live_session_states(current_session_name: &str) -> BTreeMap<String
 fn find_resurrectable_sessions(
     session_infos_on_machine: &BTreeMap<String, SessionInfo>,
 ) -> BTreeMap<String, Duration> {
-    match fs::read_dir(&*ZELLIJ_SESSION_INFO_CACHE_DIR) {
+    match fs::read_dir(&*SWARM_SESSION_INFO_CACHE_DIR) {
         Ok(files_in_session_info_folder) => {
             let files_that_are_folders = files_in_session_info_folder
                 .filter_map(|f| f.ok().map(|f| f.path()))

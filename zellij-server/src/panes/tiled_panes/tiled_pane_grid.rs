@@ -154,7 +154,7 @@ impl<'a> TiledPaneGrid<'a> {
                     PaneId::Terminal(id) => vec![(*id, true)],
                     PaneId::Plugin(id) => vec![(*id, false)],
                 };
-                return Err(ZellijError::CantResizeFixedPanes { pane_ids })
+                return Err(SwarmError::CantResizeFixedPanes { pane_ids })
                     .with_context(err_context);
             }
             let pane_ids = self
@@ -174,7 +174,7 @@ impl<'a> TiledPaneGrid<'a> {
                         PaneId::Plugin(id) => pane_ids.push((id, false)),
                     };
                 }
-                return Err(ZellijError::CantResizeFixedPanes { pane_ids })
+                return Err(SwarmError::CantResizeFixedPanes { pane_ids })
                     .with_context(err_context);
             }
             if pane_ids.is_empty() {
@@ -246,8 +246,8 @@ impl<'a> TiledPaneGrid<'a> {
         let can_change_pane_size_in_main_direction = self
             .can_change_pane_size(pane_id, &strategy, change_by)
             .unwrap_or_else(|err| {
-                if let Some(ZellijError::CantResizeFixedPanes { pane_ids }) =
-                    err.downcast_ref::<ZellijError>()
+                if let Some(SwarmError::CantResizeFixedPanes { pane_ids }) =
+                    err.downcast_ref::<SwarmError>()
                 {
                     fixed_panes_blocking_resize.append(&mut pane_ids.clone());
                 }
@@ -257,8 +257,8 @@ impl<'a> TiledPaneGrid<'a> {
             let strategy = strategy.invert();
             self.can_change_pane_size(pane_id, &strategy, change_by)
                 .unwrap_or_else(|err| {
-                    if let Some(ZellijError::CantResizeFixedPanes { pane_ids }) =
-                        err.downcast_ref::<ZellijError>()
+                    if let Some(SwarmError::CantResizeFixedPanes { pane_ids }) =
+                        err.downcast_ref::<SwarmError>()
                     {
                         fixed_panes_blocking_resize.append(&mut pane_ids.clone());
                     }
@@ -273,7 +273,7 @@ impl<'a> TiledPaneGrid<'a> {
         {
             // we can't resize in any direction, not playing the blame game, but I'm looking at
             // you: fixed_panes_blocking_resize
-            return Err(ZellijError::CantResizeFixedPanes {
+            return Err(SwarmError::CantResizeFixedPanes {
                 pane_ids: fixed_panes_blocking_resize,
             })
             .with_context(err_context);

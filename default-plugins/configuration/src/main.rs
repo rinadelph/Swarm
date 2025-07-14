@@ -89,7 +89,7 @@ impl Default for State {
 
 register_plugin!(State);
 
-impl ZellijPlugin for State {
+impl SwarmPlugin for State {
     fn load(&mut self, configuration: BTreeMap<String, String>) {
         self.is_setup_wizard = configuration
             .get("is_setup_wizard")

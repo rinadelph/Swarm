@@ -294,13 +294,13 @@ macro_rules! grant_permissions_and_log_actions_in_thread_struct_variant {
 }
 
 fn create_plugin_thread(
-    zellij_cwd: Option<PathBuf>,
+    swarm_cwd: Option<PathBuf>,
 ) -> (
     SenderWithContext<PluginInstruction>,
     Receiver<(ScreenInstruction, ErrorContext)>,
     Box<dyn FnOnce()>,
 ) {
-    let zellij_cwd = zellij_cwd.unwrap_or_else(|| PathBuf::from("."));
+    let swarm_cwd = swarm_cwd.unwrap_or_else(|| PathBuf::from("."));
     let initiating_client_id = 1;
     let (to_server, _server_receiver): ChannelWithContext<ServerInstruction> =
         channels::bounded(50);
@@ -353,7 +353,7 @@ fn create_plugin_thread(
     let plugin_thread = std::thread::Builder::new()
         .name("plugin_thread".to_string())
         .spawn(move || {
-            set_var("ZELLIJ_SESSION_NAME", "zellij-test");
+            set_var("ZELLIJ_SESSION_NAME", "swarm-test");
             plugin_thread_main(
                 plugin_bus,
                 engine,
@@ -361,7 +361,7 @@ fn create_plugin_thread(
                 Box::new(Layout::default()),
                 None,
                 default_shell,
-                zellij_cwd,
+                swarm_cwd,
                 plugin_capabilities,
                 client_attributes,
                 default_shell_action,
@@ -389,14 +389,14 @@ fn create_plugin_thread(
 }
 
 fn create_plugin_thread_with_server_receiver(
-    zellij_cwd: Option<PathBuf>,
+    swarm_cwd: Option<PathBuf>,
 ) -> (
     SenderWithContext<PluginInstruction>,
     Receiver<(ServerInstruction, ErrorContext)>,
     Receiver<(ScreenInstruction, ErrorContext)>,
     Box<dyn FnOnce()>,
 ) {
-    let zellij_cwd = zellij_cwd.unwrap_or_else(|| PathBuf::from("."));
+    let swarm_cwd = swarm_cwd.unwrap_or_else(|| PathBuf::from("."));
     let (to_server, server_receiver): ChannelWithContext<ServerInstruction> = channels::bounded(50);
     let to_server = SenderWithContext::new(to_server);
 
@@ -437,7 +437,7 @@ fn create_plugin_thread_with_server_receiver(
     let plugin_thread = std::thread::Builder::new()
         .name("plugin_thread".to_string())
         .spawn(move || {
-            set_var("ZELLIJ_SESSION_NAME", "zellij-test");
+            set_var("ZELLIJ_SESSION_NAME", "swarm-test");
             plugin_thread_main(
                 plugin_bus,
                 engine,
@@ -445,7 +445,7 @@ fn create_plugin_thread_with_server_receiver(
                 Box::new(Layout::default()),
                 None,
                 default_shell,
-                zellij_cwd,
+                swarm_cwd,
                 plugin_capabilities,
                 client_attributes,
                 default_shell_action,
@@ -478,14 +478,14 @@ fn create_plugin_thread_with_server_receiver(
 }
 
 fn create_plugin_thread_with_pty_receiver(
-    zellij_cwd: Option<PathBuf>,
+    swarm_cwd: Option<PathBuf>,
 ) -> (
     SenderWithContext<PluginInstruction>,
     Receiver<(PtyInstruction, ErrorContext)>,
     Receiver<(ScreenInstruction, ErrorContext)>,
     Box<dyn FnOnce()>,
 ) {
-    let zellij_cwd = zellij_cwd.unwrap_or_else(|| PathBuf::from("."));
+    let swarm_cwd = swarm_cwd.unwrap_or_else(|| PathBuf::from("."));
     let (to_server, _server_receiver): ChannelWithContext<ServerInstruction> =
         channels::bounded(50);
     let to_server = SenderWithContext::new(to_server);
@@ -527,7 +527,7 @@ fn create_plugin_thread_with_pty_receiver(
     let plugin_thread = std::thread::Builder::new()
         .name("plugin_thread".to_string())
         .spawn(move || {
-            set_var("ZELLIJ_SESSION_NAME", "zellij-test");
+            set_var("ZELLIJ_SESSION_NAME", "swarm-test");
             plugin_thread_main(
                 plugin_bus,
                 engine,
@@ -535,7 +535,7 @@ fn create_plugin_thread_with_pty_receiver(
                 Box::new(Layout::default()),
                 None,
                 default_shell,
-                zellij_cwd,
+                swarm_cwd,
                 plugin_capabilities,
                 client_attributes,
                 default_shell_action,
@@ -563,14 +563,14 @@ fn create_plugin_thread_with_pty_receiver(
 }
 
 fn create_plugin_thread_with_background_jobs_receiver(
-    zellij_cwd: Option<PathBuf>,
+    swarm_cwd: Option<PathBuf>,
 ) -> (
     SenderWithContext<PluginInstruction>,
     Receiver<(BackgroundJob, ErrorContext)>,
     Receiver<(ScreenInstruction, ErrorContext)>,
     Box<dyn FnOnce()>,
 ) {
-    let zellij_cwd = zellij_cwd.unwrap_or_else(|| PathBuf::from("."));
+    let swarm_cwd = swarm_cwd.unwrap_or_else(|| PathBuf::from("."));
     let (to_server, _server_receiver): ChannelWithContext<ServerInstruction> =
         channels::bounded(50);
     let to_server = SenderWithContext::new(to_server);
@@ -612,7 +612,7 @@ fn create_plugin_thread_with_background_jobs_receiver(
     let plugin_thread = std::thread::Builder::new()
         .name("plugin_thread".to_string())
         .spawn(move || {
-            set_var("ZELLIJ_SESSION_NAME", "zellij-test");
+            set_var("ZELLIJ_SESSION_NAME", "swarm-test");
             plugin_thread_main(
                 plugin_bus,
                 engine,
@@ -620,7 +620,7 @@ fn create_plugin_thread_with_background_jobs_receiver(
                 Box::new(Layout::default()),
                 None,
                 default_shell,
-                zellij_cwd,
+                swarm_cwd,
                 plugin_capabilities,
                 client_attributes,
                 default_shell_action,
@@ -3950,7 +3950,7 @@ pub fn start_or_reload_plugin() {
 
 #[test]
 #[ignore]
-pub fn quit_zellij_plugin_command() {
+pub fn quit_swarm_plugin_command() {
     let temp_folder = tempdir().unwrap(); // placed explicitly in the test scope because its
                                           // destructor removes the directory
     let plugin_host_folder = PathBuf::from(temp_folder.path());

@@ -7,20 +7,20 @@
         "email": "aram@poor.dev",
         "description": "An indie developer rethinking our terminal experience",
         "webpageUrl": {
-            "url": "https://zellij.dev",
-            "wellKnown": "https://zellij.dev/.well-known/funding-manifest-urls"
+            "url": "https://swarm.dev",
+            "wellKnown": "https://swarm.dev/.well-known/funding-manifest-urls"
         }
     },
     "projects": [{
-        "guid": "zellij",
-        "name": "Zellij",
+        "guid": "swarm",
+        "name": "Swarm",
         "description": "A terminal workspace with batteries included",
         "webpageUrl": {
-            "url": "https://zellij.dev",
-            "wellKnown": "https://zellij.dev/.well-known/funding-manifest-urls"
+            "url": "https://swarm.dev",
+            "wellKnown": "https://swarm.dev/.well-known/funding-manifest-urls"
         },
         "repositoryUrl": {
-            "url": "https://github.com/zellij-org/zellij"
+            "url": "https://github.com/swarm-org/swarm"
         },
         "licenses": ["spdx:MIT"],
         "tags": ["terminal", "linux", "macos", "developer-tools"]

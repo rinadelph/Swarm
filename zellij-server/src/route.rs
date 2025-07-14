@@ -857,7 +857,7 @@ pub(crate) fn route_action(
                     // we do this to make sure the plugin is unique (has a unique configuration parameter)
                     configuration
                         .get_or_insert_with(BTreeMap::new)
-                        .insert("_zellij_id".to_owned(), Uuid::new_v4().to_string());
+                        .insert("_swarm_id".to_owned(), Uuid::new_v4().to_string());
                 }
                 senders
                     .send_to_plugin(PluginInstruction::KeybindPipe {

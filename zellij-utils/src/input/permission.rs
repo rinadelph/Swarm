@@ -5,7 +5,7 @@ use std::{
     path::PathBuf,
 };
 
-use crate::{consts::ZELLIJ_PLUGIN_PERMISSIONS_CACHE, data::PermissionType};
+use crate::{consts::SWARM_PLUGIN_PERMISSIONS_CACHE, data::PermissionType};
 
 pub type GrantedPermission = HashMap<String, Vec<PermissionType>>;
 
@@ -43,7 +43,7 @@ impl PermissionCache {
     }
 
     pub fn from_path_or_default(cache_path: Option<PathBuf>) -> Self {
-        let cache_path = cache_path.unwrap_or(ZELLIJ_PLUGIN_PERMISSIONS_CACHE.to_path_buf());
+        let cache_path = cache_path.unwrap_or(SWARM_PLUGIN_PERMISSIONS_CACHE.to_path_buf());
 
         let granted = match fs::read_to_string(cache_path.clone()) {
             Ok(raw_string) => PermissionCache::from_string(raw_string).unwrap_or_default(),

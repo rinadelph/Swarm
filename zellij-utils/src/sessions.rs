@@ -1,7 +1,7 @@
 use crate::{
     consts::{
         session_info_folder_for_session, session_layout_cache_file_name,
-        ZELLIJ_SESSION_INFO_CACHE_DIR, ZELLIJ_SOCK_DIR,
+        SWARM_SESSION_INFO_CACHE_DIR, SWARM_SOCK_DIR,
     },
     envs,
     input::layout::Layout,
@@ -17,7 +17,7 @@ use std::{fs, io, process};
 use suggest::Suggest;
 
 pub fn get_sessions() -> Result<Vec<(String, Duration)>, io::ErrorKind> {
-    match fs::read_dir(&*ZELLIJ_SOCK_DIR) {
+    match fs::read_dir(&*SWARM_SOCK_DIR) {
         Ok(files) => {
             let mut sessions = Vec::new();
             files.for_each(|file| {
@@ -41,7 +41,7 @@ pub fn get_sessions() -> Result<Vec<(String, Duration)>, io::ErrorKind> {
 }
 
 pub fn get_resurrectable_sessions() -> Vec<(String, Duration, Layout)> {
-    match fs::read_dir(&*ZELLIJ_SESSION_INFO_CACHE_DIR) {
+    match fs::read_dir(&*SWARM_SESSION_INFO_CACHE_DIR) {
         Ok(files_in_session_info_folder) => {
             let files_that_are_folders = files_in_session_info_folder
                 .filter_map(|f| f.ok().map(|f| f.path()))
@@ -89,7 +89,7 @@ pub fn get_resurrectable_sessions() -> Vec<(String, Duration, Layout)> {
         Err(e) => {
             log::error!(
                 "Failed to read session_info cache folder: \"{:?}\": {:?}",
-                &*ZELLIJ_SESSION_INFO_CACHE_DIR,
+                &*SWARM_SESSION_INFO_CACHE_DIR,
                 e
             );
             vec![]
@@ -98,7 +98,7 @@ pub fn get_resurrectable_sessions() -> Vec<(String, Duration, Layout)> {
 }
 
 pub fn get_resurrectable_session_names() -> Vec<String> {
-    match fs::read_dir(&*ZELLIJ_SESSION_INFO_CACHE_DIR) {
+    match fs::read_dir(&*SWARM_SESSION_INFO_CACHE_DIR) {
         Ok(files_in_session_info_folder) => {
             let files_that_are_folders = files_in_session_info_folder
                 .filter_map(|f| f.ok().map(|f| f.path()))
@@ -120,7 +120,7 @@ pub fn get_resurrectable_session_names() -> Vec<String> {
         Err(e) => {
             log::error!(
                 "Failed to read session_info cache folder: \"{:?}\": {:?}",
-                &*ZELLIJ_SESSION_INFO_CACHE_DIR,
+                &*SWARM_SESSION_INFO_CACHE_DIR,
                 e
             );
             vec![]
@@ -129,7 +129,7 @@ pub fn get_resurrectable_session_names() -> Vec<String> {
 }
 
 pub fn get_sessions_sorted_by_mtime() -> anyhow::Result<Vec<String>> {
-    match fs::read_dir(&*ZELLIJ_SOCK_DIR) {
+    match fs::read_dir(&*SWARM_SOCK_DIR) {
         Ok(files) => {
             let mut sessions_with_mtime: Vec<(String, SystemTime)> = Vec::new();
             for file in files {
@@ -151,7 +151,7 @@ pub fn get_sessions_sorted_by_mtime() -> anyhow::Result<Vec<String>> {
 }
 
 fn assert_socket(name: &str) -> bool {
-    let path = &*ZELLIJ_SOCK_DIR.join(name);
+    let path = &*SWARM_SOCK_DIR.join(name);
     match LocalSocketStream::connect(path) {
         Ok(stream) => {
             let mut sender = IpcSenderWithContext::new(stream);
@@ -252,7 +252,7 @@ pub fn get_active_session() -> ActiveSession {
 }
 
 pub fn kill_session(name: &str) {
-    let path = &*ZELLIJ_SOCK_DIR.join(name);
+    let path = &*SWARM_SOCK_DIR.join(name);
     match LocalSocketStream::connect(path) {
         Ok(stream) => {
             let _ = IpcSenderWithContext::new(stream).send(ClientToServerMsg::KillSession);
@@ -266,7 +266,7 @@ pub fn kill_session(name: &str) {
 
 pub fn delete_session(name: &str, force: bool) {
     if force {
-        let path = &*ZELLIJ_SOCK_DIR.join(name);
+        let path = &*SWARM_SOCK_DIR.join(name);
         let _ = LocalSocketStream::connect(path).map(|stream| {
             IpcSenderWithContext::new(stream)
                 .send(ClientToServerMsg::KillSession)
@@ -297,7 +297,7 @@ pub fn list_sessions(no_formatting: bool, short: bool, reverse: bool) {
                 all_sessions.insert(session_name.clone(), (duration, false));
             }
             if all_sessions.is_empty() {
-                eprintln!("No active zellij sessions found.");
+                eprintln!("No active swarm sessions found.");
                 1
             } else {
                 print_sessions(

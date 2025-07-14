@@ -445,7 +445,7 @@ fn swap_layout_status(
 /// Get the keybindings for switching `InputMode`s and `Quit` visible in status bar.
 ///
 /// Return a Vector of `Key`s where each `Key` is a shortcut to switch to some `InputMode` or Quit
-/// zellij. Given the vast amount of things a user can configure in their zellij config, this
+/// swarm. Given the vast amount of things a user can configure in their swarm config, this
 /// function has some limitations to keep in mind:
 ///
 /// - The vector is not deduplicated: If switching to a certain `InputMode` is bound to multiple

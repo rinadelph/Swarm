@@ -1550,7 +1550,7 @@ fn copy_selected_text_from_viewport() {
     let text = grid.get_selected_text();
     assert_eq!(
         text.unwrap(),
-        "mauris in aliquam sem fringilla.\n\nzellij on  mouse-support [?] is 📦"
+        "mauris in aliquam sem fringilla.\n\nswarm on  mouse-support [?] is 📦"
     );
 }
 
@@ -1668,7 +1668,7 @@ fn copy_selected_text_from_lines_below() {
     let text = grid.get_selected_text();
     assert_eq!(
         text.unwrap(),
-        "mauris in aliquam sem fringilla.\n\nzellij on  mouse-support [?] is 📦"
+        "mauris in aliquam sem fringilla.\n\nswarm on  mouse-support [?] is 📦"
     );
 }
 

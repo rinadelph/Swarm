@@ -24,7 +24,7 @@ pub struct App {
 
 register_plugin!(App);
 
-impl ZellijPlugin for App {
+impl SwarmPlugin for App {
     fn load(&mut self, _configuration: BTreeMap<String, String>) {
         subscribe(&[
             EventType::Key,
@@ -257,7 +257,7 @@ impl App {
             BareKey::Char('c') => self.close_grouped_panes(),
             BareKey::Tab => self.next_coordinates(),
             BareKey::Esc => {
-                self.ungroup_panes_in_zellij(&self.grouped_panes.clone());
+                self.ungroup_panes_in_swarm(&self.grouped_panes.clone());
                 self.close_self();
             },
             _ => return false,
@@ -328,28 +328,28 @@ impl App {
         self.execute_action_and_close(|pane_ids| {
             break_panes_to_new_tab(pane_ids, None, true);
         });
-        self.ungroup_panes_in_zellij(&self.grouped_panes.clone());
+        self.ungroup_panes_in_swarm(&self.grouped_panes.clone());
     }
 
     pub fn stack_grouped_panes(&mut self) {
         self.execute_action_and_close(|pane_ids| {
             stack_panes(pane_ids.to_vec());
         });
-        self.ungroup_panes_in_zellij(&self.grouped_panes.clone());
+        self.ungroup_panes_in_swarm(&self.grouped_panes.clone());
     }
 
     pub fn float_grouped_panes(&mut self) {
         self.execute_action_and_close(|pane_ids| {
             float_multiple_panes(pane_ids.to_vec());
         });
-        self.ungroup_panes_in_zellij(&self.grouped_panes.clone());
+        self.ungroup_panes_in_swarm(&self.grouped_panes.clone());
     }
 
     pub fn embed_grouped_panes(&mut self) {
         self.execute_action_and_close(|pane_ids| {
             embed_multiple_panes(pane_ids.to_vec());
         });
-        self.ungroup_panes_in_zellij(&self.grouped_panes.clone());
+        self.ungroup_panes_in_swarm(&self.grouped_panes.clone());
     }
 
     pub fn break_grouped_panes_right(&mut self) {
@@ -390,7 +390,7 @@ impl App {
         });
     }
 
-    pub fn ungroup_panes_in_zellij(&mut self, pane_ids: &[PaneId]) {
+    pub fn ungroup_panes_in_swarm(&mut self, pane_ids: &[PaneId]) {
         group_and_ungroup_panes(vec![], pane_ids.to_vec());
     }
     pub fn close_self(&mut self) {

@@ -12,7 +12,7 @@ use zellij_utils::plugin_api::plugin_command::{
     CreateTokenResponse, ListTokensResponse, ProtobufPluginCommand, RenameWebTokenResponse,
     RevokeAllWebTokensResponse, RevokeTokenResponse,
 };
-use zellij_utils::plugin_api::plugin_ids::{ProtobufPluginIds, ProtobufZellijVersion};
+use zellij_utils::plugin_api::plugin_ids::{ProtobufPluginIds, ProtobufSwarmVersion};
 
 pub use super::ui_components::*;
 pub use prost::{self, *};
@@ -55,7 +55,7 @@ pub fn request_permission(permissions: &[PermissionType]) {
 }
 
 // Query Functions
-/// Returns the unique Zellij pane ID for the plugin as well as the Zellij process id.
+/// Returns the unique Swarm pane ID for the plugin as well as the Swarm process id.
 pub fn get_plugin_ids() -> PluginIds {
     let plugin_command = PluginCommand::GetPluginIds;
     let protobuf_plugin_command: ProtobufPluginCommand = plugin_command.try_into().unwrap();
@@ -66,15 +66,15 @@ pub fn get_plugin_ids() -> PluginIds {
     PluginIds::try_from(protobuf_plugin_ids).unwrap()
 }
 
-/// Returns the version of the running Zellij instance - can be useful to check plugin compatibility
-pub fn get_zellij_version() -> String {
-    let plugin_command = PluginCommand::GetZellijVersion;
+/// Returns the version of the running Swarm instance - can be useful to check plugin compatibility
+pub fn get_swarm_version() -> String {
+    let plugin_command = PluginCommand::GetSwarmVersion;
     let protobuf_plugin_command: ProtobufPluginCommand = plugin_command.try_into().unwrap();
     object_to_stdout(&protobuf_plugin_command.encode_to_vec());
     unsafe { host_run_plugin_command() };
-    let protobuf_zellij_version =
-        ProtobufZellijVersion::decode(bytes_from_stdin().unwrap().as_slice()).unwrap();
-    protobuf_zellij_version.version
+    let protobuf_swarm_version =
+        ProtobufSwarmVersion::decode(bytes_from_stdin().unwrap().as_slice()).unwrap();
+    protobuf_swarm_version.version
 }
 
 // Host Functions
@@ -207,7 +207,7 @@ pub fn open_terminal_in_place_of_plugin<P: AsRef<Path>>(path: P, close_plugin_af
     unsafe { host_run_plugin_command() };
 }
 
-/// Open a new command pane with the specified command and args (this sort of pane allows the user to control the command, re-run it and see its exit status through the Zellij UI).
+/// Open a new command pane with the specified command and args (this sort of pane allows the user to control the command, re-run it and see its exit status through the Swarm UI).
 pub fn open_command_pane(command_to_run: CommandToRun, context: BTreeMap<String, String>) {
     let plugin_command = PluginCommand::OpenCommandPane(command_to_run, context);
     let protobuf_plugin_command: ProtobufPluginCommand = plugin_command.try_into().unwrap();
@@ -215,7 +215,7 @@ pub fn open_command_pane(command_to_run: CommandToRun, context: BTreeMap<String,
     unsafe { host_run_plugin_command() };
 }
 
-/// Open a new command pane with the specified command and args (this sort of pane allows the user to control the command, re-run it and see its exit status through the Zellij UI).
+/// Open a new command pane with the specified command and args (this sort of pane allows the user to control the command, re-run it and see its exit status through the Swarm UI).
 /// This variant is the same as `open_command_pane` except it opens the pane in the same tab as the
 /// plugin regardless of whether the user is focused on it
 pub fn open_command_pane_near_plugin(
@@ -228,7 +228,7 @@ pub fn open_command_pane_near_plugin(
     unsafe { host_run_plugin_command() };
 }
 
-/// Open a new floating command pane with the specified command and args (this sort of pane allows the user to control the command, re-run it and see its exit status through the Zellij UI).
+/// Open a new floating command pane with the specified command and args (this sort of pane allows the user to control the command, re-run it and see its exit status through the Swarm UI).
 pub fn open_command_pane_floating(
     command_to_run: CommandToRun,
     coordinates: Option<FloatingPaneCoordinates>,
@@ -241,7 +241,7 @@ pub fn open_command_pane_floating(
     unsafe { host_run_plugin_command() };
 }
 
-/// Open a new floating command pane with the specified command and args (this sort of pane allows the user to control the command, re-run it and see its exit status through the Zellij UI).
+/// Open a new floating command pane with the specified command and args (this sort of pane allows the user to control the command, re-run it and see its exit status through the Swarm UI).
 /// This variant is the same as `open_command_pane_floating` except it opens the pane in the same tab as the
 /// plugin regardless of whether the user is focused on it
 pub fn open_command_pane_floating_near_plugin(
@@ -256,7 +256,7 @@ pub fn open_command_pane_floating_near_plugin(
     unsafe { host_run_plugin_command() };
 }
 
-/// Open a new in place command pane with the specified command and args (this sort of pane allows the user to control the command, re-run it and see its exit status through the Zellij UI).
+/// Open a new in place command pane with the specified command and args (this sort of pane allows the user to control the command, re-run it and see its exit status through the Swarm UI).
 pub fn open_command_pane_in_place(command_to_run: CommandToRun, context: BTreeMap<String, String>) {
     let plugin_command = PluginCommand::OpenCommandPaneInPlace(command_to_run, context);
     let protobuf_plugin_command: ProtobufPluginCommand = plugin_command.try_into().unwrap();
@@ -264,7 +264,7 @@ pub fn open_command_pane_in_place(command_to_run: CommandToRun, context: BTreeMa
     unsafe { host_run_plugin_command() };
 }
 
-/// Open a new in place command pane with the specified command and args (this sort of pane allows the user to control the command, re-run it and see its exit status through the Zellij UI).
+/// Open a new in place command pane with the specified command and args (this sort of pane allows the user to control the command, re-run it and see its exit status through the Swarm UI).
 /// This variant is the same as open_command_pane_in_place, except that it always replaces the
 /// plugin pane rather than whichever pane the user is focused on
 pub fn open_command_pane_in_place_of_plugin(
@@ -282,7 +282,7 @@ pub fn open_command_pane_in_place_of_plugin(
     unsafe { host_run_plugin_command() };
 }
 
-/// Open a new hidden (background) command pane with the specified command and args (this sort of pane allows the user to control the command, re-run it and see its exit status through the Zellij UI).
+/// Open a new hidden (background) command pane with the specified command and args (this sort of pane allows the user to control the command, re-run it and see its exit status through the Swarm UI).
 pub fn open_command_pane_background(
     command_to_run: CommandToRun,
     context: BTreeMap<String, String>,
@@ -417,7 +417,7 @@ pub fn switch_to_input_mode(mode: &InputMode) {
     unsafe { host_run_plugin_command() };
 }
 
-/// Provide a stringified [`layout`](https://zellij.dev/documentation/layouts.html) to be applied to the current session. If the layout has multiple tabs, they will all be opened.
+/// Provide a stringified [`layout`](https://swarm.dev/documentation/layouts.html) to be applied to the current session. If the layout has multiple tabs, they will all be opened.
 pub fn new_tabs_with_layout(layout: &str) {
     let plugin_command = PluginCommand::NewTabsWithLayout(layout.to_owned());
     let protobuf_plugin_command: ProtobufPluginCommand = plugin_command.try_into().unwrap();
@@ -702,15 +702,15 @@ pub fn undo_rename_tab() {
     unsafe { host_run_plugin_command() };
 }
 
-/// Compeltely quit Zellij for this and all other connected clients
-pub fn quit_zellij() {
-    let plugin_command = PluginCommand::QuitZellij;
+/// Compeltely quit Swarm for this and all other connected clients
+pub fn quit_swarm() {
+    let plugin_command = PluginCommand::QuitSwarm;
     let protobuf_plugin_command: ProtobufPluginCommand = plugin_command.try_into().unwrap();
     object_to_stdout(&protobuf_plugin_command.encode_to_vec());
     unsafe { host_run_plugin_command() };
 }
 
-/// Change to the previous [swap layout](https://zellij.dev/documentation/swap-layouts.html)
+/// Change to the previous [swap layout](https://swarm.dev/documentation/swap-layouts.html)
 pub fn previous_swap_layout() {
     let plugin_command = PluginCommand::PreviousSwapLayout;
     let protobuf_plugin_command: ProtobufPluginCommand = plugin_command.try_into().unwrap();
@@ -718,7 +718,7 @@ pub fn previous_swap_layout() {
     unsafe { host_run_plugin_command() };
 }
 
-/// Change to the next [swap layout](https://zellij.dev/documentation/swap-layouts.html)
+/// Change to the next [swap layout](https://swarm.dev/documentation/swap-layouts.html)
 pub fn next_swap_layout() {
     let plugin_command = PluginCommand::NextSwapLayout;
     let protobuf_plugin_command: ProtobufPluginCommand = plugin_command.try_into().unwrap();
@@ -939,7 +939,7 @@ pub fn disconnect_other_clients() {
     unsafe { host_run_plugin_command() };
 }
 
-/// Kill all Zellij sessions in the list
+/// Kill all Swarm sessions in the list
 pub fn kill_sessions<S: AsRef<str>>(session_names: &[S])
 where
     S: ToString,
@@ -1516,7 +1516,7 @@ pub fn object_to_stdout(object: &impl Serialize) {
     println!("{}", serde_json::to_string(object).unwrap());
 }
 
-/// Post a message to a worker of this plugin, for more information please see [Plugin Workers](https://zellij.dev/documentation/plugin-api-workers.md)
+/// Post a message to a worker of this plugin, for more information please see [Plugin Workers](https://swarm.dev/documentation/plugin-api-workers.md)
 pub fn post_message_to(plugin_message: PluginMessage) {
     let plugin_command = PluginCommand::PostMessageTo(plugin_message);
     let protobuf_plugin_command: ProtobufPluginCommand = plugin_command.try_into().unwrap();
@@ -1524,7 +1524,7 @@ pub fn post_message_to(plugin_message: PluginMessage) {
     unsafe { host_run_plugin_command() };
 }
 
-/// Post a message to this plugin, for more information please see [Plugin Workers](https://zellij.dev/documentation/plugin-api-workers.md)
+/// Post a message to this plugin, for more information please see [Plugin Workers](https://swarm.dev/documentation/plugin-api-workers.md)
 pub fn post_message_to_plugin(plugin_message: PluginMessage) {
     let plugin_command = PluginCommand::PostMessageToPlugin(plugin_message);
     let protobuf_plugin_command: ProtobufPluginCommand = plugin_command.try_into().unwrap();
@@ -1532,7 +1532,7 @@ pub fn post_message_to_plugin(plugin_message: PluginMessage) {
     unsafe { host_run_plugin_command() };
 }
 
-#[link(wasm_import_module = "zellij")]
+#[link(wasm_import_module = "swarm")]
 extern "C" {
     fn host_run_plugin_command();
 }

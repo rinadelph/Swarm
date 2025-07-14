@@ -86,7 +86,7 @@ export function setupInputHandlers(term, sendFunction) {
         // in short, xterm.js doesn't listen to mousemove at all and so even though
         // we send it a request for AnyEvent mouse handling, we don't get motion events in return
         // here we use some internal functions in a hopefully non-destructive way to calculate the
-        // columns/rows to send from the x/y coordinates - it's safe to always send these because Zellij
+        // columns/rows to send from the x/y coordinates - it's safe to always send these because Swarm
         // always requests mouse AnyEvent handling
         if (event.buttons == 0) {
             // this means no mouse buttons are pressed and this is just a mouse movement

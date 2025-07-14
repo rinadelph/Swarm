@@ -47,7 +47,7 @@ pub struct ColorRange {
     pub color: usize,
 }
 
-// TODO: move this API to zellij-tile
+// TODO: move this API to swarm-tile
 #[derive(Debug)]
 pub struct ColoredTextBuilder {
     text: String,

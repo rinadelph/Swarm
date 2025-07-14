@@ -1,5 +1,5 @@
 // TODO: GATE THIS WHOLE FILE AND RELEVANT DEPS BEHIND web_server_capability
-use crate::consts::ZELLIJ_PROJ_DIR;
+use crate::consts::SWARM_PROJ_DIR;
 use rusqlite::Connection;
 use sha2::{Digest, Sha256};
 use std::path::PathBuf;
@@ -61,12 +61,12 @@ type Result<T> = std::result::Result<T, TokenError>;
 fn get_db_path() -> Result<PathBuf> {
     if cfg!(debug_assertions) {
         // tests db
-        let data_dir = ZELLIJ_PROJ_DIR.data_dir();
+        let data_dir = SWARM_PROJ_DIR.data_dir();
         std::fs::create_dir_all(&data_dir)?;
         Ok(data_dir.join("tokens_for_dev.db"))
     } else {
         // prod db
-        let data_dir = ZELLIJ_PROJ_DIR.data_dir();
+        let data_dir = SWARM_PROJ_DIR.data_dir();
         std::fs::create_dir_all(data_dir)?;
         Ok(data_dir.join("tokens.db"))
     }

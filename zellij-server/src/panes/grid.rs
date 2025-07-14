@@ -1416,7 +1416,7 @@ impl Grid {
         // Drop zero-width Unicode/UTF-8 codepoints, like for example Variation Selectors.
         // This breaks unicode grapheme segmentation, and is the reason why some characters
         // aren't displayed correctly. Refer to this issue for more information:
-        //     https://github.com/zellij-org/zellij/issues/1538
+        //     https://github.com/swarm-org/swarm/issues/1538
         if character_width == 0 {
             return;
         }
@@ -2511,7 +2511,7 @@ impl Perform for Grid {
                 );
             }
         } else if c == 'z' {
-            // UI-component (Zellij internal)
+            // UI-component (Swarm internal)
             self.ui_component_bytes = Some(vec![]);
         }
     }
@@ -3140,19 +3140,19 @@ impl Perform for Grid {
         } else if c == 's' {
             self.save_cursor_position();
         } else if c == 'u' && intermediates == &[b'>'] {
-            // Zellij only supports the first "progressive enhancement" layer of the kitty keyboard
+            // Swarm only supports the first "progressive enhancement" layer of the kitty keyboard
             // protocol
             if !self.explicitly_disable_kitty_keyboard_protocol {
                 self.supports_kitty_keyboard_protocol = true;
             }
         } else if c == 'u' && intermediates == &[b'<'] {
-            // Zellij only supports the first "progressive enhancement" layer of the kitty keyboard
+            // Swarm only supports the first "progressive enhancement" layer of the kitty keyboard
             // protocol
             if !self.explicitly_disable_kitty_keyboard_protocol {
                 self.supports_kitty_keyboard_protocol = false;
             }
         } else if c == 'u' && intermediates == &[b'?'] {
-            // Zellij only supports the first "progressive enhancement" layer of the kitty keyboard
+            // Swarm only supports the first "progressive enhancement" layer of the kitty keyboard
             // protocol
             let reply = if self.supports_kitty_keyboard_protocol {
                 "\u{1b}[?1u"
@@ -3221,7 +3221,7 @@ impl Perform for Grid {
                 }
             } else if matches!(intermediates.get(0), Some(b'>')) {
                 let version = version_number(VERSION);
-                let xtversion = format!("\u{1b}P>|Zellij({})\u{1b}\\", version);
+                let xtversion = format!("\u{1b}P>|Swarm({})\u{1b}\\", version);
                 self.pending_messages_to_pty
                     .push(xtversion.as_bytes().to_vec());
             }

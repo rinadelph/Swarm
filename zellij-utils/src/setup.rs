@@ -5,7 +5,7 @@ use crate::{
     cli::{CliArgs, Command, SessionCommand, Sessions},
     consts::{
         FEATURES, SYSTEM_DEFAULT_CONFIG_DIR, SYSTEM_DEFAULT_DATA_DIR_PREFIX, VERSION,
-        ZELLIJ_CACHE_DIR, ZELLIJ_DEFAULT_THEMES, ZELLIJ_PROJ_DIR,
+        SWARM_CACHE_DIR, SWARM_DEFAULT_THEMES, SWARM_PROJ_DIR,
     },
     errors::prelude::*,
     home::*,
@@ -62,7 +62,7 @@ fn default_config_dirs() -> Vec<Option<PathBuf>> {
 pub fn get_default_data_dir() -> PathBuf {
     [
         xdg_data_dir(),
-        Path::new(SYSTEM_DEFAULT_DATA_DIR_PREFIX).join("share/zellij"),
+        Path::new(SYSTEM_DEFAULT_DATA_DIR_PREFIX).join("share/swarm"),
     ]
     .into_iter()
     .find(|p| p.exists())
@@ -72,7 +72,7 @@ pub fn get_default_data_dir() -> PathBuf {
 #[cfg(not(test))]
 fn get_default_themes() -> Themes {
     let mut themes = Themes::default();
-    for file in ZELLIJ_DEFAULT_THEMES.files() {
+    for file in SWARM_DEFAULT_THEMES.files() {
         if let Some(content) = file.contents_utf8() {
             let sourced_from_external_file = true;
             match Themes::from_string(&content.to_string(), sourced_from_external_file) {
@@ -90,11 +90,11 @@ fn get_default_themes() -> Themes {
 }
 
 pub fn xdg_config_dir() -> PathBuf {
-    ZELLIJ_PROJ_DIR.config_dir().to_owned()
+    SWARM_PROJ_DIR.config_dir().to_owned()
 }
 
 pub fn xdg_data_dir() -> PathBuf {
-    ZELLIJ_PROJ_DIR.data_dir().to_owned()
+    SWARM_PROJ_DIR.data_dir().to_owned()
 }
 
 pub fn home_config_dir() -> Option<PathBuf> {
@@ -319,11 +319,11 @@ pub struct Setup {
     pub dump_config: bool,
 
     /// Disables loading of configuration file at default location,
-    /// loads the defaults that zellij ships with
+    /// loads the defaults that swarm ships with
     #[clap(long, value_parser)]
     pub clean: bool,
 
-    /// Checks the configuration of zellij and displays
+    /// Checks the configuration of swarm and displays
     /// currently used directories
     #[clap(long, value_parser)]
     pub check: bool,
@@ -361,9 +361,9 @@ impl Setup {
     /// Merges options from the config file and the command line options
     /// into `[Options]`, the command line options superceeding the layout
     /// file options, superceeding the config file options:
-    /// 1. command line options (`zellij options`)
+    /// 1. command line options (`swarm options`)
     /// 2. layout options
-    ///    (`layout.kdl` / `zellij --layout`)
+    ///    (`layout.kdl` / `swarm --layout`)
     /// 3. config options (`config.kdl`)
     pub fn from_cli_args(
         cli_args: &CliArgs,
@@ -496,7 +496,7 @@ impl Setup {
             .layout_dir
             .clone()
             .or_else(|| get_layout_dir(config_dir.clone()));
-        let system_data_dir = PathBuf::from(SYSTEM_DEFAULT_DATA_DIR_PREFIX).join("share/zellij");
+        let system_data_dir = PathBuf::from(SYSTEM_DEFAULT_DATA_DIR_PREFIX).join("share/swarm");
         let config_file = opts
             .config
             .clone()
@@ -521,7 +521,7 @@ impl Setup {
                 .collect::<Vec<PathBuf>>();
             default_config_dirs.dedup();
             message.push_str(
-                " On your system zellij looks in the following config directories by default:\n",
+                " On your system swarm looks in the following config directories by default:\n",
             );
             for dir in default_config_dirs {
                 writeln!(&mut message, " {:?}", dir).unwrap();
@@ -538,7 +538,7 @@ impl Setup {
                 Ok(_) => message.push_str("[CONFIG FILE]: Well defined.\n"),
                 Err(e) => writeln!(
                     &mut message,
-                    "[CONFIG ERROR]: {}. \n By default, zellij loads default configuration",
+                    "[CONFIG ERROR]: {}. \n By default, swarm loads default configuration",
                     e
                 )
                 .unwrap(),
@@ -547,12 +547,12 @@ impl Setup {
             message.push_str("[CONFIG FILE]: Not Found\n");
             writeln!(
                 &mut message,
-                " By default zellij looks for a file called [{}] in the configuration directory",
+                " By default swarm looks for a file called [{}] in the configuration directory",
                 CONFIG_NAME
             )
             .unwrap();
         }
-        writeln!(&mut message, "[CACHE DIR]: {}", ZELLIJ_CACHE_DIR.display()).unwrap();
+        writeln!(&mut message, "[CACHE DIR]: {}", SWARM_CACHE_DIR.display()).unwrap();
         writeln!(&mut message, "[DATA DIR]: {:?}", data_dir).unwrap();
         message.push_str(&format!("[PLUGIN DIR]: {:?}\n", plugin_dir));
         if !cfg!(feature = "disable_automatic_asset_installation") {
@@ -576,12 +576,12 @@ impl Setup {
 
         writeln!(&mut message, "[ARROW SEPARATOR]: {}", ARROW_SEPARATOR).unwrap();
         message.push_str(" Is the [ARROW_SEPARATOR] displayed correctly?\n");
-        message.push_str(" If not you may want to either start zellij with a compatible mode: 'zellij options --simplified-ui true'\n");
+        message.push_str(" If not you may want to either start swarm with a compatible mode: 'swarm options --simplified-ui true'\n");
         let mut hyperlink_compat = String::new();
         hyperlink_compat.push_str(hyperlink_start);
-        hyperlink_compat.push_str("https://zellij.dev/documentation/compatibility.html#the-status-bar-fonts-dont-render-correctly");
+        hyperlink_compat.push_str("https://swarm.dev/documentation/compatibility.html#the-status-bar-fonts-dont-render-correctly");
         hyperlink_compat.push_str(hyperlink_mid);
-        hyperlink_compat.push_str("https://zellij.dev/documentation/compatibility.html#the-status-bar-fonts-dont-render-correctly");
+        hyperlink_compat.push_str("https://swarm.dev/documentation/compatibility.html#the-status-bar-fonts-dont-render-correctly");
         hyperlink_compat.push_str(hyperlink_end);
         write!(
             &mut message,
@@ -591,7 +591,7 @@ impl Setup {
         .unwrap();
         message.push_str("[MOUSE INTERACTION]: \n");
         message.push_str(" Can be temporarily disabled through pressing the [SHIFT] key.\n");
-        message.push_str(" If that doesn't fix any issues consider to disable the mouse handling of zellij: 'zellij options --disable-mouse-mode'\n");
+        message.push_str(" If that doesn't fix any issues consider to disable the mouse handling of swarm: 'swarm options --disable-mouse-mode'\n");
 
         let default_editor = std::env::var("EDITOR")
             .or_else(|_| std::env::var("VISUAL"))
@@ -600,9 +600,9 @@ impl Setup {
         writeln!(&mut message, "[FEATURES]: {:?}", FEATURES).unwrap();
         let mut hyperlink = String::new();
         hyperlink.push_str(hyperlink_start);
-        hyperlink.push_str("https://www.zellij.dev/documentation/");
+        hyperlink.push_str("https://www.swarm.dev/documentation/");
         hyperlink.push_str(hyperlink_mid);
-        hyperlink.push_str("zellij.dev/documentation");
+        hyperlink.push_str("swarm.dev/documentation");
         hyperlink.push_str(hyperlink_end);
         writeln!(&mut message, "[DOCUMENTATION]: {}", hyperlink).unwrap();
         //printf '\e]8;;http://example.com\e\\This is a link\e]8;;\e\\\n'
@@ -620,7 +620,7 @@ impl Setup {
             },
         };
         let mut out = std::io::stdout();
-        clap_complete::generate(shell, &mut CliArgs::command(), "zellij", &mut out);
+        clap_complete::generate(shell, &mut CliArgs::command(), "swarm", &mut out);
         // add shell dependent extra completion
         match shell {
             Shell::Bash => {

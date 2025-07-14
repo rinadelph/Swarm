@@ -1,12 +1,12 @@
 [package]
-name = "zellij"
+name = "swarm"
 version = "0.43.0"
 authors = ["Aram Drevekenin <aram@poor.dev>"]
 edition = "2021"
-description = "A terminal workspace with batteries included"
+description = "Swarm - A powerful terminal workspace for developers"
 license = "MIT"
-repository = "https://github.com/zellij-org/zellij"
-homepage = "https://zellij.dev"
+repository = "https://github.com/alejandro/swarm"
+homepage = "https://swarm.dev"
 include = ["src/**/*", "assets/layouts/*", "assets/config/*", "LICENSE.md", "README.md", "!**/*_test.*", "!**/tests/**/*"]
 # NOTE: When updating this, modify `channel` in `rust-toolchain.toml` accordingly
 rust-version = "1.84"
@@ -112,15 +112,15 @@ strip = true
 depends = "$auto"
 license-file = ["LICENSE.md", "4"]
 assets = [
-  ["assets/man/zellij.1", "usr/share/man/man1/zellij.1", "644"],
-  ["target/release/zellij", "usr/bin/zellij", "755"],
-  ["GOVERNANCE.md", "usr/share/doc/zellij/GOVERNANCE.md", "644"],
-  ["README.md", "usr/share/doc/zellij/README.md", "644"],
-  ["assets/layouts/*", "usr/share/zellij/layouts/", "644"],
-  ["assets/plugins/*", "usr/share/zellij/plugins/", "644"],
-  ["assets/completions/zellij.bash", "usr/share/bash-completion/completions/zellij.bash", "644"],
-  ["assets/completions/zellij.fish", "usr/share/fish/vendor_completions.d/zellij.fish", "644"],
-  ["assets/completions/_zellij", "usr/share/zsh/vendor-completions/_zellij", "644"],
+  ["assets/man/swarm.1", "usr/share/man/man1/swarm.1", "644"],
+  ["target/release/swarm", "usr/bin/swarm", "755"],
+  ["GOVERNANCE.md", "usr/share/doc/swarm/GOVERNANCE.md", "644"],
+  ["README.md", "usr/share/doc/swarm/README.md", "644"],
+  ["assets/layouts/*", "usr/share/swarm/layouts/", "644"],
+  ["assets/plugins/*", "usr/share/swarm/plugins/", "644"],
+  ["assets/completions/swarm.bash", "usr/share/bash-completion/completions/swarm.bash", "644"],
+  ["assets/completions/swarm.fish", "usr/share/fish/vendor_completions.d/swarm.fish", "644"],
+  ["assets/completions/_swarm", "usr/share/zsh/vendor-completions/_swarm", "644"],
 ]
 
 [package.metadata.binstall]
@@ -129,7 +129,7 @@ bin-dir = "{ bin }{ binary-ext }"
 pkg-fmt = "tgz"
 
 [features]
-# See remarks in zellij_utils/Cargo.toml
+# See remarks in zellij-utils/Cargo.toml
 default = ["plugins_from_target", "vendored_curl", "web_server_capability"]
 plugins_from_target = ["zellij-utils/plugins_from_target"]
 disable_automatic_asset_installation = ["zellij-utils/disable_automatic_asset_installation"]
@@ -138,6 +138,6 @@ unstable = ["zellij-client/unstable", "zellij-utils/unstable"]
 singlepass = ["zellij-server/singlepass"]
 web_server_capability = ["zellij-client/web_server_capability", "zellij-server/web_server_capability", "zellij-utils/web_server_capability"]
 
-# uncomment this when developing plugins in the Zellij UI to make plugin compilation faster
+# uncomment this when developing plugins in the Swarm UI to make plugin compilation faster
 # [profile.dev.package."*"]
 # opt-level = 3

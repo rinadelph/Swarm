@@ -980,7 +980,7 @@ pub fn render_controls_line(
 // Since this plugin predates the UI components, this is a developer
 // convenience to keep the coloration of dialogs organized by descriptive names
 //
-// It will be obviated once everything is migrated to UI components from zellij-tile
+// It will be obviated once everything is migrated to UI components from swarm-tile
 #[derive(Debug, Default, Clone, Copy)]
 pub struct Colors {
     pub palette: Styling,

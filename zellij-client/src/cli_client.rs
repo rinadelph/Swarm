@@ -18,14 +18,14 @@ pub fn start_cli_client(
     session_name: &str,
     actions: Vec<Action>,
 ) {
-    let zellij_ipc_pipe: PathBuf = {
-        let mut sock_dir = zellij_utils::consts::ZELLIJ_SOCK_DIR.clone();
+    let swarm_ipc_pipe: PathBuf = {
+        let mut sock_dir = zellij_utils::consts::SWARM_SOCK_DIR.clone();
         fs::create_dir_all(&sock_dir).unwrap();
         zellij_utils::shared::set_permissions(&sock_dir, 0o700).unwrap();
         sock_dir.push(session_name);
         sock_dir
     };
-    os_input.connect_to_server(&*zellij_ipc_pipe);
+    os_input.connect_to_server(&*swarm_ipc_pipe);
     let pane_id = os_input
         .env_variable("ZELLIJ_PANE_ID")
         .and_then(|e| e.trim().parse().ok());
@@ -101,7 +101,7 @@ fn pipe_client(
         // than launching a new one in every iteration of the loop
         configuration
             .get_or_insert_with(BTreeMap::new)
-            .insert("_zellij_id".to_owned(), Uuid::new_v4().to_string());
+            .insert("_swarm_id".to_owned(), Uuid::new_v4().to_string());
     }
     let create_msg = |payload: Option<String>| -> ClientToServerMsg {
         ClientToServerMsg::Action(
@@ -135,7 +135,7 @@ fn pipe_client(
             os_input.send_to_server(msg);
         } else {
             // we didn't get payload from the command line, meaning we listen on STDIN because this
-            // signifies the user is about to pipe more (eg. cat my-large-file | zellij pipe ...)
+            // signifies the user is about to pipe more (eg. cat my-large-file | swarm pipe ...)
             let mut buffer = String::new();
             let _ = stdin.read_line(&mut buffer);
             if buffer.is_empty() {

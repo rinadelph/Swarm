@@ -7,8 +7,8 @@ expression: snapshot
 01 (C): │                                                                                                                       │
 02 (C): │ ┌ command2 ──── SCROLL:  0/1 | PIN [ ] ┐                                                                              │
 03 (C): │ │      Waiting to run: command2        │                                                                              │
-04 (C): │ │ ┌ zellij:tab-bar ───────────── PIN [ ] ┐                                                                            │
-05 (C): │ │<│I am a tab bar           ┌ zellij:status-bar ────────────────────────────── PIN [ ] ┐                              │
+04 (C): │ │ ┌ swarm:tab-bar ───────────── PIN [ ] ┐                                                                            │
+05 (C): │ │<│I am a tab bar           ┌ swarm:status-bar ────────────────────────────── PIN [ ] ┐                              │
 06 (C): │ │l│                         │I am a                                                    │                              │
 07 (C): │ └─│                         │status bar                                                │ ┐                            │
 08 (C): │   │                         │                                                          │ │                            │

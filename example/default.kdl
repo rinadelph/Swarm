@@ -136,14 +136,14 @@ keybinds {
             SwitchToMode "Normal"
         }
         bind "a" {
-            LaunchOrFocusPlugin "zellij:about" {
+            LaunchOrFocusPlugin "swarm:about" {
                 floating true
                 move_to_focused_tab true
             };
             SwitchToMode "Normal"
         }
         bind "s" {
-            LaunchOrFocusPlugin "zellij:share" {
+            LaunchOrFocusPlugin "swarm:share" {
                 floating true
                 move_to_focused_tab true
             };
@@ -215,23 +215,23 @@ keybinds {
     }
 }
 
-// Plugin aliases - can be used to change the implementation of Zellij
+// Plugin aliases - can be used to change the implementation of Swarm
 // changing these requires a restart to take effect
 plugins {
-    tab-bar location="zellij:tab-bar"
-    status-bar location="zellij:status-bar"
-    strider location="zellij:strider"
-    compact-bar location="zellij:compact-bar"
-    session-manager location="zellij:session-manager"
-    welcome-screen location="zellij:session-manager" {
+    tab-bar location="swarm:tab-bar"
+    status-bar location="swarm:status-bar"
+    strider location="swarm:strider"
+    compact-bar location="swarm:compact-bar"
+    session-manager location="swarm:session-manager"
+    welcome-screen location="swarm:session-manager" {
         welcome_screen true
     }
-    filepicker location="zellij:strider" {
+    filepicker location="swarm:strider" {
         cwd "/"
     }
-    configuration location="zellij:configuration"
-    plugin-manager location="zellij:plugin-manager"
-    about location="zellij:about"
+    configuration location="swarm:configuration"
+    plugin-manager location="swarm:plugin-manager"
+    about location="swarm:about"
 }
 
 // Plugins to load in the background when a new session starts
@@ -240,8 +240,8 @@ load_plugins {
   // "https://example.com/my-plugin.wasm"
 }
 
-// Choose what to do when zellij receives SIGTERM, SIGINT, SIGQUIT or SIGHUP
-// eg. when terminal window with an active zellij session is closed
+// Choose what to do when swarm receives SIGTERM, SIGINT, SIGQUIT or SIGHUP
+// eg. when terminal window with an active swarm session is closed
 // (Requires restart)
 // Options:
 //   - detach (Default)
@@ -256,12 +256,12 @@ load_plugins {
 //
 // simplified_ui true
 
-// Choose the path to the default shell that zellij will use for opening new panes
+// Choose the path to the default shell that swarm will use for opening new panes
 // Default: $SHELL
 //
 // default_shell "fish"
 
-// Choose the path to override cwd that zellij will use for opening new panes
+// Choose the path to override cwd that swarm will use for opening new panes
 //
 // default_cwd ""
 
@@ -272,7 +272,7 @@ load_plugins {
 //
 // pane_frames true
 
-// Toggle between having Zellij lay out panes according to a predefined set of layouts whenever possible
+// Toggle between having Swarm lay out panes according to a predefined set of layouts whenever possible
 // Options:
 //   - true (default)
 //   - false
@@ -302,8 +302,8 @@ load_plugins {
 //
 // scrollback_lines_to_serialize 10000
 
-// Define color themes for Zellij
-// For more examples, see: https://github.com/zellij-org/zellij/tree/main/example/themes
+// Define color themes for Swarm
+// For more examples, see: https://github.com/swarm-org/swarm/tree/main/example/themes
 // Once these themes are defined, one of them should to be selected in the "theme" section of this file
 //
 // themes {
@@ -333,7 +333,7 @@ load_plugins {
 //
 // default_layout "compact"
 
-// Choose the mode that zellij uses when starting up.
+// Choose the mode that swarm uses when starting up.
 // Default: normal
 //
 // default_mode "locked"
@@ -349,7 +349,7 @@ load_plugins {
 // mouse_mode false
 
 // Configure the scroll back buffer size
-// This is the number of lines zellij stores for each pane in the scroll back
+// This is the number of lines swarm stores for each pane in the scroll back
 // buffer. Excess number of lines are discarded in a FIFO fashion.
 // (Requires restart)
 // Valid values: positive integers
@@ -394,12 +394,12 @@ load_plugins {
 //
 // mirror_session true
 
-// The folder in which Zellij will look for layouts
+// The folder in which Swarm will look for layouts
 // (Requires restart)
 //
 // layout_dir "/path/to/my/layout_dir"
 
-// The folder in which Zellij will look for themes
+// The folder in which Swarm will look for themes
 // (Requires restart)
 //
 // theme_dir "/path/to/my/theme_dir"

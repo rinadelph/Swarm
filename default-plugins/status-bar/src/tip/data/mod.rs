@@ -13,7 +13,7 @@ mod quicknav;
 mod send_mouse_click_to_terminal;
 mod sync_tab;
 mod use_mouse;
-mod zellij_setup_check;
+mod swarm_setup_check;
 
 lazy_static! {
     pub static ref TIPS: HashMap<&'static str, TipBody> = HashMap::from([
@@ -50,11 +50,11 @@ lazy_static! {
             }
         ),
         (
-            "zellij_setup_check",
+            "swarm_setup_check",
             TipBody {
-                short: zellij_setup_check::zellij_setup_check_short,
-                medium: zellij_setup_check::zellij_setup_check_medium,
-                full: zellij_setup_check::zellij_setup_check_full,
+                short: swarm_setup_check::swarm_setup_check_short,
+                medium: swarm_setup_check::swarm_setup_check_medium,
+                full: swarm_setup_check::swarm_setup_check_full,
             }
         ),
         (

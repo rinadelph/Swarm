@@ -225,7 +225,7 @@ pub(crate) fn plugin_thread_main(
     mut layout: Box<Layout>,
     layout_dir: Option<PathBuf>,
     path_to_default_shell: PathBuf,
-    zellij_cwd: PathBuf,
+    swarm_cwd: PathBuf,
     capabilities: PluginCapabilities,
     client_attributes: ClientAttributes,
     default_shell: Option<TerminalAction>,
@@ -253,7 +253,7 @@ pub(crate) fn plugin_thread_main(
         engine,
         plugin_dir,
         path_to_default_shell,
-        zellij_cwd,
+        swarm_cwd,
         capabilities,
         client_attributes,
         default_shell,
@@ -356,8 +356,8 @@ pub(crate) fn plugin_thread_main(
                                     .senders
                                     .send_to_server(ServerInstruction::UnblockInputThread);
                             },
-                            Err(err) => match err.downcast_ref::<ZellijError>() {
-                                Some(ZellijError::PluginDoesNotExist) => {
+                            Err(err) => match err.downcast_ref::<SwarmError>() {
+                                Some(SwarmError::PluginDoesNotExist) => {
                                     log::warn!(
                                         "Plugin {} not found, starting it instead",
                                         run_plugin.location

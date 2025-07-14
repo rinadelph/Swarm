@@ -529,13 +529,13 @@ fn layout_with_plugin_panes() {
     let kdl_layout = r#"
         layout {
             pane {
-                plugin location="zellij:tab-bar"
+                plugin location="swarm:tab-bar"
             }
             pane {
                 plugin location="file:/path/to/my/plugin.wasm"
             }
             pane {
-                plugin location="zellij:status-bar" {
+                plugin location="swarm:status-bar" {
                     config_key_1 "config_value_1"
                     "2" true
                 }
@@ -552,7 +552,7 @@ fn layout_with_plugin_panes() {
                 children: vec![
                     TiledPaneLayout {
                         run: Some(Run::Plugin(RunPluginOrAlias::RunPlugin(RunPlugin {
-                            location: RunPluginLocation::Zellij(PluginTag::new("tab-bar")),
+                            location: RunPluginLocation::Swarm(PluginTag::new("tab-bar")),
                             _allow_exec_host_cmd: false,
                             configuration: Default::default(),
                             ..Default::default()
@@ -572,7 +572,7 @@ fn layout_with_plugin_panes() {
                     },
                     TiledPaneLayout {
                         run: Some(Run::Plugin(RunPluginOrAlias::RunPlugin(RunPlugin {
-                            location: RunPluginLocation::Zellij(PluginTag::new("status-bar")),
+                            location: RunPluginLocation::Swarm(PluginTag::new("status-bar")),
                             _allow_exec_host_cmd: false,
                             configuration: PluginUserConfiguration(expected_plugin_configuration),
                             ..Default::default()
@@ -1895,11 +1895,11 @@ fn can_load_swap_layouts_from_a_different_file() {
             // in the swap layouts
             tab_template name="ui" {
                pane size=1 borderless=true {
-                   plugin location="zellij:tab-bar"
+                   plugin location="swarm:tab-bar"
                }
                children
                pane size=2 borderless=true {
-                   plugin location="zellij:status-bar"
+                   plugin location="swarm:status-bar"
                }
             }
             pane
@@ -2065,7 +2065,7 @@ fn run_plugin_location_parsing() {
     let kdl_layout = r#"
         layout {
             pane {
-                plugin location="zellij:tab-bar"
+                plugin location="swarm:tab-bar"
             }
             pane {
                 plugin location="file:/path/to/my/plugin.wasm"
@@ -2098,7 +2098,7 @@ fn run_plugin_location_parsing() {
                     TiledPaneLayout {
                         run: Some(Run::Plugin(RunPluginOrAlias::RunPlugin(RunPlugin {
                             _allow_exec_host_cmd: false,
-                            location: RunPluginLocation::Zellij(PluginTag::new("tab-bar")),
+                            location: RunPluginLocation::Swarm(PluginTag::new("tab-bar")),
                             configuration: Default::default(),
                             ..Default::default()
                         }))),

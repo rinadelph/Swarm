@@ -3,11 +3,11 @@
 //!
 //! # Help wanted
 //!
-//! There is an ongoing endeavor to improve the state of error handling in zellij. Currently, many
+//! There is an ongoing endeavor to improve the state of error handling in swarm. Currently, many
 //! functions rely on [`unwrap`]ing [`Result`]s rather than returning and hence propagating
-//! potential errors. If you're interested in helping to add error handling to zellij, don't
+//! potential errors. If you're interested in helping to add error handling to swarm, don't
 //! hesitate to get in touch with us. Additional information can be found in [the docs about error
-//! handling](https://github.com/zellij-org/zellij/tree/main/docs/ERROR_HANDLING.md).
+//! handling](https://github.com/swarm-org/swarm/tree/main/docs/ERROR_HANDLING.md).
 
 use anyhow::Context;
 use colored::*;
@@ -22,7 +22,7 @@ pub mod prelude {
     pub use super::LoggableError;
     #[cfg(not(target_family = "wasm"))]
     pub use super::ToAnyhow;
-    pub use super::ZellijError;
+    pub use super::SwarmError;
     pub use anyhow::anyhow;
     pub use anyhow::bail;
     pub use anyhow::Context;
@@ -162,7 +162,7 @@ impl<T> FatalError<T> for anyhow::Result<T> {
 /// Different types of calls that form an [`ErrorContext`] call stack.
 ///
 /// Complex variants store a variant of a related enum, whose variants can be built from
-/// the corresponding Zellij MSPC instruction enum variants ([`ScreenInstruction`],
+/// the corresponding Swarm MSPC instruction enum variants ([`ScreenInstruction`],
 /// [`PtyInstruction`], [`ClientInstruction`], etc).
 #[derive(Copy, Clone, PartialEq, Serialize, Deserialize, Debug)]
 pub enum ContextType {
@@ -536,13 +536,13 @@ pub enum BackgroundJobContext {
     ListWebSessions,
     RenderToClients,
     HighlightPanesWithMessage,
-    QueryZellijWebServerStatus,
+    QuerySwarmWebServerStatus,
     Exit,
 }
 
 use thiserror::Error;
 #[derive(Debug, Error)]
-pub enum ZellijError {
+pub enum SwarmError {
     #[error("could not find command '{command}' for terminal {terminal_id}")]
     CommandNotFound { terminal_id: u32, command: String },
 
@@ -556,14 +556,14 @@ pub enum ZellijError {
     FailedToStartPty,
 
     #[error(
-        "This version of zellij was built to load the core plugins from
+        "This version of swarm was built to load the core plugins from
 the globally configured plugin directory. However, a plugin wasn't found:
 
     Plugin name: '{plugin_path}'
     Plugin directory: '{plugin_dir}'
 
 If you're a user:
-    Please report this error to the distributor of your current zellij version
+    Please report this error to the distributor of your current swarm version
 
 If you're a developer:
     Either make sure to include the plugins with the application (See feature
@@ -571,8 +571,8 @@ If you're a developer:
     plugin directory.
 
 Possible fix for your problem:
-    Run `zellij setup --dump-plugins`, and optionally point it to your
-    'DATA DIR', visible in e.g. the output of `zellij setup --check`. Without
+    Run `swarm setup --dump-plugins`, and optionally point it to your
+    'DATA DIR', visible in e.g. the output of `swarm setup --check`. Without
     further arguments, it will use the default 'DATA DIR'.
 "
     )]
@@ -588,15 +588,15 @@ Possible fix for your problem:
 
     Plugin name: '{plugin_path}'
 
-This is not a builtin plugin known to this version of zellij. If you were using
+This is not a builtin plugin known to this version of swarm. If you were using
 a custom layout, please refer to the layout documentation at:
 
-    https://zellij.dev/documentation/creating-a-layout.html#plugin
+    https://swarm.dev/documentation/creating-a-layout.html#plugin
 
 If you think this is a bug and the plugin is indeed an internal plugin, please
 open an issue on GitHub:
 
-    https://github.com/zellij-org/zellij/issues
+    https://github.com/swarm-org/swarm/issues
 "
     )]
     BuiltinPluginNonexistent {
@@ -666,11 +666,11 @@ mod not_wasm {
                 "If you are seeing this message, it means that something went wrong.
 
 -> To get additional information, check the log at: {}
--> To see a backtrace next time, reproduce the error with: RUST_BACKTRACE=1 zellij [...]
--> To help us fix this, please open an issue: https://github.com/zellij-org/zellij/issues
+-> To see a backtrace next time, reproduce the error with: RUST_BACKTRACE=1 swarm [...]
+-> To help us fix this, please open an issue: https://github.com/swarm-org/swarm/issues
 
 ",
-                crate::consts::ZELLIJ_TMP_LOG_FILE.display().to_string()
+                crate::consts::SWARM_TMP_LOG_FILE.display().to_string()
             )
         }
     }

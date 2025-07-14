@@ -46,7 +46,7 @@ use zellij_utils::{
     channels::{self, ChannelWithContext, SenderWithContext},
     cli::CliArgs,
     consts::{
-        DEFAULT_SCROLL_BUFFER_SIZE, SCROLL_BUFFER_SIZE, ZELLIJ_SEEN_RELEASE_NOTES_CACHE_FILE,
+        DEFAULT_SCROLL_BUFFER_SIZE, SCROLL_BUFFER_SIZE, SWARM_SEEN_RELEASE_NOTES_CACHE_FILE,
     },
     data::{ConnectToSession, Event, InputMode, KeyWithModifier, PluginCapabilities, WebSharing},
     errors::{prelude::*, ContextType, ErrorInstruction, FatalError, ServerContext},
@@ -458,8 +458,8 @@ macro_rules! send_to_client {
         let send_to_client_res = $os_input.send_to_client($client_id, $msg);
         if let Err(e) = send_to_client_res {
             // Try to recover the message
-            let context = match e.downcast_ref::<ZellijError>() {
-                Some(ZellijError::ClientTooSlow { .. }) => {
+            let context = match e.downcast_ref::<SwarmError>() {
+                Some(SwarmError::ClientTooSlow { .. }) => {
                     format!(
                         "client {} is processing server messages too slow",
                         $client_id
@@ -577,7 +577,7 @@ impl SessionState {
 }
 
 pub fn start_server(mut os_input: Box<dyn ServerOsApi>, socket_path: PathBuf) {
-    info!("Starting Zellij server!");
+    info!("Starting Swarm server!");
 
     // preserve the current umask: read current value by setting to another mode, and then restoring it
     let current_umask = umask(Mode::all());
@@ -588,7 +588,7 @@ pub fn start_server(mut os_input: Box<dyn ServerOsApi>, socket_path: PathBuf) {
         .start()
         .expect("could not daemonize the server process");
 
-    envs::set_zellij("0".to_string());
+    envs::set_swarm("0".to_string());
 
     let (to_server, server_receiver): ChannelWithContext<ServerInstruction> = channels::bounded(50);
     let to_server = SenderWithContext::new(to_server);
@@ -1325,7 +1325,7 @@ pub fn start_server(mut os_input: Box<dyn ServerOsApi>, socket_path: PathBuf) {
                     );
                 } else {
                     // TODO: test this
-                    log::error!("Cannot start web server: this instance of Zellij was compiled without web_server_capability");
+                    log::error!("Cannot start web server: this instance of Swarm was compiled without web_server_capability");
                 }
             },
             ServerInstruction::ShareCurrentSession(_client_id) => {
@@ -1346,7 +1346,7 @@ pub fn start_server(mut os_input: Box<dyn ServerOsApi>, socket_path: PathBuf) {
                             .unwrap();
                     }
                 } else {
-                    log::error!("Cannot share session: this instance of Zellij was compiled without web_server_capability");
+                    log::error!("Cannot share session: this instance of Swarm was compiled without web_server_capability");
                 }
             },
             ServerInstruction::StopSharingCurrentSession(_client_id) => {
@@ -1384,7 +1384,7 @@ pub fn start_server(mut os_input: Box<dyn ServerOsApi>, socket_path: PathBuf) {
                     }
                 } else {
                     // TODO: test this
-                    log::error!("Cannot start web server: this instance of Zellij was compiled without web_server_capability");
+                    log::error!("Cannot start web server: this instance of Swarm was compiled without web_server_capability");
                 }
             },
             ServerInstruction::WebServerStarted(base_url) => {
@@ -1554,7 +1554,7 @@ fn init_session(
         })
         .unwrap();
 
-    let zellij_cwd = std::env::current_dir().unwrap_or_else(|_| std::path::PathBuf::from("."));
+    let swarm_cwd = std::env::current_dir().unwrap_or_else(|_| std::path::PathBuf::from("."));
     let plugin_thread = thread::Builder::new()
         .name("wasm".to_string())
         .spawn({
@@ -1584,7 +1584,7 @@ fn init_session(
                     layout,
                     layout_dir,
                     path_to_default_shell,
-                    zellij_cwd,
+                    swarm_cwd,
                     capabilities,
                     client_attributes,
                     default_shell,
@@ -1717,10 +1717,10 @@ fn should_show_release_notes(should_show_release_notes_config: Option<bool>) -> 
             return false;
         }
     }
-    if ZELLIJ_SEEN_RELEASE_NOTES_CACHE_FILE.exists() {
+    if SWARM_SEEN_RELEASE_NOTES_CACHE_FILE.exists() {
         return false;
     } else {
-        if let Err(e) = std::fs::write(&*ZELLIJ_SEEN_RELEASE_NOTES_CACHE_FILE, &[]) {
+        if let Err(e) = std::fs::write(&*SWARM_SEEN_RELEASE_NOTES_CACHE_FILE, &[]) {
             log::error!(
                 "Failed to write seen release notes indication to disk: {}",
                 e

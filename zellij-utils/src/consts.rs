@@ -1,4 +1,4 @@
-//! Zellij program-wide constants.
+//! Swarm program-wide constants.
 
 use crate::home::find_default_config_dir;
 use directories::ProjectDirs;
@@ -7,18 +7,18 @@ use lazy_static::lazy_static;
 use std::{path::PathBuf, sync::OnceLock};
 use uuid::Uuid;
 
-pub const ZELLIJ_CONFIG_FILE_ENV: &str = "ZELLIJ_CONFIG_FILE";
-pub const ZELLIJ_CONFIG_DIR_ENV: &str = "ZELLIJ_CONFIG_DIR";
-pub const ZELLIJ_LAYOUT_DIR_ENV: &str = "ZELLIJ_LAYOUT_DIR";
+pub const SWARM_CONFIG_FILE_ENV: &str = "SWARM_CONFIG_FILE";
+pub const SWARM_CONFIG_DIR_ENV: &str = "SWARM_CONFIG_DIR";
+pub const SWARM_LAYOUT_DIR_ENV: &str = "SWARM_LAYOUT_DIR";
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 pub const DEFAULT_SCROLL_BUFFER_SIZE: usize = 10_000;
 pub static SCROLL_BUFFER_SIZE: OnceLock<usize> = OnceLock::new();
 pub static DEBUG_MODE: OnceLock<bool> = OnceLock::new();
 
-pub const SYSTEM_DEFAULT_CONFIG_DIR: &str = "/etc/zellij";
+pub const SYSTEM_DEFAULT_CONFIG_DIR: &str = "/etc/swarm";
 pub const SYSTEM_DEFAULT_DATA_DIR_PREFIX: &str = system_default_data_dir();
 
-pub static ZELLIJ_DEFAULT_THEMES: Dir = include_dir!("$CARGO_MANIFEST_DIR/assets/themes");
+pub static SWARM_DEFAULT_THEMES: Dir = include_dir!("$CARGO_MANIFEST_DIR/assets/themes");
 
 pub fn session_info_cache_file_name(session_name: &str) -> PathBuf {
     session_info_folder_for_session(session_name).join("session-metadata.kdl")
@@ -29,11 +29,11 @@ pub fn session_layout_cache_file_name(session_name: &str) -> PathBuf {
 }
 
 pub fn session_info_folder_for_session(session_name: &str) -> PathBuf {
-    ZELLIJ_SESSION_INFO_CACHE_DIR.join(session_name)
+    SWARM_SESSION_INFO_CACHE_DIR.join(session_name)
 }
 
 pub fn create_config_and_cache_folders() {
-    if let Err(e) = std::fs::create_dir_all(&ZELLIJ_CACHE_DIR.as_path()) {
+    if let Err(e) = std::fs::create_dir_all(&SWARM_CACHE_DIR.as_path()) {
         log::error!("Failed to create cache dir: {:?}", e);
     }
     if let Some(config_dir) = find_default_config_dir() {
@@ -43,7 +43,7 @@ pub fn create_config_and_cache_folders() {
     }
     // while session_info is a child of cache currently, it won't necessarily always be this way,
     // and so it's explicitly created here
-    if let Err(e) = std::fs::create_dir_all(&ZELLIJ_SESSION_INFO_CACHE_DIR.as_path()) {
+    if let Err(e) = std::fs::create_dir_all(&SWARM_SESSION_INFO_CACHE_DIR.as_path()) {
         log::error!("Failed to create session_info cache dir: {:?}", e);
     }
 }
@@ -57,22 +57,22 @@ const fn system_default_data_dir() -> &'static str {
 }
 
 lazy_static! {
-    pub static ref ZELLIJ_PROJ_DIR: ProjectDirs =
-        ProjectDirs::from("org", "Zellij Contributors", "Zellij").unwrap();
-    pub static ref ZELLIJ_CACHE_DIR: PathBuf = ZELLIJ_PROJ_DIR.cache_dir().to_path_buf();
-    pub static ref ZELLIJ_SESSION_CACHE_DIR: PathBuf = ZELLIJ_PROJ_DIR
+    pub static ref SWARM_PROJ_DIR: ProjectDirs =
+        ProjectDirs::from("org", "Swarm Contributors", "Swarm").unwrap();
+    pub static ref SWARM_CACHE_DIR: PathBuf = SWARM_PROJ_DIR.cache_dir().to_path_buf();
+    pub static ref SWARM_SESSION_CACHE_DIR: PathBuf = SWARM_PROJ_DIR
         .cache_dir()
         .to_path_buf()
         .join(format!("{}", Uuid::new_v4()));
-    pub static ref ZELLIJ_PLUGIN_PERMISSIONS_CACHE: PathBuf =
-        ZELLIJ_CACHE_DIR.join("permissions.kdl");
-    pub static ref ZELLIJ_SESSION_INFO_CACHE_DIR: PathBuf =
-        ZELLIJ_CACHE_DIR.join(VERSION).join("session_info");
-    pub static ref ZELLIJ_STDIN_CACHE_FILE: PathBuf =
-        ZELLIJ_CACHE_DIR.join(VERSION).join("stdin_cache");
-    pub static ref ZELLIJ_PLUGIN_ARTIFACT_DIR: PathBuf = ZELLIJ_CACHE_DIR.join(VERSION);
-    pub static ref ZELLIJ_SEEN_RELEASE_NOTES_CACHE_FILE: PathBuf =
-        ZELLIJ_CACHE_DIR.join(VERSION).join("seen_release_notes");
+    pub static ref SWARM_PLUGIN_PERMISSIONS_CACHE: PathBuf =
+        SWARM_CACHE_DIR.join("permissions.kdl");
+    pub static ref SWARM_SESSION_INFO_CACHE_DIR: PathBuf =
+        SWARM_CACHE_DIR.join(VERSION).join("session_info");
+    pub static ref SWARM_STDIN_CACHE_FILE: PathBuf =
+        SWARM_CACHE_DIR.join(VERSION).join("stdin_cache");
+    pub static ref SWARM_PLUGIN_ARTIFACT_DIR: PathBuf = SWARM_CACHE_DIR.join(VERSION);
+    pub static ref SWARM_SEEN_RELEASE_NOTES_CACHE_FILE: PathBuf =
+        SWARM_CACHE_DIR.join(VERSION).join("seen_release_notes");
 }
 
 pub const FEATURES: &[&str] = &[
@@ -93,9 +93,9 @@ mod not_wasm {
     //
     // Plugins are taken from:
     //
-    // - `zellij-utils/assets/plugins`: When building in release mode OR when the
+    // - `swarm-utils/assets/plugins`: When building in release mode OR when the
     //   `plugins_from_target` feature IS NOT set
-    // - `zellij-utils/../target/wasm32-wasip1/debug`: When building in debug mode AND the
+    // - `swarm-utils/../target/wasm32-wasip1/debug`: When building in debug mode AND the
     //   `plugins_from_target` feature IS set
     macro_rules! add_plugin {
         ($assets:expr, $plugin:literal) => {
@@ -120,7 +120,7 @@ mod not_wasm {
     }
 
     lazy_static! {
-        // Zellij asset map
+        // Swarm asset map
         pub static ref ASSET_MAP: HashMap<PathBuf, Vec<u8>> = {
             let mut assets = std::collections::HashMap::new();
             add_plugin!(assets, "compact-bar.wasm");
@@ -150,25 +150,25 @@ mod unix_only {
     use nix::unistd::Uid;
     use std::env::temp_dir;
 
-    pub const ZELLIJ_SOCK_MAX_LENGTH: usize = 108;
+    pub const SWARM_SOCK_MAX_LENGTH: usize = 108;
 
     lazy_static! {
         static ref UID: Uid = Uid::current();
-        pub static ref ZELLIJ_TMP_DIR: PathBuf = temp_dir().join(format!("zellij-{}", *UID));
-        pub static ref ZELLIJ_TMP_LOG_DIR: PathBuf = ZELLIJ_TMP_DIR.join("zellij-log");
-        pub static ref ZELLIJ_TMP_LOG_FILE: PathBuf = ZELLIJ_TMP_LOG_DIR.join("zellij.log");
-        pub static ref ZELLIJ_SOCK_DIR: PathBuf = {
+        pub static ref SWARM_TMP_DIR: PathBuf = temp_dir().join(format!("swarm-{}", *UID));
+        pub static ref SWARM_TMP_LOG_DIR: PathBuf = SWARM_TMP_DIR.join("swarm-log");
+        pub static ref SWARM_TMP_LOG_FILE: PathBuf = SWARM_TMP_LOG_DIR.join("swarm.log");
+        pub static ref SWARM_SOCK_DIR: PathBuf = {
             let mut ipc_dir = envs::get_socket_dir().map_or_else(
                 |_| {
-                    ZELLIJ_PROJ_DIR
+                    SWARM_PROJ_DIR
                         .runtime_dir()
-                        .map_or_else(|| ZELLIJ_TMP_DIR.clone(), |p| p.to_owned())
+                        .map_or_else(|| SWARM_TMP_DIR.clone(), |p| p.to_owned())
                 },
                 PathBuf::from,
             );
             ipc_dir.push(VERSION);
             ipc_dir
         };
-        pub static ref WEBSERVER_SOCKET_PATH: PathBuf = ZELLIJ_SOCK_DIR.join("web_server_bus");
+        pub static ref WEBSERVER_SOCKET_PATH: PathBuf = SWARM_SOCK_DIR.join("web_server_bus");
     }
 }

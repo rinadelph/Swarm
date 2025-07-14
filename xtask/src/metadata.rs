@@ -23,14 +23,14 @@ pub fn get_no_web_features(sh: &Shell, crate_name: &str) -> anyhow::Result<Optio
         .as_array()
         .context("Expected packages array in metadata")?;
 
-    // First, find the main zellij crate to get the default features
+    // First, find the main swarm crate to get the default features
     let mut main_default_features = Vec::new();
     for package in packages {
         let name = package["name"]
             .as_str()
             .context("Expected package name as string")?;
 
-        if name == "zellij" {
+        if name == "swarm" {
             let features = package["features"]
                 .as_object()
                 .context("Expected features object")?;
@@ -56,7 +56,7 @@ pub fn get_no_web_features(sh: &Shell, crate_name: &str) -> anyhow::Result<Optio
 
         // Handle the root crate case
         let matches_crate = if crate_name == "." {
-            name == "zellij"
+            name == "swarm"
         } else {
             name == crate_name
         };

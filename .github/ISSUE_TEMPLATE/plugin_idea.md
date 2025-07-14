@@ -9,7 +9,7 @@ assignees: ''
 
 <!--
 
-The best way to extend the Zellij functionality is through plugins. If you have a plugin idea that you would like to see others implement, you can write it here so that others can find it and implement it.
+The best way to extend the Swarm functionality is through plugins. If you have a plugin idea that you would like to see others implement, you can write it here so that others can find it and implement it.
 
 -->
 

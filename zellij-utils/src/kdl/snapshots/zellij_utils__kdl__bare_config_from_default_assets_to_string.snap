@@ -101,7 +101,7 @@ keybinds clear-defaults=true {
     }
     session {
         bind "a" {
-            LaunchOrFocusPlugin "zellij:about" {
+            LaunchOrFocusPlugin "swarm:about" {
                 floating true
                 move_to_focused_tab true
             }
@@ -123,7 +123,7 @@ keybinds clear-defaults=true {
             SwitchToMode "normal"
         }
         bind "s" {
-            LaunchOrFocusPlugin "zellij:share" {
+            LaunchOrFocusPlugin "swarm:share" {
                 floating true
                 move_to_focused_tab true
             }
@@ -248,18 +248,18 @@ keybinds clear-defaults=true {
     }
 }
 plugins {
-    about location="zellij:about"
-    compact-bar location="zellij:compact-bar"
-    configuration location="zellij:configuration"
-    filepicker location="zellij:strider" {
+    about location="swarm:about"
+    compact-bar location="swarm:compact-bar"
+    configuration location="swarm:configuration"
+    filepicker location="swarm:strider" {
         cwd "/"
     }
-    plugin-manager location="zellij:plugin-manager"
-    session-manager location="zellij:session-manager"
-    status-bar location="zellij:status-bar"
-    strider location="zellij:strider"
-    tab-bar location="zellij:tab-bar"
-    welcome-screen location="zellij:session-manager" {
+    plugin-manager location="swarm:plugin-manager"
+    session-manager location="swarm:session-manager"
+    status-bar location="swarm:status-bar"
+    strider location="swarm:strider"
+    tab-bar location="swarm:tab-bar"
+    welcome-screen location="swarm:session-manager" {
         welcome_screen true
     }
 }

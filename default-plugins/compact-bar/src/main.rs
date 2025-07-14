@@ -69,7 +69,7 @@ struct TabRenderData {
 
 register_plugin!(State);
 
-impl ZellijPlugin for State {
+impl SwarmPlugin for State {
     fn load(&mut self, configuration: BTreeMap<String, String>) {
         self.initialize_configuration(configuration);
         self.setup_subscriptions();
@@ -311,7 +311,7 @@ impl State {
     fn detect_tooltip_presence(&self, pane_manifest: &PaneManifest) -> bool {
         for (_tab_index, panes) in &pane_manifest.panes {
             for pane in panes {
-                if pane.plugin_url == Some("zellij:compact-bar".to_owned())
+                if pane.plugin_url == Some("swarm:compact-bar".to_owned())
                     && pane.pane_x != pane.pane_content_x
                 {
                     return true;
@@ -374,7 +374,7 @@ impl State {
         tooltip_config.insert(CONFIG_IS_TOOLTIP.to_string(), "true".to_string());
 
         MessageToPlugin::new(name)
-            .with_plugin_url("zellij:OWN_URL")
+            .with_plugin_url("swarm:OWN_URL")
             .with_plugin_config(tooltip_config)
             .with_floating_pane_coordinates(self.calculate_tooltip_coordinates())
             .new_plugin_instance_should_have_pane_title(format!("{:?}", mode))

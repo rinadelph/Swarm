@@ -3,7 +3,7 @@
 // TL;DR: The build script doesn't work during a `cargo publish --dry-run` and to ensure we can
 //        make a release, we decided to temporarily disable it.
 //
-// [1]: https://github.com/zellij-org/zellij/pull/2711#issuecomment-1695015818
+// [1]: https://github.com/swarm-org/swarm/pull/2711#issuecomment-1695015818
 
 //use prost_build;
 //use std::fs;

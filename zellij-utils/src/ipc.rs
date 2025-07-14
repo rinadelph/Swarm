@@ -131,7 +131,7 @@ pub enum ExitReason {
 impl Display for ExitReason {
     fn fmt(&self, f: &mut Formatter) -> Result<(), Error> {
         match self {
-            Self::Normal => write!(f, "Bye from Zellij!"),
+            Self::Normal => write!(f, "Bye from Swarm!"),
             Self::NormalDetached => write!(f, "Session detached"),
             Self::ForceDetached => write!(
                 f,
@@ -147,15 +147,15 @@ impl Display for ExitReason {
             ),
             Self::Disconnect => {
                 let session_tip = match crate::envs::get_session_name() {
-                    Ok(name) => format!("`zellij attach {}`", name),
-                    Err(_) => "see `zellij ls` and `zellij attach`".to_string(),
+                    Ok(name) => format!("`swarm attach {}`", name),
+                    Err(_) => "see `swarm ls` and `swarm attach`".to_string(),
                 };
                 write!(
                     f,
                     "
-Your zellij client lost connection to the zellij server.
+Your swarm client lost connection to the swarm server.
 
-As a safety measure, you have been disconnected from the current zellij session.
+As a safety measure, you have been disconnected from the current swarm session.
 However, the session should still exist and none of your data should be lost.
 
 This usually means that your terminal didn't process server messages quick

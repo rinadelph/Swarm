@@ -96,11 +96,11 @@ pub fn install(sh: &Shell, flags: flags::Install) -> anyhow::Result<()> {
             .join(&flags.destination)
     };
     sh.change_dir(crate::project_root());
-    sh.copy_file("target/release/zellij", &destination)
+    sh.copy_file("target/release/swarm", &destination)
         .with_context(err_context)
 }
 
-/// Run zellij debug build.
+/// Run swarm debug build.
 pub fn run(sh: &Shell, mut flags: flags::Run) -> anyhow::Result<()> {
     let err_context =
         |flags: &flags::Run| format!("failed to run pipeline 'run' with args {:?}", flags);
@@ -131,7 +131,7 @@ pub fn run(sh: &Shell, mut flags: flags::Run) -> anyhow::Result<()> {
         crate::cargo()
             .and_then(|cargo| {
                 cmd!(sh, "{cargo} run")
-                    .args(["--package", "zellij"])
+                    .args(["--package", "swarm"])
                     .arg("--no-default-features")
                     .args(["--features", features])
                     .args(singlepass.iter().flatten())
@@ -201,7 +201,7 @@ pub fn run(sh: &Shell, mut flags: flags::Run) -> anyhow::Result<()> {
 
 /// Bundle all distributable content to `target/dist`.
 ///
-/// This includes the optimized zellij executable from the [`install`] pipeline, the man page, the
+/// This includes the optimized swarm executable from the [`install`] pipeline, the man page, the
 /// `.desktop` file and the application logo.
 pub fn dist(sh: &Shell, _flags: flags::Dist) -> anyhow::Result<()> {
     let err_context = || "failed to run pipeline 'dist'";
@@ -216,7 +216,7 @@ pub fn dist(sh: &Shell, _flags: flags::Dist) -> anyhow::Result<()> {
             install(
                 sh,
                 flags::Install {
-                    destination: crate::project_root().join("./target/dist/zellij"),
+                    destination: crate::project_root().join("./target/dist/swarm"),
                     no_web: false,
                 },
             )
@@ -224,8 +224,8 @@ pub fn dist(sh: &Shell, _flags: flags::Dist) -> anyhow::Result<()> {
         .with_context(err_context)?;
 
     sh.create_dir("target/dist/man")
-        .and_then(|_| sh.copy_file("assets/man/zellij.1", "target/dist/man/zellij.1"))
-        .and_then(|_| sh.copy_file("assets/zellij.desktop", "target/dist/zellij.desktop"))
+        .and_then(|_| sh.copy_file("assets/man/swarm.1", "target/dist/man/swarm.1"))
+        .and_then(|_| sh.copy_file("assets/swarm.desktop", "target/dist/swarm.desktop"))
         .and_then(|_| sh.copy_file("assets/logo.png", "target/dist/logo.png"))
         .with_context(err_context)
 }
@@ -237,9 +237,9 @@ enum UserAction {
     Ignore,
 }
 
-/// Make a zellij release and publish all crates.
+/// Make a swarm release and publish all crates.
 pub fn publish(sh: &Shell, flags: flags::Publish) -> anyhow::Result<()> {
-    let err_context = "failed to publish zellij";
+    let err_context = "failed to publish swarm";
 
     // Process flags
     let dry_run = if flags.dry_run {
@@ -334,7 +334,7 @@ pub fn publish(sh: &Shell, flags: flags::Publish) -> anyhow::Result<()> {
         // Update default config
         sh.copy_file(
             project_dir
-                .join("zellij-utils")
+                .join("swarm-utils")
                 .join("assets")
                 .join("config")
                 .join("default.kdl"),
@@ -381,8 +381,8 @@ pub fn publish(sh: &Shell, flags: flags::Publish) -> anyhow::Result<()> {
                 println!("{}", msg);
 
                 let more_args = match *crate_name {
-                    // This is needed for zellij to pick up the plugins from the assets included in
-                    // the released zellij-utils binary
+                    // This is needed for swarm to pick up the plugins from the assets included in
+                    // the released swarm-utils binary
                     "." => Some("--no-default-features"),
                     _ => None,
                 };

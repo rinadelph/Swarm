@@ -21,7 +21,7 @@ const UI_COLUMNS: usize = 90;
 struct App {
     active_page: Page,
     link_executable: Rc<RefCell<String>>,
-    zellij_version: Rc<RefCell<String>>,
+    swarm_version: Rc<RefCell<String>>,
     base_mode: Rc<RefCell<InputMode>>,
     tab_rows: usize,
     tab_columns: usize,
@@ -36,7 +36,7 @@ struct App {
 impl Default for App {
     fn default() -> Self {
         let link_executable = Rc::new(RefCell::new("".to_owned()));
-        let zellij_version = Rc::new(RefCell::new("".to_owned()));
+        let swarm_version = Rc::new(RefCell::new("".to_owned()));
         let base_mode = Rc::new(RefCell::new(Default::default()));
         App {
             active_page: Page::new_main_screen(
@@ -46,7 +46,7 @@ impl Default for App {
                 false,
             ),
             link_executable,
-            zellij_version,
+            swarm_version,
             base_mode,
             tab_rows: 0,
             tab_columns: 0,
@@ -62,7 +62,7 @@ impl Default for App {
 
 register_plugin!(App);
 
-impl ZellijPlugin for App {
+impl SwarmPlugin for App {
     fn load(&mut self, configuration: BTreeMap<String, String>) {
         self.is_release_notes = configuration
             .get("is_release_notes")
@@ -83,7 +83,7 @@ impl ZellijPlugin for App {
         ]);
         let own_plugin_id = get_plugin_ids().plugin_id;
         self.own_plugin_id = Some(own_plugin_id);
-        *self.zellij_version.borrow_mut() = get_zellij_version();
+        *self.swarm_version.borrow_mut() = get_swarm_version();
         self.change_own_title();
         self.query_link_executable();
         self.active_page = if self.is_startup_tip {
@@ -97,7 +97,7 @@ impl ZellijPlugin for App {
         } else {
             Page::new_main_screen(
                 self.link_executable.clone(),
-                self.zellij_version.borrow().clone(),
+                self.swarm_version.borrow().clone(),
                 self.base_mode.clone(),
                 self.is_release_notes,
             )
@@ -175,10 +175,10 @@ impl App {
             if self.is_release_notes {
                 rename_plugin_pane(
                     own_plugin_id,
-                    format!("Release Notes {}", self.zellij_version.borrow()),
+                    format!("Release Notes {}", self.swarm_version.borrow()),
                 );
             } else {
-                rename_plugin_pane(own_plugin_id, "About Zellij");
+                rename_plugin_pane(own_plugin_id, "About Swarm");
             }
         }
     }
@@ -246,7 +246,7 @@ impl App {
             } else {
                 self.active_page = Page::new_main_screen(
                     self.link_executable.clone(),
-                    self.zellij_version.borrow().clone(),
+                    self.swarm_version.borrow().clone(),
                     self.base_mode.clone(),
                     self.is_release_notes,
                 );

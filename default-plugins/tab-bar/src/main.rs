@@ -38,7 +38,7 @@ static ARROW_SEPARATOR: &str = "";
 
 register_plugin!(State);
 
-impl ZellijPlugin for State {
+impl SwarmPlugin for State {
     fn load(&mut self, configuration: BTreeMap<String, String>) {
         self.hide_swap_layout_indication = configuration
             .get("hide_swap_layout_indication")

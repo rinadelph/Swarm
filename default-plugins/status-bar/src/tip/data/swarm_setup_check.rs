@@ -21,22 +21,22 @@ macro_rules! strings {
     }};
 }
 
-pub fn zellij_setup_check_full(help: &ModeInfo) -> LinePart {
-    // Tip: Having issues with Zellij? Try running "zellij setup --check"
+pub fn swarm_setup_check_full(help: &ModeInfo) -> LinePart {
+    // Tip: Having issues with Swarm? Try running "swarm setup --check"
     let orange_color = palette_match!(help.style.colors.text_unselected.emphasis_0);
 
     strings!(&[
         Style::new().paint(" Tip: "),
-        Style::new().paint("Having issues with Zellij? Try running "),
+        Style::new().paint("Having issues with Swarm? Try running "),
         Style::new()
             .fg(orange_color)
             .bold()
-            .paint("zellij setup --check"),
+            .paint("swarm setup --check"),
     ])
 }
 
-pub fn zellij_setup_check_medium(help: &ModeInfo) -> LinePart {
-    // Tip: Run "zellij setup --check" to find issues
+pub fn swarm_setup_check_medium(help: &ModeInfo) -> LinePart {
+    // Tip: Run "swarm setup --check" to find issues
     let orange_color = palette_match!(help.style.colors.text_unselected.emphasis_0);
 
     strings!(&[
@@ -45,13 +45,13 @@ pub fn zellij_setup_check_medium(help: &ModeInfo) -> LinePart {
         Style::new()
             .fg(orange_color)
             .bold()
-            .paint("zellij setup --check"),
+            .paint("swarm setup --check"),
         Style::new().paint(" to find issues"),
     ])
 }
 
-pub fn zellij_setup_check_short(help: &ModeInfo) -> LinePart {
-    // Run "zellij setup --check" to find issues
+pub fn swarm_setup_check_short(help: &ModeInfo) -> LinePart {
+    // Run "swarm setup --check" to find issues
     let orange_color = palette_match!(help.style.colors.text_unselected.emphasis_0);
 
     strings!(&[
@@ -59,7 +59,7 @@ pub fn zellij_setup_check_short(help: &ModeInfo) -> LinePart {
         Style::new()
             .fg(orange_color)
             .bold()
-            .paint("zellij setup --check"),
+            .paint("swarm setup --check"),
         Style::new().paint(" to find issues"),
     ])
 }

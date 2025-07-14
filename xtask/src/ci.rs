@@ -1,4 +1,4 @@
-//! Tasks related to zellij CI
+//! Tasks related to swarm CI
 use crate::{
     build,
     flags::{self, CiCmd, Cross, E2e},
@@ -119,7 +119,7 @@ fn e2e_test(sh: &Shell, args: Vec<OsString>) -> anyhow::Result<()> {
             .map_err(anyhow::Error::new)?;
 
             // plugin system tests are run here because they're medium-slow
-            let _pd = sh.push_dir(Path::new("zellij-server"));
+            let _pd = sh.push_dir(Path::new("swarm-server"));
             println!();
             let msg = ">> Testing Plugin System".to_string();
             crate::status(&msg);

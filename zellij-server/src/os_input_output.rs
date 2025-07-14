@@ -209,7 +209,7 @@ fn handle_openpty(
 
         Ok((pid_primary, child_id as RawFd))
     } else {
-        Err(ZellijError::CommandNotFound {
+        Err(SwarmError::CommandNotFound {
             terminal_id,
             command: cmd.command.to_string_lossy().to_string(),
         })
@@ -380,7 +380,7 @@ impl ClientSender {
         // doesn't cause noticable increase in RAM usage, but there's no reason beyond that. If in
         // the future this is found to fill up too quickly again, it may be worthwhile to increase
         // the size even further (or better yet, implement a redraw-on-backpressure mechanism).
-        // We, the zellij maintainers, have decided against an unbounded
+        // We, the swarm maintainers, have decided against an unbounded
         // queue for the time being because we want to prevent e.g. the whole session being killed
         // (by OOM-killers or some other mechanism) just because a single client doesn't respond.
         let (client_buffer_sender, client_buffer_receiver) = channels::bounded(5000);
@@ -460,7 +460,7 @@ impl AsyncReader for RawFdAsyncReader {
 }
 
 /// The `ServerOsApi` trait represents an abstract interface to the features of an operating system that
-/// Zellij server requires.
+/// Swarm server requires.
 pub trait ServerOsApi: Send + Sync {
     fn set_terminal_size_using_terminal_id(
         &self,

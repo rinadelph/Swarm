@@ -23,17 +23,17 @@ macro_rules! strings {
 }
 
 pub fn compact_layout_full(help: &ModeInfo) -> LinePart {
-    // Tip: UI taking up too much space? Start Zellij with
-    // zellij -l compact or remove pane frames with Ctrl + <p> + <z>
+    // Tip: UI taking up too much space? Start Swarm with
+    // swarm -l compact or remove pane frames with Ctrl + <p> + <z>
     let green_color = palette_match!(help.style.colors.text_unselected.emphasis_0);
 
     let mut bits = vec![
         Style::new().paint(" Tip: "),
-        Style::new().paint("UI taking up too much space? Start Zellij with "),
+        Style::new().paint("UI taking up too much space? Start Swarm with "),
         Style::new()
             .fg(green_color)
             .bold()
-            .paint("zellij -l compact"),
+            .paint("swarm -l compact"),
         Style::new().paint(" or remove pane frames with "),
     ];
     bits.extend(add_keybinds(help));
@@ -41,17 +41,17 @@ pub fn compact_layout_full(help: &ModeInfo) -> LinePart {
 }
 
 pub fn compact_layout_medium(help: &ModeInfo) -> LinePart {
-    // Tip: To save screen space, start Zellij with
-    // zellij -l compact or remove pane frames with Ctrl + <p> + <z>
+    // Tip: To save screen space, start Swarm with
+    // swarm -l compact or remove pane frames with Ctrl + <p> + <z>
     let green_color = palette_match!(help.style.colors.text_unselected.emphasis_0);
 
     let mut bits = vec![
         Style::new().paint(" Tip: "),
-        Style::new().paint("To save screen space, start Zellij with "),
+        Style::new().paint("To save screen space, start Swarm with "),
         Style::new()
             .fg(green_color)
             .bold()
-            .paint("zellij -l compact"),
+            .paint("swarm -l compact"),
         Style::new().paint(" or remove frames with "),
     ];
     bits.extend(add_keybinds(help));
@@ -59,8 +59,8 @@ pub fn compact_layout_medium(help: &ModeInfo) -> LinePart {
 }
 
 pub fn compact_layout_short(help: &ModeInfo) -> LinePart {
-    // Save screen space, start Zellij with
-    // zellij -l compact or remove pane frames with Ctrl + <p> + <z>
+    // Save screen space, start Swarm with
+    // swarm -l compact or remove pane frames with Ctrl + <p> + <z>
     let green_color = palette_match!(help.style.colors.text_unselected.emphasis_0);
 
     let mut bits = vec![
@@ -68,7 +68,7 @@ pub fn compact_layout_short(help: &ModeInfo) -> LinePart {
         Style::new()
             .fg(green_color)
             .bold()
-            .paint("zellij -l compact"),
+            .paint("swarm -l compact"),
         Style::new().paint(" or remove frames with "),
     ];
     bits.extend(add_keybinds(help));

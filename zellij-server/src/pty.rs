@@ -315,8 +315,8 @@ pub(crate) fn pty_thread_main(mut pty: Pty, layout: Box<Layout>) -> Result<()> {
                             ))
                             .with_context(err_context)?;
                     },
-                    Err(err) => match err.downcast_ref::<ZellijError>() {
-                        Some(ZellijError::CommandNotFound { terminal_id, .. }) => {
+                    Err(err) => match err.downcast_ref::<SwarmError>() {
+                        Some(SwarmError::CommandNotFound { terminal_id, .. }) => {
                             if hold_on_close {
                                 let hold_for_command = None; // we do not hold an "error" pane
                                 pty.bus
@@ -402,8 +402,8 @@ pub(crate) fn pty_thread_main(mut pty: Pty, layout: Box<Layout>) -> Result<()> {
                             ))
                             .with_context(err_context)?;
                     },
-                    Err(err) => match err.downcast_ref::<ZellijError>() {
-                        Some(ZellijError::CommandNotFound { terminal_id, .. }) => {
+                    Err(err) => match err.downcast_ref::<SwarmError>() {
+                        Some(SwarmError::CommandNotFound { terminal_id, .. }) => {
                             if hold_on_close {
                                 let hold_for_command = None; // we do not hold an "error" pane
                                 pty.bus
@@ -530,8 +530,8 @@ pub(crate) fn pty_thread_main(mut pty: Pty, layout: Box<Layout>) -> Result<()> {
                     .with_context(err_context)
                 {
                     Ok(..) => {},
-                    Err(err) => match err.downcast_ref::<ZellijError>() {
-                        Some(ZellijError::CommandNotFound { terminal_id, .. }) => {
+                    Err(err) => match err.downcast_ref::<SwarmError>() {
+                        Some(SwarmError::CommandNotFound { terminal_id, .. }) => {
                             if run_command.hold_on_close {
                                 pty.bus
                                     .senders
@@ -581,8 +581,8 @@ pub(crate) fn pty_thread_main(mut pty: Pty, layout: Box<Layout>) -> Result<()> {
                     .with_context(err_context)
                 {
                     Ok(..) => {},
-                    Err(err) => match err.downcast_ref::<ZellijError>() {
-                        Some(ZellijError::CommandNotFound { terminal_id, .. }) => {
+                    Err(err) => match err.downcast_ref::<SwarmError>() {
+                        Some(SwarmError::CommandNotFound { terminal_id, .. }) => {
                             if run_command.hold_on_close {
                                 pty.bus
                                     .senders
@@ -1182,8 +1182,8 @@ impl Pty {
                             )))
                         },
                         Err(err) => {
-                            match err.downcast_ref::<ZellijError>() {
-                                Some(ZellijError::CommandNotFound { terminal_id, .. }) => Ok(Some(
+                            match err.downcast_ref::<SwarmError>() {
+                                Some(SwarmError::CommandNotFound { terminal_id, .. }) => Ok(Some(
                                     (*terminal_id, starts_held, Some(command.clone()), Err(err)),
                                 )),
                                 _ => Err(err),
@@ -1208,8 +1208,8 @@ impl Pty {
                         self.id_to_child_pid.insert(terminal_id, child_fd);
                         Ok(Some((terminal_id, starts_held, None, Ok(pid_primary))))
                     },
-                    Err(err) => match err.downcast_ref::<ZellijError>() {
-                        Some(ZellijError::CommandNotFound { terminal_id, .. }) => {
+                    Err(err) => match err.downcast_ref::<SwarmError>() {
+                        Some(SwarmError::CommandNotFound { terminal_id, .. }) => {
                             Ok(Some((*terminal_id, starts_held, None, Err(err))))
                         },
                         _ => Err(err),
@@ -1239,8 +1239,8 @@ impl Pty {
                         self.id_to_child_pid.insert(terminal_id, child_fd);
                         Ok(Some((terminal_id, starts_held, None, Ok(pid_primary))))
                     },
-                    Err(err) => match err.downcast_ref::<ZellijError>() {
-                        Some(ZellijError::CommandNotFound { terminal_id, .. }) => {
+                    Err(err) => match err.downcast_ref::<SwarmError>() {
+                        Some(SwarmError::CommandNotFound { terminal_id, .. }) => {
                             Ok(Some((*terminal_id, starts_held, None, Err(err))))
                         },
                         _ => Err(err),
@@ -1262,8 +1262,8 @@ impl Pty {
                         self.id_to_child_pid.insert(terminal_id, child_fd);
                         Ok(Some((terminal_id, starts_held, None, Ok(pid_primary))))
                     },
-                    Err(err) => match err.downcast_ref::<ZellijError>() {
-                        Some(ZellijError::CommandNotFound { terminal_id, .. }) => {
+                    Err(err) => match err.downcast_ref::<SwarmError>() {
+                        Some(SwarmError::CommandNotFound { terminal_id, .. }) => {
                             Ok(Some((*terminal_id, starts_held, None, Err(err))))
                         },
                         _ => Err(err),

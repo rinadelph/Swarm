@@ -78,7 +78,7 @@ impl TerminalBytes {
 
         // Ignore any errors that happen here.
         // We only leave the loop above when the pane exits. This can happen in a lot of ways, but
-        // the most problematic is when quitting zellij with `Ctrl+q`. That is because the channel
+        // the most problematic is when quitting swarm with `Ctrl+q`. That is because the channel
         // for `Screen` will have exited already, so this send *will* fail. This isn't a problem
         // per-se because the application terminates anyway, but it will print a lengthy error
         // message into the log for every pane that was still active when we quit the application.

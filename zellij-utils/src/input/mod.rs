@@ -77,7 +77,7 @@ mod not_wasm {
     }
 
     // FIXME: This is an absolutely cursed function that should be destroyed as soon
-    // as an alternative that doesn't touch zellij-tile can be developed...
+    // as an alternative that doesn't touch swarm-tile can be developed...
     pub fn cast_termwiz_key(
         event: KeyEvent,
         raw_bytes: &[u8],

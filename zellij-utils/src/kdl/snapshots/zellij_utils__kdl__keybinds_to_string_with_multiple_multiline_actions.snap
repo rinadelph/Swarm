@@ -8,7 +8,7 @@ keybinds clear-defaults=true {
         bind "Ctrl n" {
             NewPane
             SwitchToMode "locked"
-            MessagePlugin "zellij:session-manager" {
+            MessagePlugin "swarm:session-manager" {
                 name "message_name"
                 cwd "/tmp"
                 payload "message_payload"

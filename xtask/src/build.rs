@@ -2,14 +2,14 @@
 //!
 //! Currently has the following functions:
 //!
-//! - [`build`]: Builds general cargo projects (i.e. zellij components) with `cargo build`
+//! - [`build`]: Builds general cargo projects (i.e. swarm components) with `cargo build`
 //! - [`manpage`]: Builds the manpage with `mandown`
 use crate::{flags, metadata, WorkspaceMember};
 use anyhow::Context;
 use std::path::{Path, PathBuf};
 use xshell::{cmd, Shell};
 
-/// Build members of the zellij workspace.
+/// Build members of the swarm workspace.
 ///
 /// Build behavior is controlled by the [`flags`](flags::Build). Calls some variation of `cargo
 /// build` under the hood.
@@ -36,14 +36,14 @@ pub fn build(sh: &Shell, flags: flags::Build) -> anyhow::Result<()> {
             continue;
         }
 
-        // zellij-utils requires protobuf definition files to be present. Usually these are
+        // swarm-utils requires protobuf definition files to be present. Usually these are
         // auto-generated with `build.rs`-files, but this is currently broken for us.
         // See [this PR][1] for details.
         //
-        // [1]: https://github.com/zellij-org/zellij/pull/2711#issuecomment-1695015818
+        // [1]: https://github.com/swarm-org/swarm/pull/2711#issuecomment-1695015818
         {
-            let zellij_utils_basedir = crate::project_root().join("zellij-utils");
-            let _pd = sh.push_dir(zellij_utils_basedir);
+            let swarm_utils_basedir = crate::project_root().join("swarm-utils");
+            let _pd = sh.push_dir(swarm_utils_basedir);
 
             let prost_asset_dir = sh.current_dir().join("assets").join("prost");
             let protobuf_source_dir = sh.current_dir().join("src").join("plugin_api");
@@ -160,7 +160,7 @@ fn move_plugin_to_assets(sh: &Shell, plugin_name: &str) -> anyhow::Result<()> {
 
 /// Build the manpage with `mandown`.
 //      mkdir -p ${root_dir}/assets/man
-//      mandown ${root_dir}/docs/MANPAGE.md 1 > ${root_dir}/assets/man/zellij.1
+//      mandown ${root_dir}/docs/MANPAGE.md 1 > ${root_dir}/assets/man/swarm.1
 pub fn manpage(sh: &Shell) -> anyhow::Result<()> {
     let err_context = "failed to generate manpage";
 
@@ -173,7 +173,7 @@ pub fn manpage(sh: &Shell) -> anyhow::Result<()> {
 
     cmd!(sh, "{mandown} {project_root}/docs/MANPAGE.md 1")
         .read()
-        .and_then(|text| sh.write_file("zellij.1", text))
+        .and_then(|text| sh.write_file("swarm.1", text))
         .context(err_context)
 }
 

@@ -11,8 +11,8 @@ use std::collections::{BTreeMap, HashMap};
 use url::Url;
 
 const ON_FORCE_CLOSE_DESCRIPTION: &'static str = "
-// Choose what to do when zellij receives SIGTERM, SIGINT, SIGQUIT or SIGHUP
-// eg. when terminal window with an active zellij session is closed
+// Choose what to do when swarm receives SIGTERM, SIGINT, SIGQUIT or SIGHUP
+// eg. when terminal window with an active swarm session is closed
 // Options:
 //   - detach (Default)
 //   - quit
@@ -28,7 +28,7 @@ const SIMPLIFIED_UI_DESCRIPTION: &'static str = "
 ";
 
 const DEFAULT_SHELL_DESCRIPTION: &'static str = "
-// Choose the path to the default shell that zellij will use for opening new panes
+// Choose the path to the default shell that swarm will use for opening new panes
 // Default: $SHELL
 //
 ";
@@ -48,7 +48,7 @@ const DEFAULT_THEME_DESCRIPTION: &'static str = "
 ";
 
 const DEFAULT_MODE_DESCRIPTION: &'static str = "
-// Choose the mode that zellij uses when starting up.
+// Choose the mode that swarm uses when starting up.
 // Default: normal
 //
 ";
@@ -65,7 +65,7 @@ const MOUSE_MODE_DESCRIPTION: &'static str = "
 
 const SCROLL_BUFFER_SIZE_DESCRIPTION: &'static str = "
 // Configure the scroll back buffer size
-// This is the number of lines zellij stores for each pane in the scroll back
+// This is the number of lines swarm stores for each pane in the scroll back
 // buffer. Excess number of lines are discarded in a FIFO fashion.
 // Valid values: positive integers
 // Default value: 10000
@@ -121,12 +121,12 @@ const DEFAULT_LAYOUT_DESCRIPTION: &'static str = "
 ";
 
 const LAYOUT_DIR_DESCRIPTION: &'static str = "
-// The folder in which Zellij will look for layouts
+// The folder in which Swarm will look for layouts
 //
 ";
 
 const THEME_DIR_DESCRIPTION: &'static str = "
-// The folder in which Zellij will look for themes
+// The folder in which Swarm will look for themes
 //
 ";
 
@@ -738,13 +738,13 @@ struct OldPluginConfig {
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq)]
 enum OldRunPluginLocation {
     File(PathBuf),
-    Zellij(OldPluginTag),
+    Swarm(OldPluginTag),
 }
 
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "kebab-case")]
 enum OldPluginType {
-    /// Starts immediately when Zellij is started and runs without a visible pane
+    /// Starts immediately when Swarm is started and runs without a visible pane
     Headless,
     /// Runs once per pane declared inside a layout file
     Pane(Option<usize>), // tab_index

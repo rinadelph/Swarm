@@ -2,7 +2,7 @@ layout {
     cwd "/tmp"
     tab name="Tab #1" focus=true {
         pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
+            plugin location="swarm:tab-bar"
         }
         pane split_direction="vertical" {
             pane cwd="/tmp" size="50%"
@@ -12,7 +12,7 @@ layout {
             }
         }
         pane size=2 borderless=true {
-            plugin location="zellij:status-bar"
+            plugin location="swarm:status-bar"
         }
         floating_panes {
             pane cwd="/tmp" {
@@ -39,20 +39,20 @@ layout {
     }
     tab name="Tab #2" hide_floating_panes=true {
         pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
+            plugin location="swarm:tab-bar"
         }
         pane cwd="/tmp" focus=true
         pane size=2 borderless=true {
-            plugin location="zellij:status-bar"
+            plugin location="swarm:status-bar"
         }
     }
     tab name="Tab #3" {
         pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
+            plugin location="swarm:tab-bar"
         }
         pane cwd="/tmp"
         pane size=2 borderless=true {
-            plugin location="zellij:status-bar"
+            plugin location="swarm:status-bar"
         }
         floating_panes {
             pane cwd="/tmp" {
@@ -78,26 +78,26 @@ layout {
     }
     tab name="Tab #4" hide_floating_panes=true {
         pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
+            plugin location="swarm:tab-bar"
         }
         pane cwd="/tmp" focus=true
         pane size=2 borderless=true {
-            plugin location="zellij:status-bar"
+            plugin location="swarm:status-bar"
         }
     }
     new_tab_template {
         pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
+            plugin location="swarm:tab-bar"
         }
         pane cwd="/tmp"
         pane size=2 borderless=true {
-            plugin location="zellij:status-bar"
+            plugin location="swarm:status-bar"
         }
     }
     swap_tiled_layout name="vertical" {
         tab max_panes=5 {
             pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
+                plugin location="swarm:tab-bar"
             }
             pane {
                 pane split_direction="vertical" {
@@ -108,12 +108,12 @@ layout {
                 }
             }
             pane size=2 borderless=true {
-                plugin location="zellij:status-bar"
+                plugin location="swarm:status-bar"
             }
         }
         tab max_panes=8 {
             pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
+                plugin location="swarm:tab-bar"
             }
             pane {
                 pane split_direction="vertical" {
@@ -129,12 +129,12 @@ layout {
                 }
             }
             pane size=2 borderless=true {
-                plugin location="zellij:status-bar"
+                plugin location="swarm:status-bar"
             }
         }
         tab max_panes=12 {
             pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
+                plugin location="swarm:tab-bar"
             }
             pane {
                 pane split_direction="vertical" {
@@ -156,26 +156,26 @@ layout {
                 }
             }
             pane size=2 borderless=true {
-                plugin location="zellij:status-bar"
+                plugin location="swarm:status-bar"
             }
         }
     }
     swap_tiled_layout name="horizontal" {
         tab max_panes=5 {
             pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
+                plugin location="swarm:tab-bar"
             }
             pane {
                 pane
                 pane
             }
             pane size=2 borderless=true {
-                plugin location="zellij:status-bar"
+                plugin location="swarm:status-bar"
             }
         }
         tab max_panes=8 {
             pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
+                plugin location="swarm:tab-bar"
             }
             pane {
                 pane {
@@ -191,12 +191,12 @@ layout {
                 }
             }
             pane size=2 borderless=true {
-                plugin location="zellij:status-bar"
+                plugin location="swarm:status-bar"
             }
         }
         tab max_panes=12 {
             pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
+                plugin location="swarm:tab-bar"
             }
             pane {
                 pane {
@@ -218,14 +218,14 @@ layout {
                 }
             }
             pane size=2 borderless=true {
-                plugin location="zellij:status-bar"
+                plugin location="swarm:status-bar"
             }
         }
     }
     swap_tiled_layout name="stacked" {
         tab min_panes=5 {
             pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
+                plugin location="swarm:tab-bar"
             }
             pane {
                 pane split_direction="vertical" {
@@ -236,7 +236,7 @@ layout {
                 }
             }
             pane size=2 borderless=true {
-                plugin location="zellij:status-bar"
+                plugin location="swarm:status-bar"
             }
         }
     }

@@ -112,7 +112,7 @@ pub struct Options {
     #[clap(long, value_parser)]
     pub scrollback_editor: Option<PathBuf>,
 
-    /// The name of the session to create when starting Zellij
+    /// The name of the session to create when starting Swarm
     #[clap(long, value_parser)]
     #[serde(default)]
     pub session_name: Option<String>,
@@ -164,12 +164,12 @@ pub struct Options {
     #[serde(default)]
     pub support_kitty_keyboard_protocol: Option<bool>,
 
-    /// Whether to make sure a local web server is running when a new Zellij session starts.
+    /// Whether to make sure a local web server is running when a new Swarm session starts.
     /// This web server will allow creating new sessions and attaching to existing ones that have
     /// opted in to being shared in the browser.
     ///
-    /// Note: a local web server can still be manually started from within a Zellij session or from the CLI.
-    /// If this is not desired, one can use a version of Zellij compiled without
+    /// Note: a local web server can still be manually started from within a Swarm session or from the CLI.
+    /// If this is not desired, one can use a version of Swarm compiled without
     /// web_server_capability
     ///
     /// Possible values:
@@ -183,7 +183,7 @@ pub struct Options {
     /// Whether to allow new sessions to be shared through a local web server, assuming one is
     /// running (see the `web_server` option for more details).
     ///
-    /// Note: if Zellij was compiled without web_server_capability, this option will be locked to
+    /// Note: if Swarm was compiled without web_server_capability, this option will be locked to
     /// "disabled"
     ///
     /// Possible values:

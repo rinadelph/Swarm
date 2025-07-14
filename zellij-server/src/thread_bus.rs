@@ -8,7 +8,7 @@ use crate::{
 use zellij_utils::errors::prelude::*;
 use zellij_utils::{channels, channels::SenderWithContext, errors::ErrorContext};
 
-/// A container for senders to the different threads in zellij on the server side
+/// A container for senders to the different threads in swarm on the server side
 #[derive(Default, Clone)]
 pub struct ThreadSenders {
     pub to_screen: Option<SenderWithContext<ScreenInstruction>>,

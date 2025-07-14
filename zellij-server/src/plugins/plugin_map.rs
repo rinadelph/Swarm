@@ -185,7 +185,7 @@ impl PluginMap {
             .map(|((plugin_id, _client_id), _)| *plugin_id)
             .collect();
         if plugin_ids.is_empty() {
-            return Err(ZellijError::PluginDoesNotExist).with_context(err_context);
+            return Err(SwarmError::PluginDoesNotExist).with_context(err_context);
         }
         Ok(plugin_ids)
     }

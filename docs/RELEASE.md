@@ -1,7 +1,7 @@
-# How to release a zellij version
+# How to release a swarm version
 
-This document is primarily target at zellij maintainers in need to (prepare to)
-release a new zellij version.
+This document is primarily target at swarm maintainers in need to (prepare to)
+release a new swarm version.
 
 
 ## Simulating a release
@@ -22,8 +22,8 @@ You only need a publicly accessible Git repository to provide a cargo registry.
 The setup explained below will host a third-party cargo registry software
 ([ktra](https://github.com/moriturus/ktra)) locally on your PC. In order for
 `cargo` to pick this up and be able to work with it, we must perform a few
-modifications to the zellij repository and other components. Once setup, we
-release a zellij version to this private registry and install zellij from there
+modifications to the swarm repository and other components. Once setup, we
+release a swarm version to this private registry and install swarm from there
 to make sure it works as expected.
 
 
@@ -43,26 +43,26 @@ to make sure it works as expected.
        credentials:
         1. Username: Your git-forge username
         1. Password: `$TOKEN`
-1. Prepare the zellij repo
-    1. `cd` into your local copy of the zellij repository
+1. Prepare the swarm repo
+    1. `cd` into your local copy of the swarm repository
     1. Add a new cargo registry to `.cargo/config.toml` like this:
        ```toml
        
        [registries]
        ktra = { index = "https://$INDEX_REPO" }
        ```
-    1. Modify **all** `Cargo.toml` in the zellij repo to retrieve the individual
-       zellij subcrates from the private registry:
+    1. Modify **all** `Cargo.toml` in the swarm repo to retrieve the individual
+       swarm subcrates from the private registry:
         1. Find all dependencies that look like this:
            ```toml
-           zellij-utils = { path = "../zellij-utils/", version = "XXX" }
+           swarm-utils = { path = "../swarm-utils/", version = "XXX" }
            ```
         1. Change them to look like this
            ```toml
-           zellij-utils = { path = "../zellij-utils/", version = "XXX", registry = "ktra" }
+           swarm-utils = { path = "../swarm-utils/", version = "XXX", registry = "ktra" }
            ```
-        1. This applies to all zellij subcrates, e.g. `zellij-client`,
-           `zellij-server`, ... You can ignore the plugins, because these aren't
+        1. This applies to all swarm subcrates, e.g. `swarm-client`,
+           `swarm-server`, ... You can ignore the plugins, because these aren't
            released as sources.
 1. Launch your private registry
     1. Create the file `~/.cargo/config.toml` with the following content:
@@ -94,14 +94,14 @@ to make sure it works as expected.
        cargo login --registry ktra "KTRA_TOKEN"
        ```
 1. **Install safety measures to prevent accidentally performing a real release**:
-    1. In your `zellij` repo, remove all configured remotes that allow you to
-       push/publish directly to the zellij main GitHub repo. Setup a fork of
-       the main zellij repo instead and configure a remote that allows you to
+    1. In your `swarm` repo, remove all configured remotes that allow you to
+       push/publish directly to the swarm main GitHub repo. Setup a fork of
+       the main swarm repo instead and configure a remote that allows you to
        push/publish to that. Please, this is very important.
     1. Comment out the entire `[registry]` section in `~/.cargo/credentials` to
        prevent accidentally pushing a new release to `crates.io`.
 1. **Simulate a release**
-    1. Go back to the zellij repo, type:
+    1. Go back to the swarm repo, type:
        ```bash
        cargo x publish --git-remote <YOUR_ZELLIJ_FORK> --cargo-registry ktra
        ```
@@ -110,22 +110,22 @@ to make sure it works as expected.
     1. If all goes well, the release will be done in a few minutes and all the
        crates are published to the private `ktra` registry!
 1. Testing the release binary
-    1. Install zellij from the registry to some local directory like this:
+    1. Install swarm from the registry to some local directory like this:
        ```bash
-       $ cargo install --registry ktra --root /tmp zellij
+       $ cargo install --registry ktra --root /tmp swarm
        ```
     1. Execute the binary to see if all went well:
        ```bash
-       $ /tmp/bin/zellij
+       $ /tmp/bin/swarm
        ```
 1. Cleaning up
     1. Uncomment the `[registry]` section in `~/.cargo/config.toml`
-    1. Restore your original git remotes for the zellij repo
+    1. Restore your original git remotes for the swarm repo
     1. Undo your last commit:
        ```bash
        $ git reset --hard HEAD~1
        ```
-    1. Undo your last commit in the remote zellij repo:
+    1. Undo your last commit in the remote swarm repo:
        ```bash
        $ git push --force <YOUR_ZELLIJ_FORK>
        ```
@@ -133,7 +133,7 @@ to make sure it works as expected.
        ```bash
        $ git tag -d "vX.Y.Z"
        ```
-    1. Delete the release tag in the remote zellij repo
+    1. Delete the release tag in the remote swarm repo
        ```bash
        $ git push <YOUR_ZELLIJ_FORK> --force --delete "vX.Y.Z"
        ```

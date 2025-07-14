@@ -1,7 +1,7 @@
 use crate::data::{Direction, InputMode, Resize};
 use crate::setup::Setup;
 use crate::{
-    consts::{ZELLIJ_CONFIG_DIR_ENV, ZELLIJ_CONFIG_FILE_ENV},
+    consts::{SWARM_CONFIG_DIR_ENV, SWARM_CONFIG_FILE_ENV},
     input::{layout::PluginUserConfiguration, options::CliOptions},
 };
 use clap::{Args, Parser, Subcommand};
@@ -12,14 +12,14 @@ use url::Url;
 fn validate_session(name: &str) -> Result<String, String> {
     #[cfg(unix)]
     {
-        use crate::consts::ZELLIJ_SOCK_MAX_LENGTH;
+        use crate::consts::SWARM_SOCK_MAX_LENGTH;
 
-        let mut socket_path = crate::consts::ZELLIJ_SOCK_DIR.clone();
+        let mut socket_path = crate::consts::SWARM_SOCK_DIR.clone();
         socket_path.push(name);
 
-        if socket_path.as_os_str().len() >= ZELLIJ_SOCK_MAX_LENGTH {
+        if socket_path.as_os_str().len() >= SWARM_SOCK_MAX_LENGTH {
             // socket path must be less than 108 bytes
-            let available_length = ZELLIJ_SOCK_MAX_LENGTH
+            let available_length = SWARM_SOCK_MAX_LENGTH
                 .saturating_sub(socket_path.as_os_str().len())
                 .saturating_sub(1);
 
@@ -34,13 +34,13 @@ fn validate_session(name: &str) -> Result<String, String> {
 }
 
 #[derive(Parser, Default, Debug, Clone, Serialize, Deserialize)]
-#[clap(version, name = "zellij")]
+#[clap(version, name = "swarm")]
 pub struct CliArgs {
     /// Maximum panes on screen, caution: opening more panes will close old ones
     #[clap(long, value_parser)]
     pub max_panes: Option<usize>,
 
-    /// Change where zellij looks for plugins
+    /// Change where swarm looks for plugins
     #[clap(long, value_parser, overrides_with = "data_dir")]
     pub data_dir: Option<PathBuf>,
 
@@ -67,12 +67,12 @@ pub struct CliArgs {
     #[clap(short, long, value_parser, overrides_with = "new_session_with_layout")]
     pub new_session_with_layout: Option<PathBuf>,
 
-    /// Change where zellij looks for the configuration file
-    #[clap(short, long, overrides_with = "config", env = ZELLIJ_CONFIG_FILE_ENV, value_parser)]
+    /// Change where swarm looks for the configuration file
+    #[clap(short, long, overrides_with = "config", env = SWARM_CONFIG_FILE_ENV, value_parser)]
     pub config: Option<PathBuf>,
 
-    /// Change where zellij looks for the configuration directory
-    #[clap(long, overrides_with = "config_dir", env = ZELLIJ_CONFIG_DIR_ENV, value_parser)]
+    /// Change where swarm looks for the configuration directory
+    #[clap(long, overrides_with = "config_dir", env = SWARM_CONFIG_DIR_ENV, value_parser)]
     pub config_dir: Option<PathBuf>,
 
     #[clap(subcommand)]
@@ -85,19 +85,19 @@ pub struct CliArgs {
 
 #[derive(Debug, Subcommand, Clone, Serialize, Deserialize)]
 pub enum Command {
-    /// Change the behaviour of zellij
+    /// Change the behaviour of swarm
     #[clap(name = "options", value_parser)]
     Options(CliOptions),
 
-    /// Setup zellij and check its configuration
+    /// Setup swarm and check its configuration
     #[clap(name = "setup", value_parser)]
     Setup(Setup),
 
-    /// Setup zellij and check its configuration
+    /// Setup swarm and check its configuration
     #[clap(name = "web", value_parser)]
     Web(WebCli),
 
-    /// Explore existing zellij sessions
+    /// Explore existing swarm sessions
     #[clap(flatten)]
     Sessions(Sessions),
 }
@@ -160,7 +160,7 @@ impl WebCli {
 
 #[derive(Debug, Subcommand, Clone, Serialize, Deserialize)]
 pub enum SessionCommand {
-    /// Change the behaviour of zellij
+    /// Change the behaviour of swarm
     #[clap(name = "options")]
     Options(CliOptions),
 }
@@ -204,7 +204,7 @@ pub enum Sessions {
         #[clap(long, value_parser)]
         index: Option<usize>,
 
-        /// Change the behaviour of zellij
+        /// Change the behaviour of swarm
         #[clap(subcommand, name = "options")]
         options: Option<Box<SessionCommand>>,
 
@@ -326,7 +326,7 @@ pub enum Sessions {
     /// Load a plugin
     #[clap(visible_alias = "p")]
     Plugin {
-        /// Plugin URL, can either start with http(s), file: or zellij:
+        /// Plugin URL, can either start with http(s), file: or swarm:
         #[clap(last(true), required(true))]
         url: String,
 
@@ -428,19 +428,19 @@ pub enum Sessions {
     /// Send data to one or more plugins, launch them if they are not running.
     #[clap(override_usage(
 r#"
-zellij pipe [OPTIONS] [--] <PAYLOAD>
+swarm pipe [OPTIONS] [--] <PAYLOAD>
 
 * Send data to a specific plugin:
 
-zellij pipe --plugin file:/path/to/my/plugin.wasm --name my_pipe_name -- my_arbitrary_data
+swarm pipe --plugin file:/path/to/my/plugin.wasm --name my_pipe_name -- my_arbitrary_data
 
 * To all running plugins (that are listening):
 
-zellij pipe --name my_pipe_name -- my_arbitrary_data
+swarm pipe --name my_pipe_name -- my_arbitrary_data
 
 * Pipe data into this command's STDIN and get output from the plugin on this command's STDOUT
 
-tail -f /tmp/my-live-logfile | zellij pipe --name logs --plugin https://example.com/my-plugin.wasm | wc -l
+tail -f /tmp/my-live-logfile | swarm pipe --name logs --plugin https://example.com/my-plugin.wasm | wc -l
 "#))]
     Pipe {
         /// The name of the pipe
@@ -621,7 +621,7 @@ pub enum CliAction {
         )]
         stacked: bool,
     },
-    /// Open the specified file in a new zellij pane with your default EDITOR
+    /// Open the specified file in a new swarm pane with your default EDITOR
     Edit {
         file: PathBuf,
 
@@ -768,19 +768,19 @@ pub enum CliAction {
     /// Send data to one or more plugins, launch them if they are not running.
     #[clap(override_usage(
 r#"
-zellij action pipe [OPTIONS] [--] <PAYLOAD>
+swarm action pipe [OPTIONS] [--] <PAYLOAD>
 
 * Send data to a specific plugin:
 
-zellij action pipe --plugin file:/path/to/my/plugin.wasm --name my_pipe_name -- my_arbitrary_data
+swarm action pipe --plugin file:/path/to/my/plugin.wasm --name my_pipe_name -- my_arbitrary_data
 
 * To all running plugins (that are listening):
 
-zellij action pipe --name my_pipe_name -- my_arbitrary_data
+swarm action pipe --name my_pipe_name -- my_arbitrary_data
 
 * Pipe data into this command's STDIN and get output from the plugin on this command's STDOUT
 
-tail -f /tmp/my-live-logfile | zellij action pipe --name logs --plugin https://example.com/my-plugin.wasm | wc -l
+tail -f /tmp/my-live-logfile | swarm action pipe --name logs --plugin https://example.com/my-plugin.wasm | wc -l
 "#))]
     Pipe {
         /// The name of the pipe
@@ -848,7 +848,7 @@ tail -f /tmp/my-live-logfile | zellij action pipe --name logs --plugin https://e
     /// plugin_1) or bare integers in which case they'll be considered terminals (eg. 1 is
     /// the equivalent of terminal_1)
     ///
-    /// Example: zellij action stack-panes -- terminal_1 plugin_2 3
+    /// Example: swarm action stack-panes -- terminal_1 plugin_2 3
     StackPanes {
         #[clap(last(true), required(true))]
         pane_ids: Vec<String>,

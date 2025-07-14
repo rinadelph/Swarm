@@ -16,7 +16,7 @@ pub struct State {
     pub hide_hidden_files: bool,
     pub current_rows: Option<usize>,
     pub handling_filepick_request_from: Option<(PipeSource, BTreeMap<String, String>)>,
-    pub initial_cwd: PathBuf, // TODO: get this from zellij
+    pub initial_cwd: PathBuf, // TODO: get this from swarm
     pub is_searching: bool,
     pub search_term: String,
     pub close_on_selection: bool,

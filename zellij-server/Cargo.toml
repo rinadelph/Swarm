@@ -3,7 +3,7 @@ name = "zellij-server"
 version = "0.43.0"
 authors = ["Kunal Mohan <kunalmohan99@gmail.com>"]
 edition = "2021"
-description = "The server-side library for Zellij"
+description = "The server-side library for Swarm"
 license = "MIT"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

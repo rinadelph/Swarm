@@ -498,7 +498,7 @@ struct State {
 
 register_plugin!(State);
 
-impl ZellijPlugin for State {
+impl SwarmPlugin for State {
     fn load(&mut self, configuration: BTreeMap<String, String>) {
         self.userspace_configuration = configuration;
         subscribe(&[

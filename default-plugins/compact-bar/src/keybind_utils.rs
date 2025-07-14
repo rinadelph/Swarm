@@ -488,7 +488,7 @@ impl KeybindProcessor {
                     |action: &Action| action.launches_plugin("session-manager"),
                     |action: &Action| action.launches_plugin("plugin-manager"),
                     |action: &Action| action.launches_plugin("configuration"),
-                    |action: &Action| action.launches_plugin("zellij:about"),
+                    |action: &Action| action.launches_plugin("swarm:about"),
                 ];
                 Self::find_predetermined_actions(mode_info, mode, ordered_predicates)
             },

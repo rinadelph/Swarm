@@ -51,7 +51,7 @@ pub(crate) use zellij_utils::sessions::list_sessions;
 pub(crate) fn kill_all_sessions(yes: bool) {
     match get_sessions() {
         Ok(sessions) if sessions.is_empty() => {
-            eprintln!("No active zellij sessions found.");
+            eprintln!("No active swarm sessions found.");
             process::exit(1);
         },
         Ok(sessions) => {
@@ -181,10 +181,10 @@ pub(crate) fn start_web_server(opts: CliArgs, run_daemonized: bool) {
 #[cfg(not(feature = "web_server_capability"))]
 pub(crate) fn start_web_server(_opts: CliArgs, _run_daemonized: bool) {
     log::error!(
-        "This version of Zellij was compiled without web server support, cannot run web server!"
+        "This version of Swarm was compiled without web server support, cannot run web server!"
     );
     eprintln!(
-        "This version of Zellij was compiled without web server support, cannot run web server!"
+        "This version of Swarm was compiled without web server support, cannot run web server!"
     );
     std::process::exit(2);
 }
@@ -202,10 +202,10 @@ pub(crate) fn stop_web_server() -> Result<(), String> {
 #[cfg(not(feature = "web_server_capability"))]
 pub(crate) fn stop_web_server() -> Result<(), String> {
     log::error!(
-        "This version of Zellij was compiled without web server support, cannot stop web server!"
+        "This version of Swarm was compiled without web server support, cannot stop web server!"
     );
     eprintln!(
-        "This version of Zellij was compiled without web server support, cannot stop web server!"
+        "This version of Swarm was compiled without web server support, cannot stop web server!"
     );
     std::process::exit(2);
 }
@@ -221,10 +221,10 @@ pub(crate) fn create_auth_token() -> Result<String, String> {
 #[cfg(not(feature = "web_server_capability"))]
 pub(crate) fn create_auth_token() -> Result<String, String> {
     log::error!(
-        "This version of Zellij was compiled without web server support, cannot create auth token!"
+        "This version of Swarm was compiled without web server support, cannot create auth token!"
     );
     eprintln!(
-        "This version of Zellij was compiled without web server support, cannot create auth token!"
+        "This version of Swarm was compiled without web server support, cannot create auth token!"
     );
     std::process::exit(2);
 }
@@ -237,10 +237,10 @@ pub(crate) fn revoke_auth_token(token_name: &str) -> Result<bool, String> {
 #[cfg(not(feature = "web_server_capability"))]
 pub(crate) fn revoke_auth_token(_token_name: &str) -> Result<bool, String> {
     log::error!(
-        "This version of Zellij was compiled without web server support, cannot revoke auth token!"
+        "This version of Swarm was compiled without web server support, cannot revoke auth token!"
     );
     eprintln!(
-        "This version of Zellij was compiled without web server support, cannot revoke auth token!"
+        "This version of Swarm was compiled without web server support, cannot revoke auth token!"
     );
     std::process::exit(2);
 }
@@ -254,10 +254,10 @@ pub(crate) fn revoke_all_auth_tokens() -> Result<usize, String> {
 #[cfg(not(feature = "web_server_capability"))]
 pub(crate) fn revoke_all_auth_tokens() -> Result<usize, String> {
     log::error!(
-        "This version of Zellij was compiled without web server support, cannot revoke all tokens!"
+        "This version of Swarm was compiled without web server support, cannot revoke all tokens!"
     );
     eprintln!(
-        "This version of Zellij was compiled without web server support, cannot revoke all tokens!"
+        "This version of Swarm was compiled without web server support, cannot revoke all tokens!"
     );
     std::process::exit(2);
 }
@@ -279,10 +279,10 @@ pub(crate) fn list_auth_tokens() -> Result<Vec<String>, String> {
 #[cfg(not(feature = "web_server_capability"))]
 pub(crate) fn list_auth_tokens() -> Result<Vec<String>, String> {
     log::error!(
-        "This version of Zellij was compiled without web server support, cannot list tokens!"
+        "This version of Swarm was compiled without web server support, cannot list tokens!"
     );
     eprintln!(
-        "This version of Zellij was compiled without web server support, cannot list tokens!"
+        "This version of Swarm was compiled without web server support, cannot list tokens!"
     );
     std::process::exit(2);
 }
@@ -312,10 +312,10 @@ pub(crate) fn web_server_status(web_server_base_url: &str) -> Result<String, Str
 #[cfg(not(feature = "web_server_capability"))]
 pub(crate) fn web_server_status(_web_server_base_url: &str) -> Result<String, String> {
     log::error!(
-        "This version of Zellij was compiled without web server support, cannot get web server status!"
+        "This version of Swarm was compiled without web server support, cannot get web server status!"
     );
     eprintln!(
-        "This version of Zellij was compiled without web server support, cannot get web server status!"
+        "This version of Swarm was compiled without web server support, cannot get web server status!"
     );
     std::process::exit(2);
 }
@@ -489,7 +489,7 @@ fn attach_with_session_index(config_options: Options, index: usize, create: bool
             if create {
                 create_new_client()
             } else {
-                eprintln!("No active zellij sessions found.");
+                eprintln!("No active swarm sessions found.");
                 process::exit(1);
             }
         },
@@ -542,7 +542,7 @@ fn attach_with_session_name(
         None => match get_active_session() {
             ActiveSession::None if create => create_new_client(),
             ActiveSession::None => {
-                eprintln!("No active zellij sessions found.");
+                eprintln!("No active swarm sessions found.");
                 process::exit(1);
             },
             ActiveSession::One(session_name) => ClientInfo::Attach(session_name, config_options),
@@ -772,12 +772,12 @@ pub(crate) fn start_client(opts: CliArgs) {
                         // This prevents the same type of recursion as above, only that here we
                         // don't get the command to "attach", but to start a new session instead.
                         // This occurs for example when declaring the session name inside a layout
-                        // file and then, from within this session, trying to open a new zellij
+                        // file and then, from within this session, trying to open a new swarm
                         // session with the same layout. This causes an infinite recursion in the
                         // `zellij_server::terminal_bytes::listen` task, flooding the server and
                         // clients with infinite `Render` requests.
                         if *session_name == val {
-                            eprintln!("You are trying to attach to the current session (\"{}\"). Zellij does not support nesting a session in itself.", session_name);
+                            eprintln!("You are trying to attach to the current session (\"{}\"). Swarm does not support nesting a session in itself.", session_name);
                             process::exit(1);
                         }
                     }

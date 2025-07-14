@@ -63,7 +63,7 @@ pub(crate) fn get_terminal_size_using_fd(fd: RawFd) -> Size {
         ioctl(fd, TIOCGWINSZ.into(), &mut winsize)
     };
 
-    // fallback to default values when rows/cols == 0: https://github.com/zellij-org/zellij/issues/1551
+    // fallback to default values when rows/cols == 0: https://github.com/swarm-org/swarm/issues/1551
     let rows = if winsize.ws_row != 0 {
         winsize.ws_row as usize
     } else {
@@ -95,7 +95,7 @@ impl std::fmt::Debug for ClientOsInputOutput {
 }
 
 /// The `ClientOsApi` trait represents an abstract interface to the features of an operating system that
-/// Zellij client requires.
+/// Swarm client requires.
 pub trait ClientOsApi: Send + Sync + std::fmt::Debug {
     /// Returns the size of the terminal associated to file descriptor `fd`.
     fn get_terminal_size_using_fd(&self, fd: RawFd) -> Size;
@@ -280,7 +280,7 @@ impl ClientOsApi for ClientOsInputOutput {
     }
     fn load_palette(&self) -> Palette {
         // this was removed because termbg doesn't release stdin in certain scenarios (we know of
-        // windows terminal and FreeBSD): https://github.com/zellij-org/zellij/issues/538
+        // windows terminal and FreeBSD): https://github.com/swarm-org/swarm/issues/538
         //
         // let palette = default_palette();
         // let timeout = std::time::Duration::from_millis(100);

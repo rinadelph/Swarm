@@ -21,7 +21,7 @@ use zellij_utils::input::mouse::MouseEvent;
 use zellij_utils::input::options::Clipboard;
 use zellij_utils::pane_size::{Size, SizeInPixels};
 use zellij_utils::{
-    consts::{session_info_folder_for_session, ZELLIJ_SOCK_DIR},
+    consts::{session_info_folder_for_session, SWARM_SOCK_DIR},
     envs::set_session_name,
     input::command::TerminalAction,
     input::layout::{
@@ -1785,7 +1785,7 @@ impl Screen {
         // TODO: consider moving this elsewhere
         self.bus
             .senders
-            .send_to_background_jobs(BackgroundJob::QueryZellijWebServerStatus)
+            .send_to_background_jobs(BackgroundJob::QuerySwarmWebServerStatus)
             .with_context(err_context)?;
         Ok(())
     }
@@ -4153,7 +4153,7 @@ pub(crate) fn screen_thread_main(
                 screen.unblock_input()?;
                 screen.render(None)?;
                 // we do this here in order to recover from a race condition on app start
-                // that sometimes causes Zellij to think the terminal window is a different size
+                // that sometimes causes Swarm to think the terminal window is a different size
                 // than it actually is - here, we query the client for its terminal size after
                 // we've finished the setup and handle it as we handle a normal resize,
                 // while this can affect other instances of a layout being applied, the query is
@@ -5089,8 +5089,8 @@ pub(crate) fn screen_thread_main(
                     }
 
                     // rename socket file
-                    let old_socket_file_path = ZELLIJ_SOCK_DIR.join(&old_session_name);
-                    let new_socket_file_path = ZELLIJ_SOCK_DIR.join(&name);
+                    let old_socket_file_path = SWARM_SOCK_DIR.join(&old_session_name);
+                    let new_socket_file_path = SWARM_SOCK_DIR.join(&name);
                     if let Err(e) = std::fs::rename(old_socket_file_path, new_socket_file_path) {
                         log::error!("Failed to rename ipc socket: {:?}", e);
                     }

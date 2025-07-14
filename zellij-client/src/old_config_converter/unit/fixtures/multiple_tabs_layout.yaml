@@ -7,7 +7,7 @@ template:
         Fixed: 1
       run:
         plugin:
-          location: "zellij:tab-bar"
+          location: "swarm:tab-bar"
       borderless: true
     - direction: Vertical
       body: true
@@ -16,7 +16,7 @@ template:
         Fixed: 2
       run:
         plugin:
-          location: "zellij:status-bar"
+          location: "swarm:status-bar"
       borderless: true
 
 tabs:
@@ -62,7 +62,7 @@ tabs:
       Percent: 20
     run:
       plugin:
-        location: "zellij:strider"
+        location: "swarm:strider"
   - direction: Horizontal
     split_size:
       Percent: 80

@@ -18,13 +18,30 @@ pub struct Page {
 impl Page {
     pub fn new_main_screen(
         link_executable: Rc<RefCell<String>>,
-        zellij_version: String,
+        swarm_version: String,
         base_mode: Rc<RefCell<InputMode>>,
         is_release_notes: bool,
     ) -> Self {
         Page::new()
             .main_screen()
-            .with_title(main_screen_title(zellij_version.clone(), is_release_notes))
+            .with_title(main_screen_title(swarm_version.clone(), is_release_notes))
+            .with_paragraph(vec![
+                ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
+                    Text::new("Swarm is a fork of Zellij, designed as the ultimate terminal workspace")
+                        .color_range(7, ..), // Cyan color for description
+                ))]),
+                ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
+                    Text::new("environment, providing a better alternative to Neovim and IDEs for")
+                        .color_range(7, ..), // Cyan color
+                ))]),
+                ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
+                    Text::new("developers who prefer working in the terminal.")
+                        .color_range(7, ..), // Cyan color
+                ))]),
+                ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
+                    Text::new("") // Empty line for spacing
+                ))]),
+            ])
             .with_bulletin_list(BulletinList::new(whats_new_title()).with_items(vec![
                     ActiveComponent::new(TextOrCustomRender::Text(main_menu_item(
                         "Stacked Resize",
@@ -77,16 +94,16 @@ impl Page {
             .with_paragraph(vec![ComponentLine::new(vec![
                 ActiveComponent::new(TextOrCustomRender::Text(Text::new("Full Changelog: "))),
                 ActiveComponent::new(TextOrCustomRender::Text(changelog_link_unselected(
-                    zellij_version.clone(),
+                    swarm_version.clone(),
                 )))
                 .with_hover(TextOrCustomRender::CustomRender(
-                    Box::new(changelog_link_selected(zellij_version.clone())),
-                    Box::new(changelog_link_selected_len(zellij_version.clone())),
+                    Box::new(changelog_link_selected(swarm_version.clone())),
+                    Box::new(changelog_link_selected_len(swarm_version.clone())),
                 ))
                 .with_left_click_action(ClickAction::new_open_link(
                     format!(
-                        "https://github.com/zellij-org/zellij/releases/tag/v{}",
-                        zellij_version.clone()
+                        "https://github.com/swarm-org/swarm/releases/tag/v{}",
+                        swarm_version.clone()
                     ),
                     link_executable.clone(),
                 )),
@@ -153,7 +170,7 @@ impl Page {
             .with_paragraph(vec![
                 ComponentLine::new(vec![
                     ActiveComponent::new(TextOrCustomRender::Text(
-                            Text::new("To disable, add stacked_resize false to the Zellij Configuration")
+                            Text::new("To disable, add stacked_resize false to the Swarm Configuration")
                                 .color_range(3, 16..=35)
                     )),
                 ])
@@ -164,9 +181,9 @@ impl Page {
                         Text::new("For more details, see: ")
                             .color_range(2, ..)
                     )),
-                    ActiveComponent::new(TextOrCustomRender::Text(Text::new("https://zellij.dev/screencasts/stacked-resize")))
+                    ActiveComponent::new(TextOrCustomRender::Text(Text::new("https://swarm.dev/screencasts/stacked-resize")))
                         .with_hover(TextOrCustomRender::CustomRender(Box::new(stacked_resize_screencast_link_selected), Box::new(stacked_resize_screencast_link_selected_len)))
-                        .with_left_click_action(ClickAction::new_open_link("https://zellij.dev/screencasts/stacked-resize".to_owned(), link_executable.clone()))
+                        .with_left_click_action(ClickAction::new_open_link("https://swarm.dev/screencasts/stacked-resize".to_owned(), link_executable.clone()))
                 ])
             ])
             .with_help(Box::new(|hovering_over_link, menu_item_is_selected| esc_go_back_plus_link_hover(hovering_over_link, menu_item_is_selected)))
@@ -252,9 +269,9 @@ impl Page {
                         Text::new("For more information: ")
                             .color_range(2, ..)
                     )),
-                    ActiveComponent::new(TextOrCustomRender::Text(Text::new("https://zellij.dev/documentation/themes")))
+                    ActiveComponent::new(TextOrCustomRender::Text(Text::new("https://swarm.dev/documentation/themes")))
                         .with_hover(TextOrCustomRender::CustomRender(Box::new(theme_link_selected), Box::new(theme_link_selected_len)))
-                        .with_left_click_action(ClickAction::new_open_link("https://zellij.dev/documentation/themes".to_owned(), link_executable.clone()))
+                        .with_left_click_action(ClickAction::new_open_link("https://swarm.dev/documentation/themes".to_owned(), link_executable.clone()))
                 ])
             ])
             .with_help(Box::new(|hovering_over_link, menu_item_is_selected| esc_go_back_plus_link_hover(hovering_over_link, menu_item_is_selected)))
@@ -304,12 +321,12 @@ impl Page {
                     ),
                 ))]),
                 ComponentLine::new(vec![ActiveComponent::new(TextOrCustomRender::Text(
-                    Text::new("both in Zellij, in terminal panes and in plugin panes."),
+                    Text::new("both in Swarm, in terminal panes and in plugin panes."),
                 ))]),
             ])
             .with_paragraph(vec![ComponentLine::new(vec![ActiveComponent::new(
                 TextOrCustomRender::Text(Text::new(
-                    "Future versions will also build on this capability to improve the Zellij UI",
+                    "Future versions will also build on this capability to improve the Swarm UI",
                 )),
             )])])
             .with_help(Box::new(|_hovering_over_link, _menu_item_is_selected| {
@@ -606,7 +623,7 @@ fn render_error(error: &str, y: usize) {
 
 fn changelog_link_unselected(version: String) -> Text {
     let full_changelog_text = format!(
-        "https://github.com/zellij-org/zellij/releases/tag/v{}",
+        "https://github.com/swarm-org/swarm/releases/tag/v{}",
         version
     );
     Text::new(full_changelog_text)
@@ -615,7 +632,7 @@ fn changelog_link_unselected(version: String) -> Text {
 fn changelog_link_selected(version: String) -> Box<dyn Fn(usize, usize) -> usize> {
     Box::new(move |x, y| {
         print!(
-            "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://github.com/zellij-org/zellij/releases/tag/v{}",
+            "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://github.com/swarm-org/swarm/releases/tag/v{}",
             y + 1,
             x + 1,
             version
@@ -647,7 +664,7 @@ fn sponsors_link_text_selected_len() -> usize {
 
 fn stacked_resize_screencast_link_selected(x: usize, y: usize) -> usize {
     print!(
-        "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://zellij.dev/screencasts/stacked-resize",
+        "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://swarm.dev/screencasts/stacked-resize",
         y + 1,
         x + 1
     );
@@ -660,7 +677,7 @@ fn stacked_resize_screencast_link_selected_len() -> usize {
 
 fn theme_link_selected(x: usize, y: usize) -> usize {
     print!(
-        "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://zellij.dev/documentation/themes",
+        "\u{1b}[{};{}H\u{1b}[m\u{1b}[1;4mhttps://swarm.dev/documentation/themes",
         y + 1,
         x + 1
     );
@@ -677,11 +694,11 @@ fn whats_new_title() -> Text {
 
 fn main_screen_title(version: String, is_release_notes: bool) -> Text {
     if is_release_notes {
-        let title_text = format!("Hi there, welcome to Zellij {}!", &version);
-        Text::new(title_text).color_range(2, 21..=27 + version.chars().count())
+        let title_text = format!("Hi there, welcome to Swarm {}!", &version);
+        Text::new(title_text).color_range(7, 21..=27 + version.chars().count()) // Using cyan color
     } else {
-        let title_text = format!("Zellij {}", &version);
-        Text::new(title_text).color_range(2, ..)
+        let title_text = format!("Swarm {} - Terminal Workspace", &version);
+        Text::new(title_text).color_range(7, ..) // Using cyan color for title
     }
 }
 
@@ -689,20 +706,20 @@ fn main_screen_help_text(hovering_over_link: bool, menu_item_is_selected: bool) 
     if hovering_over_link {
         let help_text = format!("Help: Click or Shift-Click to open in browser");
         Text::new(help_text)
-            .color_range(3, 6..=10)
-            .color_range(3, 15..=25)
+            .color_range(7, 6..=10)  // Using cyan for help text
+            .color_range(7, 15..=25)
     } else if menu_item_is_selected {
         let help_text = format!("Help: <↓↑> - Navigate, <ENTER> - Learn More, <ESC> - Dismiss");
         Text::new(help_text)
-            .color_range(1, 6..=9)
-            .color_range(1, 23..=29)
-            .color_range(1, 45..=49)
+            .color_range(7, 6..=9)   // Using cyan for brackets
+            .color_range(7, 23..=29)
+            .color_range(7, 45..=49)
     } else {
         let help_text = format!("Help: <↓↑> - Navigate, <ESC> - Dismiss, <?> - Usage Tips");
         Text::new(help_text)
-            .color_range(1, 6..=9)
-            .color_range(1, 23..=27)
-            .color_range(1, 40..=42)
+            .color_range(7, 6..=9)   // Using cyan for brackets
+            .color_range(7, 23..=27)
+            .color_range(7, 40..=42)
     }
 }
 
@@ -748,7 +765,7 @@ fn main_menu_item(item_name: &str) -> Text {
 }
 
 fn support_the_developer_text() -> Text {
-    let support_text = format!("Please support the Zellij developer <3: ");
+    let support_text = format!("Please support the Swarm developer <3: ");
     Text::new(support_text).color_range(3, ..)
 }
 

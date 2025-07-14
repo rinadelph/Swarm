@@ -12,7 +12,7 @@ use zellij_tile::prelude::*;
 
 register_plugin!(State);
 
-impl ZellijPlugin for State {
+impl SwarmPlugin for State {
     fn load(&mut self, configuration: BTreeMap<String, String>) {
         let plugin_ids = get_plugin_ids();
         self.initial_cwd = plugin_ids.initial_cwd;

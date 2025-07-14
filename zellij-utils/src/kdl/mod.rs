@@ -2510,7 +2510,7 @@ impl Options {
     fn default_mode_to_kdl(&self, add_comments: bool) -> Option<KdlNode> {
         let comment_text = format!(
             "{}\n{}\n{}\n{}",
-            " ", "// Choose the base input mode of zellij.", "// Default: normal", "// "
+            " ", "// Choose the base input mode of swarm.", "// Default: normal", "// "
         );
 
         let create_node = |default_mode: &InputMode| -> KdlNode {
@@ -2536,7 +2536,7 @@ impl Options {
         let comment_text =
             format!("{}\n{}\n{}\n{}",
             " ",
-            "// Choose the path to the default shell that zellij will use for opening new panes",
+            "// Choose the path to the default shell that swarm will use for opening new panes",
             "// Default: $SHELL",
             "// ",
         );
@@ -2564,7 +2564,7 @@ impl Options {
         let comment_text = format!(
             "{}\n{}\n{}",
             " ",
-            "// Choose the path to override cwd that zellij will use for opening new panes",
+            "// Choose the path to override cwd that swarm will use for opening new panes",
             "// ",
         );
 
@@ -2619,7 +2619,7 @@ impl Options {
         let comment_text = format!(
             "{}\n{}\n{}\n{}",
             " ",
-            "// The folder in which Zellij will look for layouts",
+            "// The folder in which Swarm will look for layouts",
             "// (Requires restart)",
             "// ",
         );
@@ -2647,7 +2647,7 @@ impl Options {
         let comment_text = format!(
             "{}\n{}\n{}\n{}",
             " ",
-            "// The folder in which Zellij will look for themes",
+            "// The folder in which Swarm will look for themes",
             "// (Requires restart)",
             "// ",
         );
@@ -2768,8 +2768,8 @@ impl Options {
         let comment_text = format!(
             "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}",
             " ",
-            "// Choose what to do when zellij receives SIGTERM, SIGINT, SIGQUIT or SIGHUP",
-            "// eg. when terminal window with an active zellij session is closed",
+            "// Choose what to do when swarm receives SIGTERM, SIGINT, SIGQUIT or SIGHUP",
+            "// eg. when terminal window with an active swarm session is closed",
             "// (Requires restart)",
             "// Options:",
             "//   - detach (Default)",
@@ -2804,7 +2804,7 @@ impl Options {
             "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}",
             " ",
             "// Configure the scroll back buffer size",
-            "// This is the number of lines zellij stores for each pane in the scroll back",
+            "// This is the number of lines swarm stores for each pane in the scroll back",
             "// buffer. Excess number of lines are discarded in a FIFO fashion.",
             "// (Requires restart)",
             "// Valid values: positive integers",
@@ -2959,7 +2959,7 @@ impl Options {
         let comment_text = format!(
             "{}\n{}\n{}\n{}\n{}\n{}",
             " ",
-            "// A fixed name to always give the Zellij session.",
+            "// A fixed name to always give the Swarm session.",
             "// Consider also setting `attach_to_session true,`",
             "// otherwise this will error if such a session exists.",
             "// Default: <RANDOM>",
@@ -3017,7 +3017,7 @@ impl Options {
     fn auto_layout_to_kdl(&self, add_comments: bool) -> Option<KdlNode> {
         let comment_text = format!("{}\n{}\n{}\n{}\n{}\n{}",
             " ",
-            "// Toggle between having Zellij lay out panes according to a predefined set of layouts whenever possible",
+            "// Toggle between having Swarm lay out panes according to a predefined set of layouts whenever possible",
             "// Options:",
             "//   - true (default)",
             "//   - false",
@@ -3245,14 +3245,14 @@ impl Options {
     fn web_server_to_kdl(&self, add_comments: bool) -> Option<KdlNode> {
         let comment_text = format!(
             "{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}\n{}",
-            "// Whether to make sure a local web server is running when a new Zellij session starts.",
+            "// Whether to make sure a local web server is running when a new Swarm session starts.",
             "// This web server will allow creating new sessions and attaching to existing ones that have",
             "// opted in to being shared in the browser.",
             "// When enabled, navigate to http://127.0.0.1:8082",
             "// (Requires restart)",
             "// ",
-            "// Note: a local web server can still be manually started from within a Zellij session or from the CLI.",
-            "// If this is not desired, one can use a version of Zellij compiled without",
+            "// Note: a local web server can still be manually started from within a Swarm session or from the CLI.",
+            "// If this is not desired, one can use a version of Swarm compiled without",
             "// `web_server_capability`",
             "// ",
             "// Possible values:",
@@ -3571,7 +3571,7 @@ impl Options {
             "{}\n{}\n{}\n{}\n{}\n{}",
             " ",
             "// A command to run (will be wrapped with sh -c and provided the RESURRECT_COMMAND env variable) ",
-            "// after Zellij attempts to discover a command inside a pane when resurrecting sessions, the STDOUT",
+            "// after Swarm attempts to discover a command inside a pane when resurrecting sessions, the STDOUT",
             "// of this command will be used instead of the discovered RESURRECT_COMMAND",
             "// can be useful for removing wrappers around commands",
             "// Note: be sure to escape backslashes and similar characters properly",
@@ -4318,7 +4318,7 @@ impl PluginAliases {
         if add_comments {
             plugins.set_leading(format!(
                 "\n{}\n{}\n",
-                "// Plugin aliases - can be used to change the implementation of Zellij",
+                "// Plugin aliases - can be used to change the implementation of Swarm",
                 "// changing these requires a restart to take effect",
             ));
         }
@@ -5750,7 +5750,7 @@ fn keybinds_to_string_with_all_actions() {
                 }
                 bind "Alt t" { Detach; }
                 bind "Alt u" {
-                    LaunchOrFocusPlugin "zellij:session-manager"{
+                    LaunchOrFocusPlugin "swarm:session-manager"{
                         floating true;
                         move_to_focused_tab true;
                         skip_plugin_cache true;
@@ -5759,7 +5759,7 @@ fn keybinds_to_string_with_all_actions() {
                     };
                 }
                 bind "Alt v" {
-                    LaunchOrFocusPlugin "zellij:session-manager"{
+                    LaunchOrFocusPlugin "swarm:session-manager"{
                         in_place true;
                         move_to_focused_tab true;
                         skip_plugin_cache true;
@@ -5768,7 +5768,7 @@ fn keybinds_to_string_with_all_actions() {
                     };
                 }
                 bind "Alt w" {
-                    LaunchPlugin "zellij:session-manager" {
+                    LaunchPlugin "swarm:session-manager" {
                         floating true;
                         skip_plugin_cache true;
                         config_key_1 "config_value_1";
@@ -5776,7 +5776,7 @@ fn keybinds_to_string_with_all_actions() {
                     };
                 }
                 bind "Alt x" {
-                    LaunchPlugin "zellij:session-manager"{
+                    LaunchPlugin "swarm:session-manager"{
                         in_place true;
                         skip_plugin_cache true;
                         config_key_1 "config_value_1";
@@ -5795,7 +5795,7 @@ fn keybinds_to_string_with_all_actions() {
                 bind "Ctrl Alt i" { BreakPaneLeft; }
                 bind "Ctrl Alt i" { BreakPaneLeft; }
                 bind "Ctrl Alt j" {
-                    MessagePlugin "zellij:session-manager"{
+                    MessagePlugin "swarm:session-manager"{
                         name "message_name";
                         payload "message_payload";
                         cwd "/tmp";
@@ -5900,7 +5900,7 @@ fn keybinds_to_string_with_multiple_multiline_actions() {
                 bind "Ctrl n" {
                     NewPane
                     SwitchToMode "Locked"
-                    MessagePlugin "zellij:session-manager"{
+                    MessagePlugin "swarm:session-manager"{
                         name "message_name";
                         payload "message_payload";
                         cwd "/tmp";
@@ -6158,15 +6158,15 @@ fn themes_to_string_with_multiple_theme_definitions() {
 fn plugins_to_string() {
     let fake_config = r##"
         plugins {
-            tab-bar location="zellij:tab-bar"
-            status-bar location="zellij:status-bar"
-            strider location="zellij:strider"
-            compact-bar location="zellij:compact-bar"
-            session-manager location="zellij:session-manager"
-            welcome-screen location="zellij:session-manager" {
+            tab-bar location="swarm:tab-bar"
+            status-bar location="swarm:status-bar"
+            strider location="swarm:strider"
+            compact-bar location="swarm:compact-bar"
+            session-manager location="swarm:session-manager"
+            welcome-screen location="swarm:session-manager" {
                 welcome_screen true
             }
-            filepicker location="zellij:strider" {
+            filepicker location="swarm:strider" {
                 cwd "/"
             }
         }"##;

@@ -1,13 +1,13 @@
 //! The layout system.
-//  Layouts have been moved from [`zellij-server`] to
-//  [`zellij-utils`] in order to provide more helpful
+//  Layouts have been moved from [`swarm-server`] to
+//  [`swarm-utils`] in order to provide more helpful
 //  error messages to the user until a more general
 //  logging system is in place.
 //  In case there is a logging system in place evaluate,
-//  if [`zellij-utils`], or [`zellij-server`] is a proper
+//  if [`swarm-utils`], or [`swarm-server`] is a proper
 //  place.
 //  If plugins should be able to depend on the layout system
-//  then [`zellij-utils`] could be a proper place.
+//  then [`swarm-utils`] could be a proper place.
 #[cfg(not(target_family = "wasm"))]
 use crate::downloader::Downloader;
 use crate::{
@@ -558,7 +558,7 @@ impl FromStr for PluginUserConfiguration {
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Eq, Hash)]
 pub enum RunPluginLocation {
     File(PathBuf),
-    Zellij(PluginTag),
+    Swarm(PluginTag),
     Remote(String),
 }
 
@@ -575,7 +575,7 @@ impl RunPluginLocation {
         let decoded_path = percent_encoding::percent_decode_str(url.path()).decode_utf8_lossy();
 
         match url.scheme() {
-            "zellij" => Ok(Self::Zellij(PluginTag::new(decoded_path))),
+            "swarm" => Ok(Self::Swarm(PluginTag::new(decoded_path))),
             "file" => {
                 let path = if location.starts_with("file:/") {
                     // Path is absolute, its safe to use URL path.
@@ -612,7 +612,7 @@ impl RunPluginLocation {
     pub fn display(&self) -> String {
         match self {
             RunPluginLocation::File(pathbuf) => format!("file:{}", pathbuf.display()),
-            RunPluginLocation::Zellij(plugin_tag) => format!("zellij:{}", plugin_tag),
+            RunPluginLocation::Swarm(plugin_tag) => format!("swarm:{}", plugin_tag),
             RunPluginLocation::Remote(url) => String::from(url),
         }
     }
@@ -625,7 +625,7 @@ impl From<&RunPluginLocation> for Url {
                 "file:{}",
                 path.clone().into_os_string().into_string().unwrap()
             ),
-            RunPluginLocation::Zellij(tag) => format!("zellij:{}", tag),
+            RunPluginLocation::Swarm(tag) => format!("swarm:{}", tag),
             RunPluginLocation::Remote(url) => String::from(url),
         };
         Self::parse(&url).unwrap()
@@ -640,7 +640,7 @@ impl fmt::Display for RunPluginLocation {
                 "{}",
                 path.clone().into_os_string().into_string().unwrap()
             ),
-            Self::Zellij(tag) => write!(f, "{}", tag),
+            Self::Swarm(tag) => write!(f, "{}", tag),
             Self::Remote(url) => write!(f, "{}", url),
         }
     }
@@ -1257,7 +1257,7 @@ impl Layout {
             Some(layout_path) => {
                 // The way we determine where to look for the layout is similar to
                 // how a path would look for an executable.
-                // See the gh issue for more: https://github.com/zellij-org/zellij/issues/1412#issuecomment-1131559720
+                // See the gh issue for more: https://github.com/swarm-org/swarm/issues/1412#issuecomment-1131559720
                 if layout_path.extension().is_some() || layout_path.components().count() > 1 {
                     // We look localy!
                     Layout::stringified_from_path(layout_path)

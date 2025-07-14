@@ -224,7 +224,7 @@ impl<'a> PaneResizer<'a> {
             // called us - if it's an explicit resize operation, it's clearly an error (the user
             // wanted to resize and doesn't care about percentage rounding), if it's resizing the
             // terminal window as a whole, it might not be
-            Err(ZellijError::PaneSizeUnchanged).with_context(err_context)
+            Err(SwarmError::PaneSizeUnchanged).with_context(err_context)
         }
     }
 

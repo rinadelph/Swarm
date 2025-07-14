@@ -189,7 +189,7 @@ fn color_elements(palette: Styling, different_color_alternates: bool) -> Colored
     }
 }
 
-impl ZellijPlugin for State {
+impl SwarmPlugin for State {
     fn load(&mut self, configuration: BTreeMap<String, String>) {
         // TODO: Should be able to choose whether to use the cache through config.
         self.tip_name = get_cached_tip_name();

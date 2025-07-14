@@ -298,7 +298,7 @@ impl InputHandler {
     /// [`Self::handle_input()`] should break after this action is dispatched.
     /// This is a temporary measure that is only necessary due to the way that the
     /// framework works, and shouldn't be necessary anymore once the test framework
-    /// is revised. See [issue#183](https://github.com/zellij-org/zellij/issues/183).
+    /// is revised. See [issue#183](https://github.com/swarm-org/swarm/issues/183).
     fn dispatch_action(&mut self, action: Action, client_id: Option<ClientId>) -> bool {
         let mut should_break = false;
 
@@ -358,7 +358,7 @@ impl InputHandler {
     }
 
     /// Routine to be called when the input handler exits (at the moment this is the
-    /// same as quitting Zellij).
+    /// same as quitting Swarm).
     fn exit(&mut self, reason: ExitReason) {
         self.send_client_instructions
             .send(ClientInstruction::Exit(reason))

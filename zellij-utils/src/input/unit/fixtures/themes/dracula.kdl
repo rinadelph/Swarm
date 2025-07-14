@@ -2,7 +2,7 @@
 
 themes {
     dracula {
-        // From https://github.com/dracula/zellij
+        // From https://github.com/dracula/swarm
         bg 40 42 54
         red 255 85 85
         green 80 250 123

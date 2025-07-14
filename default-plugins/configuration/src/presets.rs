@@ -142,14 +142,14 @@ keybinds clear-defaults=true {{
             SwitchToMode "Locked"
         }}
         bind "a" {{
-            LaunchOrFocusPlugin "zellij:about" {{
+            LaunchOrFocusPlugin "swarm:about" {{
                 floating true
                 move_to_focused_tab true
             }};
             SwitchToMode "Locked"
         }}
         bind "s" {{
-            LaunchOrFocusPlugin "zellij:share" {{
+            LaunchOrFocusPlugin "swarm:share" {{
                 floating true
                 move_to_focused_tab true
             }};
@@ -358,14 +358,14 @@ keybinds clear-defaults=true {{
             SwitchToMode "Normal"
         }}
         bind "a" {{
-            LaunchOrFocusPlugin "zellij:about" {{
+            LaunchOrFocusPlugin "swarm:about" {{
                 floating true
                 move_to_focused_tab true
             }};
             SwitchToMode "Normal"
         }}
         bind "s" {{
-            LaunchOrFocusPlugin "zellij:share" {{
+            LaunchOrFocusPlugin "swarm:share" {{
                 floating true
                 move_to_focused_tab true
             }};
@@ -574,14 +574,14 @@ keybinds clear-defaults=true {{
             SwitchToMode "Normal"
         }}
         bind "a" {{
-            LaunchOrFocusPlugin "zellij:about" {{
+            LaunchOrFocusPlugin "swarm:about" {{
                 floating true
                 move_to_focused_tab true
             }};
             SwitchToMode "Normal"
         }}
         bind "s" {{
-            LaunchOrFocusPlugin "zellij:share" {{
+            LaunchOrFocusPlugin "swarm:share" {{
                 floating true
                 move_to_focused_tab true
             }};
@@ -771,14 +771,14 @@ keybinds clear-defaults=true {{
             SwitchToMode "Normal"
         }}
         bind "a" {{
-            LaunchOrFocusPlugin "zellij:about" {{
+            LaunchOrFocusPlugin "swarm:about" {{
                 floating true
                 move_to_focused_tab true
             }};
             SwitchToMode "Normal"
         }}
         bind "s" {{
-            LaunchOrFocusPlugin "zellij:share" {{
+            LaunchOrFocusPlugin "swarm:share" {{
                 floating true
                 move_to_focused_tab true
             }};
@@ -968,14 +968,14 @@ keybinds clear-defaults=true {{
             SwitchToMode "Normal"
         }}
         bind "a" {{
-            LaunchOrFocusPlugin "zellij:about" {{
+            LaunchOrFocusPlugin "swarm:about" {{
                 floating true
                 move_to_focused_tab true
             }};
             SwitchToMode "Normal"
         }}
         bind "s" {{
-            LaunchOrFocusPlugin "zellij:share" {{
+            LaunchOrFocusPlugin "swarm:share" {{
                 floating true
                 move_to_focused_tab true
             }};
@@ -1160,14 +1160,14 @@ keybinds clear-defaults=true {{
             SwitchToMode "Normal"
         }}
         bind "a" {{
-            LaunchOrFocusPlugin "zellij:about" {{
+            LaunchOrFocusPlugin "swarm:about" {{
                 floating true
                 move_to_focused_tab true
             }};
             SwitchToMode "Normal"
         }}
         bind "s" {{
-            LaunchOrFocusPlugin "zellij:share" {{
+            LaunchOrFocusPlugin "swarm:share" {{
                 floating true
                 move_to_focused_tab true
             }};

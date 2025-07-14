@@ -4,7 +4,7 @@ const STARTUP_PARSE_DEADLINE_MS: u64 = 500;
 use lazy_static::lazy_static;
 use regex::Regex;
 use zellij_utils::{
-    consts::ZELLIJ_STDIN_CACHE_FILE, ipc::PixelDimensions, pane_size::SizeInPixels,
+    consts::SWARM_STDIN_CACHE_FILE, ipc::PixelDimensions, pane_size::SizeInPixels,
 };
 
 use anyhow::Result;
@@ -108,7 +108,7 @@ impl StdinAnsiParser {
     pub fn read_cache(&self) -> Option<Vec<AnsiStdinInstruction>> {
         match OpenOptions::new()
             .read(true)
-            .open(ZELLIJ_STDIN_CACHE_FILE.as_path())
+            .open(SWARM_STDIN_CACHE_FILE.as_path())
         {
             Ok(mut file) => {
                 let mut json_cache = String::new();
@@ -129,7 +129,7 @@ impl StdinAnsiParser {
     }
     pub fn write_cache(&self, events: Vec<AnsiStdinInstruction>) {
         if let Ok(serialized_events) = serde_json::to_string(&events) {
-            if let Ok(mut file) = File::create(ZELLIJ_STDIN_CACHE_FILE.as_path()) {
+            if let Ok(mut file) = File::create(SWARM_STDIN_CACHE_FILE.as_path()) {
                 let _ = file.write_all(serialized_events.as_bytes());
             }
         };

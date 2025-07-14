@@ -873,8 +873,8 @@ impl From<Metadata> for FileMetadata {
     }
 }
 
-/// These events can be subscribed to with subscribe method exported by `zellij-tile`.
-/// Once subscribed to, they will trigger the `update` method of the `ZellijPlugin` trait.
+/// These events can be subscribed to with subscribe method exported by `swarm-tile`.
+/// Once subscribed to, they will trigger the `update` method of the `SwarmPlugin` trait.
 #[derive(Debug, Clone, PartialEq, EnumDiscriminants, ToString, Serialize, Deserialize)]
 #[strum_discriminants(derive(EnumString, Hash, Serialize, Deserialize))]
 #[strum_discriminants(name(EventType))]
@@ -887,7 +887,7 @@ pub enum Event {
     Key(KeyWithModifier),
     /// A mouse event happened while the user is focused on this plugin's pane
     Mouse(Mouse),
-    /// A timer expired set by the `set_timeout` method exported by `zellij-tile`.
+    /// A timer expired set by the `set_timeout` method exported by `swarm-tile`.
     Timer(f64),
     /// Text was copied to the clipboard anywhere in the app
     CopyToClipboard(CopyDestination),
@@ -902,13 +902,13 @@ pub enum Event {
         String, // message
         String, // payload
     ),
-    /// A file was created somewhere in the Zellij CWD folder
+    /// A file was created somewhere in the Swarm CWD folder
     FileSystemCreate(Vec<(PathBuf, Option<FileMetadata>)>),
-    /// A file was accessed somewhere in the Zellij CWD folder
+    /// A file was accessed somewhere in the Swarm CWD folder
     FileSystemRead(Vec<(PathBuf, Option<FileMetadata>)>),
-    /// A file was modified somewhere in the Zellij CWD folder
+    /// A file was modified somewhere in the Swarm CWD folder
     FileSystemUpdate(Vec<(PathBuf, Option<FileMetadata>)>),
-    /// A file was deleted somewhere in the Zellij CWD folder
+    /// A file was deleted somewhere in the Swarm CWD folder
     FileSystemDelete(Vec<(PathBuf, Option<FileMetadata>)>),
     /// A Result of plugin permission request
     PermissionRequestResult(PermissionStatus),
@@ -990,10 +990,10 @@ impl PermissionType {
     pub fn display_name(&self) -> String {
         match self {
             PermissionType::ReadApplicationState => {
-                "Access Zellij state (Panes, Tabs and UI)".to_owned()
+                "Access Swarm state (Panes, Tabs and UI)".to_owned()
             },
             PermissionType::ChangeApplicationState => {
-                "Change Zellij state (Panes, Tabs and UI) and run commands".to_owned()
+                "Change Swarm state (Panes, Tabs and UI) and run commands".to_owned()
             },
             PermissionType::OpenFiles => "Open files (eg. for editing)".to_owned(),
             PermissionType::RunCommands => "Run commands".to_owned(),
@@ -1004,10 +1004,10 @@ impl PermissionType {
             PermissionType::MessageAndLaunchOtherPlugins => {
                 "Send messages to and launch other plugins".to_owned()
             },
-            PermissionType::Reconfigure => "Change Zellij runtime configuration".to_owned(),
+            PermissionType::Reconfigure => "Change Swarm runtime configuration".to_owned(),
             PermissionType::FullHdAccess => "Full access to the hard-drive".to_owned(),
             PermissionType::StartWebServer => {
-                "Start a local web server to serve Zellij sessions".to_owned()
+                "Start a local web server to serve Swarm sessions".to_owned()
             },
             PermissionType::InterceptInput => "Intercept Input (keyboard & mouse)".to_owned(),
         }
@@ -1563,7 +1563,7 @@ impl From<Palette> for Styling {
 // FIXME: Poor devs hashtable since HashTable can't derive `Default`...
 pub type KeybindsVec = Vec<(InputMode, Vec<(KeyWithModifier, Vec<Action>)>)>;
 
-/// Provides information helpful in rendering the Zellij controls for UI bars
+/// Provides information helpful in rendering the Swarm controls for UI bars
 #[derive(Default, Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 pub struct ModeInfo {
     pub mode: InputMode,
@@ -1831,7 +1831,7 @@ pub struct PaneInfo {
     /// If this is a command pane, this will show the stringified version of the command and its
     /// arguments
     pub terminal_command: Option<String>,
-    /// The URL from which this plugin was loaded (eg. `zellij:strider` for the built-in `strider`
+    /// The URL from which this plugin was loaded (eg. `swarm:strider` for the built-in `strider`
     /// plugin or `file:/path/to/my/plugin.wasm` for a local plugin)
     pub plugin_url: Option<String>,
     /// Unselectable panes are often used for UI elements that do not have direct user interaction
@@ -1868,7 +1868,7 @@ impl ClientInfo {
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Deserialize, Serialize)]
 pub struct PluginIds {
     pub plugin_id: u32,
-    pub zellij_pid: u32,
+    pub swarm_pid: u32,
     pub initial_cwd: PathBuf,
     pub client_id: ClientId,
 }
@@ -2357,7 +2357,7 @@ pub enum PluginCommand {
     Unsubscribe(HashSet<EventType>),
     SetSelectable(bool),
     GetPluginIds,
-    GetZellijVersion,
+    GetSwarmVersion,
     OpenFile(FileToOpen, Context),
     OpenFileFloating(FileToOpen, Option<FloatingPaneCoordinates>, Context),
     OpenTerminal(FileToOpen), // only used for the path as cwd
@@ -2407,7 +2407,7 @@ pub enum PluginCommand {
     ToggleActiveTabSync,
     CloseFocusedTab,
     UndoRenameTab,
-    QuitZellij,
+    QuitSwarm,
     PreviousSwapLayout,
     NextSwapLayout,
     GoToTabName(String),

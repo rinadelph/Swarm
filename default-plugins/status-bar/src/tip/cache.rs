@@ -6,11 +6,11 @@ use std::path::PathBuf;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
 
-use zellij_tile::prelude::get_zellij_version;
+use zellij_tile::prelude::get_swarm_version;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Metadata {
-    zellij_version: String,
+    swarm_version: String,
     cached_data: HashMap<String, usize>,
 }
 
@@ -42,7 +42,7 @@ impl LocalCache {
             Err(err) => {
                 if json_cache.is_empty() {
                     return Ok(Metadata {
-                        zellij_version: get_zellij_version(),
+                        swarm_version: get_swarm_version(),
                         cached_data: HashMap::new(),
                     });
                 }
@@ -88,11 +88,11 @@ impl LocalCache {
     }
 
     pub fn get_version(&self) -> &String {
-        &self.metadata.zellij_version
+        &self.metadata.swarm_version
     }
 
     pub fn set_version<S: Into<String>>(&mut self, version: S) {
-        self.metadata.zellij_version = version.into();
+        self.metadata.swarm_version = version.into();
     }
 
     pub fn is_empty(&self) -> bool {

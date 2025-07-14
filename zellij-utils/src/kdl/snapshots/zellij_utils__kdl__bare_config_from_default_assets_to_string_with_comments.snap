@@ -101,7 +101,7 @@ keybinds clear-defaults=true {
     }
     session {
         bind "a" {
-            LaunchOrFocusPlugin "zellij:about" {
+            LaunchOrFocusPlugin "swarm:about" {
                 floating true
                 move_to_focused_tab true
             }
@@ -123,7 +123,7 @@ keybinds clear-defaults=true {
             SwitchToMode "normal"
         }
         bind "s" {
-            LaunchOrFocusPlugin "zellij:share" {
+            LaunchOrFocusPlugin "swarm:share" {
                 floating true
                 move_to_focused_tab true
             }
@@ -248,21 +248,21 @@ keybinds clear-defaults=true {
     }
 }
 
-// Plugin aliases - can be used to change the implementation of Zellij
+// Plugin aliases - can be used to change the implementation of Swarm
 // changing these requires a restart to take effect
 plugins {
-    about location="zellij:about"
-    compact-bar location="zellij:compact-bar"
-    configuration location="zellij:configuration"
-    filepicker location="zellij:strider" {
+    about location="swarm:about"
+    compact-bar location="swarm:compact-bar"
+    configuration location="swarm:configuration"
+    filepicker location="swarm:strider" {
         cwd "/"
     }
-    plugin-manager location="zellij:plugin-manager"
-    session-manager location="zellij:session-manager"
-    status-bar location="zellij:status-bar"
-    strider location="zellij:strider"
-    tab-bar location="zellij:tab-bar"
-    welcome-screen location="zellij:session-manager" {
+    plugin-manager location="swarm:plugin-manager"
+    session-manager location="swarm:session-manager"
+    status-bar location="swarm:status-bar"
+    strider location="swarm:strider"
+    tab-bar location="swarm:tab-bar"
+    welcome-screen location="swarm:session-manager" {
         welcome_screen true
     }
 }
@@ -288,17 +288,17 @@ web_client {
 // 
 // theme "dracula"
  
-// Choose the base input mode of zellij.
+// Choose the base input mode of swarm.
 // Default: normal
 // 
 // default_mode "locked"
  
-// Choose the path to the default shell that zellij will use for opening new panes
+// Choose the path to the default shell that swarm will use for opening new panes
 // Default: $SHELL
 // 
 // default_shell "fish"
  
-// Choose the path to override cwd that zellij will use for opening new panes
+// Choose the path to override cwd that swarm will use for opening new panes
 // 
 // default_cwd "/tmp"
  
@@ -307,12 +307,12 @@ web_client {
 // 
 // default_layout "compact"
  
-// The folder in which Zellij will look for layouts
+// The folder in which Swarm will look for layouts
 // (Requires restart)
 // 
 // layout_dir "/tmp"
  
-// The folder in which Zellij will look for themes
+// The folder in which Swarm will look for themes
 // (Requires restart)
 // 
 // theme_dir "/tmp"
@@ -341,8 +341,8 @@ web_client {
 // 
 // mirror_session true
  
-// Choose what to do when zellij receives SIGTERM, SIGINT, SIGQUIT or SIGHUP
-// eg. when terminal window with an active zellij session is closed
+// Choose what to do when swarm receives SIGTERM, SIGINT, SIGQUIT or SIGHUP
+// eg. when terminal window with an active swarm session is closed
 // (Requires restart)
 // Options:
 //   - detach (Default)
@@ -351,7 +351,7 @@ web_client {
 // on_force_close "quit"
  
 // Configure the scroll back buffer size
-// This is the number of lines zellij stores for each pane in the scroll back
+// This is the number of lines swarm stores for each pane in the scroll back
 // buffer. Excess number of lines are discarded in a FIFO fashion.
 // (Requires restart)
 // Valid values: positive integers
@@ -389,7 +389,7 @@ web_client {
 // Default: $EDITOR or $VISUAL
 // scrollback_editor "/usr/bin/vim"
  
-// A fixed name to always give the Zellij session.
+// A fixed name to always give the Swarm session.
 // Consider also setting `attach_to_session true,`
 // otherwise this will error if such a session exists.
 // Default: <RANDOM>
@@ -402,7 +402,7 @@ web_client {
 // 
 // attach_to_session true
  
-// Toggle between having Zellij lay out panes according to a predefined set of layouts whenever possible
+// Toggle between having Swarm lay out panes according to a predefined set of layouts whenever possible
 // Options:
 //   - true (default)
 //   - false
@@ -452,14 +452,14 @@ web_client {
 // Default: true (if the host terminal supports it)
 // 
 // support_kitty_keyboard_protocol false
-// Whether to make sure a local web server is running when a new Zellij session starts.
+// Whether to make sure a local web server is running when a new Swarm session starts.
 // This web server will allow creating new sessions and attaching to existing ones that have
 // opted in to being shared in the browser.
 // When enabled, navigate to http://127.0.0.1:8082
 // (Requires restart)
 // 
-// Note: a local web server can still be manually started from within a Zellij session or from the CLI.
-// If this is not desired, one can use a version of Zellij compiled without
+// Note: a local web server can still be manually started from within a Swarm session or from the CLI.
+// If this is not desired, one can use a version of Swarm compiled without
 // `web_server_capability`
 // 
 // Possible values:
@@ -529,7 +529,7 @@ web_client {
 // web_server_port 8082
  
 // A command to run (will be wrapped with sh -c and provided the RESURRECT_COMMAND env variable) 
-// after Zellij attempts to discover a command inside a pane when resurrecting sessions, the STDOUT
+// after Swarm attempts to discover a command inside a pane when resurrecting sessions, the STDOUT
 // of this command will be used instead of the discovered RESURRECT_COMMAND
 // can be useful for removing wrappers around commands
 // Note: be sure to escape backslashes and similar characters properly

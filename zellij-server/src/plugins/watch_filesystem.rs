@@ -16,10 +16,10 @@ const DEBOUNCE_DURATION_MS: u64 = 400;
 
 pub fn watch_filesystem(
     senders: ThreadSenders,
-    zellij_cwd: &Path,
+    swarm_cwd: &Path,
 ) -> Result<Debouncer<RecommendedWatcher, FileIdMap>> {
     let path_prefix_in_plugins = PathBuf::from("/host");
-    let current_dir = PathBuf::from(zellij_cwd);
+    let current_dir = PathBuf::from(swarm_cwd);
     let mut debouncer = new_debouncer(
         Duration::from_millis(DEBOUNCE_DURATION_MS),
         None,
@@ -130,6 +130,6 @@ pub fn watch_filesystem(
 
     debouncer
         .watcher()
-        .watch(zellij_cwd, RecursiveMode::Recursive)?;
+        .watch(swarm_cwd, RecursiveMode::Recursive)?;
     Ok(debouncer)
 }

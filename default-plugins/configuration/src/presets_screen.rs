@@ -349,7 +349,7 @@ impl PresetsScreen {
     ) {
         let widths = self.main_screen_widths(primary_modifier_key_text);
         if cols >= widths.0 {
-            let title_text_1 = "Hi there! How would you like to interact with Zellij?";
+            let title_text_1 = "Hi there! How would you like to interact with Swarm?";
             let title_text_2 = "Not sure? Press <ENTER> to choose Default.";
             let title_text_3 = "Everything can always be changed later.";
             let title_text_4 = "Tips appear on screen - you don't need to remember anything.";

@@ -4,7 +4,7 @@ layout {
     }
     tab split_direction="Horizontal" {
         pane size=1 borderless=true {
-            plugin location="zellij:tab-bar"
+            plugin location="swarm:tab-bar"
         }
         pane split_direction="Vertical" {
             pane split_direction="Vertical" {
@@ -16,7 +16,7 @@ layout {
         }
         pane size=5
         pane size=2 borderless=true {
-            plugin location="zellij:status-bar"
+            plugin location="swarm:status-bar"
         }
     }
 }

@@ -14757,7 +14757,7 @@ pub fn custom_cursor_height_width_ratio() {
 
 #[test]
 fn correctly_resize_frameless_panes_on_pane_close() {
-    // check that https://github.com/zellij-org/zellij/issues/1773 is fixed
+    // check that https://github.com/swarm-org/swarm/issues/1773 is fixed
     let cols = 60;
     let rows = 20;
     let size = Size { cols, rows };

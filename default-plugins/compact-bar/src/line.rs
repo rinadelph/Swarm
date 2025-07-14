@@ -275,7 +275,7 @@ impl TabLinePrefixBuilder {
     }
 
     fn build(&self, session_name: Option<&str>, mode: InputMode) -> Vec<LinePart> {
-        let mut parts = vec![self.create_zellij_part()];
+        let mut parts = vec![self.create_swarm_part()];
         let mut used_len = parts.get(0).map_or(0, |p| p.len);
 
         if let Some(name) = session_name {
@@ -292,8 +292,8 @@ impl TabLinePrefixBuilder {
         parts
     }
 
-    fn create_zellij_part(&self) -> LinePart {
-        let prefix_text = " Zellij ";
+    fn create_swarm_part(&self) -> LinePart {
+        let prefix_text = " Swarm ";
         let colors = self.get_text_colors();
 
         LinePart {

@@ -51,7 +51,7 @@ struct State {
 
 register_plugin!(State);
 
-impl ZellijPlugin for State {
+impl SwarmPlugin for State {
     fn load(&mut self, configuration: BTreeMap<String, String>) {
         self.is_welcome_screen = configuration
             .get("welcome_screen")
@@ -456,7 +456,7 @@ impl State {
             ActiveScreen::NewSession => {
                 if self.new_session_info.name().len() >= 108 {
                     // this is due to socket path limitations
-                    // TODO: get this from Zellij (for reference: this is part of the interprocess
+                    // TODO: get this from Swarm (for reference: this is part of the interprocess
                     // package, we should get if from there if possible because it's configurable
                     // through the package)
                     self.show_error("Session name must be shorter than 108 bytes");

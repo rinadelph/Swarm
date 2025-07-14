@@ -196,22 +196,22 @@ keybinds clear-defaults=true {
     }
 }
 plugins {
-    compact-bar location="zellij:compact-bar"
-    configuration location="zellij:configuration"
-    filepicker location="zellij:strider" {
+    compact-bar location="swarm:compact-bar"
+    configuration location="swarm:configuration"
+    filepicker location="swarm:strider" {
         cwd "/"
     }
-    session-manager location="zellij:session-manager"
-    status-bar location="zellij:status-bar"
-    strider location="zellij:strider"
-    tab-bar location="zellij:tab-bar"
-    welcome-screen location="zellij:session-manager" {
+    session-manager location="swarm:session-manager"
+    status-bar location="swarm:status-bar"
+    strider location="swarm:strider"
+    tab-bar location="swarm:tab-bar"
+    welcome-screen location="swarm:session-manager" {
         welcome_screen true
     }
 }
 
 load_plugins {
-  "file:/usr/src/zellij/wasm32-wasip1/release/fixture-plugin-for-tests.wasm" {
+  "file:/usr/src/swarm/wasm32-wasip1/release/fixture-plugin-for-tests.wasm" {
       config_key "config_value"
       config_key2 "config_value2"
   }
@@ -229,17 +229,17 @@ load_plugins {
 // 
 // theme "default"
  
-// Choose the base input mode of zellij.
+// Choose the base input mode of swarm.
 // Default: normal
 // 
 default_mode "locked"
  
-// Choose the path to the default shell that zellij will use for opening new panes
+// Choose the path to the default shell that swarm will use for opening new panes
 // Default: $SHELL
 // 
 // default_shell "fish"
  
-// Choose the path to override cwd that zellij will use for opening new panes
+// Choose the path to override cwd that swarm will use for opening new panes
 // 
 // default_cwd "/tmp"
  
@@ -248,11 +248,11 @@ default_mode "locked"
 // 
 // default_layout "compact"
  
-// The folder in which Zellij will look for layouts
+// The folder in which Swarm will look for layouts
 // 
 // layout_dir "/tmp"
  
-// The folder in which Zellij will look for themes
+// The folder in which Swarm will look for themes
 // 
 // theme_dir "/tmp"
  
@@ -279,8 +279,8 @@ default_mode "locked"
 // 
 // mirror_session true
  
-// Choose what to do when zellij receives SIGTERM, SIGINT, SIGQUIT or SIGHUP
-// eg. when terminal window with an active zellij session is closed
+// Choose what to do when swarm receives SIGTERM, SIGINT, SIGQUIT or SIGHUP
+// eg. when terminal window with an active swarm session is closed
 // Options:
 //   - detach (Default)
 //   - quit
@@ -288,7 +288,7 @@ default_mode "locked"
 // on_force_close "quit"
  
 // Configure the scroll back buffer size
-// This is the number of lines zellij stores for each pane in the scroll back
+// This is the number of lines swarm stores for each pane in the scroll back
 // buffer. Excess number of lines are discarded in a FIFO fashion.
 // Valid values: positive integers
 // Default value: 10000
@@ -324,7 +324,7 @@ default_mode "locked"
 // Default: $EDITOR or $VISUAL
 // scrollback_editor "nvim"
  
-// A fixed name to always give the Zellij session.
+// A fixed name to always give the Swarm session.
 // Consider also setting `attach_to_session true,`
 // otherwise this will error if such a session exists.
 // Default: <RANDOM>
@@ -337,7 +337,7 @@ default_mode "locked"
 // 
 // attach_to_session true
  
-// Toggle between having Zellij lay out panes according to a predefined set of layouts whenever possible
+// Toggle between having Swarm lay out panes according to a predefined set of layouts whenever possible
 // Options:
 //   - true (default)
 //   - false

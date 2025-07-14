@@ -1211,8 +1211,8 @@ impl TiledPanes {
                     viewport.cols = (viewport.cols as isize + column_difference) as usize;
                     display_area.cols = cols;
                 },
-                Err(e) => match e.downcast_ref::<ZellijError>() {
-                    Some(ZellijError::PaneSizeUnchanged) => {}, // ignore unchanged layout
+                Err(e) => match e.downcast_ref::<SwarmError>() {
+                    Some(SwarmError::PaneSizeUnchanged) => {}, // ignore unchanged layout
                     _ => {
                         // display area still changed, even if we had an error
                         display_area.cols = cols;
@@ -1228,8 +1228,8 @@ impl TiledPanes {
                     viewport.rows = (viewport.rows as isize + row_difference) as usize;
                     display_area.rows = rows;
                 },
-                Err(e) => match e.downcast_ref::<ZellijError>() {
-                    Some(ZellijError::PaneSizeUnchanged) => {}, // ignore unchanged layout
+                Err(e) => match e.downcast_ref::<SwarmError>() {
+                    Some(SwarmError::PaneSizeUnchanged) => {}, // ignore unchanged layout
                     _ => {
                         // display area still changed, even if we had an error
                         display_area.rows = rows;
@@ -1651,8 +1651,8 @@ impl TiledPanes {
             Ok(changed) => {
                 pane_size_changed = changed;
             },
-            Err(err) => match err.downcast_ref::<ZellijError>() {
-                Some(ZellijError::PaneSizeUnchanged) => {
+            Err(err) => match err.downcast_ref::<SwarmError>() {
+                Some(SwarmError::PaneSizeUnchanged) => {
                     // try once more with double the resize percent, but let's keep it at that
                     match pane_grid
                         .change_pane_size(
@@ -1663,8 +1663,8 @@ impl TiledPanes {
                         .with_context(err_context)
                     {
                         Ok(_) => {},
-                        Err(err) => match err.downcast_ref::<ZellijError>() {
-                            Some(ZellijError::PaneSizeUnchanged) => Err::<(), _>(err).non_fatal(),
+                        Err(err) => match err.downcast_ref::<SwarmError>() {
+                            Some(SwarmError::PaneSizeUnchanged) => Err::<(), _>(err).non_fatal(),
                             _ => {
                                 return Err(err);
                             },

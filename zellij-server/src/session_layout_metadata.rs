@@ -160,19 +160,19 @@ impl SessionLayoutMetadata {
     fn should_exclude_from_count(&self, pane: &PaneLayoutMetadata) -> bool {
         if let Some(Run::Plugin(run_plugin)) = &pane.run {
             let location_string = run_plugin.location_string();
-            if location_string == "zellij:about" {
+            if location_string == "swarm:about" {
                 return true;
             }
-            if location_string == "zellij:session-manager" {
+            if location_string == "swarm:session-manager" {
                 return true;
             }
-            if location_string == "zellij:plugin-manager" {
+            if location_string == "swarm:plugin-manager" {
                 return true;
             }
-            if location_string == "zellij:configuration-manager" {
+            if location_string == "swarm:configuration-manager" {
                 return true;
             }
-            if location_string == "zellij:share" {
+            if location_string == "swarm:share" {
                 return true;
             }
         }

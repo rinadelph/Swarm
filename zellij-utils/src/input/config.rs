@@ -54,7 +54,7 @@ impl KdlError {
 
 impl std::fmt::Display for KdlError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> Result<(), std::fmt::Error> {
-        write!(f, "Failed to parse Zellij configuration")
+        write!(f, "Failed to parse Swarm configuration")
     }
 }
 use std::fmt::Display;
@@ -69,7 +69,7 @@ impl Diagnostic for KdlError {
     fn help<'a>(&'a self) -> Option<Box<dyn Display + 'a>> {
         match &self.help_message {
             Some(help_message) => Some(Box::new(help_message)),
-            None => Some(Box::new(format!("For more information, please see our configuration guide: https://zellij.dev/documentation/configuration.html")))
+            None => Some(Box::new(format!("For more information, please see our configuration guide: https://swarm.dev/documentation/configuration.html")))
         }
     }
     fn labels(&self) -> Option<Box<dyn Iterator<Item = LabeledSpan> + '_>> {
@@ -122,7 +122,7 @@ impl ConfigError {
             src: None,
             offset: Some(offset),
             len: Some(len),
-            help_message: Some(format!("For more information, please see our layout guide: https://zellij.dev/documentation/creating-a-layout.html")),
+            help_message: Some(format!("For more information, please see our layout guide: https://swarm.dev/documentation/creating-a-layout.html")),
         })
     }
 }
@@ -423,7 +423,7 @@ where
     // 3. Once it exists, we start watching it for changes again
     //
     // we do this because the alternative is to watch its parent folder and this might cause the
-    // classic "too many open files" issue if there are a lot of files there and/or lots of Zellij
+    // classic "too many open files" issue if there are a lot of files there and/or lots of Swarm
     // instances
     use crate::setup::Setup;
     use notify::{self, Config as WatcherConfig, Event, PollWatcher, RecursiveMode, Watcher};
@@ -1147,50 +1147,50 @@ mod config_test {
     fn can_define_plugin_configuration_in_configfile() {
         let config_contents = r#"
             plugins {
-                tab-bar location="zellij:tab-bar"
-                status-bar location="zellij:status-bar"
-                strider location="zellij:strider"
-                compact-bar location="zellij:compact-bar"
-                session-manager location="zellij:session-manager"
-                welcome-screen location="zellij:session-manager" {
+                tab-bar location="swarm:tab-bar"
+                status-bar location="swarm:status-bar"
+                strider location="swarm:strider"
+                compact-bar location="swarm:compact-bar"
+                session-manager location="swarm:session-manager"
+                welcome-screen location="swarm:session-manager" {
                     welcome_screen true
                 }
-                filepicker location="zellij:strider"
+                filepicker location="swarm:strider"
             }
         "#;
         let config = Config::from_kdl(config_contents, None).unwrap();
         let mut expected_plugin_configuration = BTreeMap::new();
         expected_plugin_configuration.insert(
             "tab-bar".to_owned(),
-            RunPlugin::from_url("zellij:tab-bar").unwrap(),
+            RunPlugin::from_url("swarm:tab-bar").unwrap(),
         );
         expected_plugin_configuration.insert(
             "status-bar".to_owned(),
-            RunPlugin::from_url("zellij:status-bar").unwrap(),
+            RunPlugin::from_url("swarm:status-bar").unwrap(),
         );
         expected_plugin_configuration.insert(
             "strider".to_owned(),
-            RunPlugin::from_url("zellij:strider").unwrap(),
+            RunPlugin::from_url("swarm:strider").unwrap(),
         );
         expected_plugin_configuration.insert(
             "compact-bar".to_owned(),
-            RunPlugin::from_url("zellij:compact-bar").unwrap(),
+            RunPlugin::from_url("swarm:compact-bar").unwrap(),
         );
         expected_plugin_configuration.insert(
             "session-manager".to_owned(),
-            RunPlugin::from_url("zellij:session-manager").unwrap(),
+            RunPlugin::from_url("swarm:session-manager").unwrap(),
         );
         let mut welcome_screen_configuration = BTreeMap::new();
         welcome_screen_configuration.insert("welcome_screen".to_owned(), "true".to_owned());
         expected_plugin_configuration.insert(
             "welcome-screen".to_owned(),
-            RunPlugin::from_url("zellij:session-manager")
+            RunPlugin::from_url("swarm:session-manager")
                 .unwrap()
                 .with_configuration(welcome_screen_configuration),
         );
         expected_plugin_configuration.insert(
             "filepicker".to_owned(),
-            RunPlugin::from_url("zellij:strider").unwrap(),
+            RunPlugin::from_url("swarm:strider").unwrap(),
         );
         assert_eq!(
             config.plugins,

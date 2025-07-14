@@ -1,6 +1,6 @@
 # Help wanted
 
-As the zellij code-base changed, a lot of places where a call to `unwrap()`
+As the swarm code-base changed, a lot of places where a call to `unwrap()`
 previously made sense can now potentially cause errors which we'd like to
 handle. While we don't consider `unwrap` to be a bad thing in general, it hides
 the underlying error and leaves the user only with a stack trace to go on.
@@ -14,11 +14,11 @@ up in the call stack can react to errors from underlying functions and either
 try to recover, or give some meaningful error messages if recovery isn't
 possible.
 
-Since the zellij codebase is pretty big and growing rapidly, this endeavor
-will continue to be pursued over time, as zellij develops. The idea is that
+Since the swarm codebase is pretty big and growing rapidly, this endeavor
+will continue to be pursued over time, as swarm develops. The idea is that
 modules or single files are converted bit by bit, preferably in small PRs that
 each target a specific module or file. **If you are looking to contribute to
-zellij, this may be an ideal start for you!** This way you get to know the
+swarm, this may be an ideal start for you!** This way you get to know the
 codebase and get an idea which modules are used at which other places in the
 code.
 
@@ -33,7 +33,7 @@ remainder of this document by including/adding this in the code you're working
 on:
 
 ```rust
-use zellij_utils::errors::prelude::*;
+use swarm_utils::errors::prelude::*;
 ```
 
 ## Displaying panic messages
@@ -45,7 +45,7 @@ is performed by the [`miette`][miette] crate.
 ## Propagating errors
 
 We use the [`anyhow`][anyhow] crate to propagate errors up the call stack. At
-the moment, zellij doesn't have custom error types, so we wrap whatever errors
+the moment, swarm doesn't have custom error types, so we wrap whatever errors
 the underlying libraries give us, if any. [`anyhow`][anyhow] serves the purpose
 of providing [`context`][context] about where (i.e. under which circumstances)
 an error happened.
@@ -97,8 +97,8 @@ error usually calls for actions to be taken rather than ignoring it.
 # Examples of applied error handling
 
 You can have a look at the commit that introduced error handling to the
-`zellij_server::screen` module [right here][1] (look at the changes in
-`zellij-server/src/screen.rs`). We'll use this to demonstrate a few things in
+`swarm_server::screen` module [right here][1] (look at the changes in
+`swarm-server/src/screen.rs`). We'll use this to demonstrate a few things in
 the following text. You can find countless other examples in the [tracking
 issue for error handling][3]
 
@@ -106,7 +106,7 @@ issue for error handling][3]
 ## Converting a function to return a `Result` type
 
 > **TL;DR**  
-> - Add `use zellij_utils::errors::prelude::*;` to the file
+> - Add `use swarm_utils::errors::prelude::*;` to the file
 > - Make the function return `Result<T>`, with an appropriate `T` (Often `()`)
 > - Append `.context()` to any `Result` you get with a sensible error description (see below)
 > - Generate ad-hoc errors with `anyhow!(<SOME MESSAGE>)`
@@ -296,7 +296,7 @@ and write a context message somehow mentioning this.
 We want to propagate errors as far up as we can. This way, every function along
 the way can at least attach a context message giving us an idea what chain of
 events lead to the error. Where do we terminate execution in `Screen`? If you
-study the code in `screen.rs`, you'll notice all the components of zellij
+study the code in `screen.rs`, you'll notice all the components of swarm
 interact with the `Screen` instance by means of IPC messages. These messages
 are handled in the `screen_thread_main` function. Here's an excerpt:
 
@@ -322,7 +322,7 @@ The code goes on like this for quite a while, so there are many places where an
 error may occur. In this case, since all the functions are called from this
 central location, we forego attaching a context message to every error.
 Instead, we propagate the errors to the caller of this function, which happens
-to be the function `init_session` in `zellij-server/src/lib.rs`. We see that
+to be the function `init_session` in `swarm-server/src/lib.rs`. We see that
 `screen_thread_main` is spawned to run in a separate thread. Hence, we cannot
 propagate the error further up and terminate execution at this point:
 
@@ -338,7 +338,7 @@ propagate the error further up and terminate execution at this point:
 ```
 
 Remember the call to [`fatal`][fatal] will log the error and afterwards panic
-the application (i.e. crash zellij). Since we made sure to attach context
+the application (i.e. crash swarm). Since we made sure to attach context
 messages to the errors on their way up, we will see these messages in the
 resulting output!
 
@@ -356,7 +356,7 @@ tell us why the `None` is bad (i.e. equivalent to an Error) in this case.
 
 In situations where a call to `unwrap()` or similar on a `Option` type is to be
 converted for error handling, it is a good idea to attach an additional short
-context. An example from the zellij codebase is shown below:
+context. An example from the swarm codebase is shown below:
 
 ```rust
     let destination_tab = self.get_indexed_tab_mut(destination_tab_index)
@@ -488,11 +488,11 @@ fixed by adding `::<(), _>`.
 ## Adding Concrete Errors, Handling Specific Errors
 
 > **TL;DR**
-> - Add a new variant to `zellij_utils::errors::ZellijError`
-> - Use `anyhow::Error::downcast_ref::<ZellijError>()` to recover underlying errors
+> - Add a new variant to `swarm_utils::errors::SwarmError`
+> - Use `anyhow::Error::downcast_ref::<SwarmError>()` to recover underlying errors
 
 Sometimes you'll find yourself in a situation where you want to react to very
-specific errors. For example, the "command panes" feature in zellij has a
+specific errors. For example, the "command panes" feature in swarm has a
 special handling for "command not found" errors. If all the `anyhow::Error`s
 are the same, how can we distinguish between underlying error types?
 
@@ -506,11 +506,11 @@ own error types. These error types have distinct error variants that one can
 distinguish and react upon. But what happens, for example, if we create the
 error we want to react to ourselves?
 
-For this purpose, there is the `ZellijError`, which is contained in
-`zellij_utils::errors`. It is built with the [`thiserror`][thiserror] crate and
+For this purpose, there is the `SwarmError`, which is contained in
+`swarm_utils::errors`. It is built with the [`thiserror`][thiserror] crate and
 hence easily extensible. If you need a specific error type to act upon, just
-define a new variant in `ZellijError`. It is automatically available in any
-source file that has the `use zellij_utils::errors::prelude::*;` statement in
+define a new variant in `SwarmError`. It is automatically available in any
+source file that has the `use swarm_utils::errors::prelude::*;` statement in
 it.
 
 Once you have created your error instance, as soon as you wrap a `context`
@@ -528,8 +528,8 @@ match pty
     Ok(_) => {
         // ... Whatever
     },
-    Err(err) => match err.downcast_ref::<ZellijError>() {
-        Some(ZellijError::CommandNotFound { terminal_id, .. }) => {
+    Err(err) => match err.downcast_ref::<SwarmError>() {
+        Some(SwarmError::CommandNotFound { terminal_id, .. }) => {
             // Do something now that this error occured.
             // We can even access the values stored inside it, "terminal_id" in
             // this case
@@ -546,16 +546,16 @@ match pty
 
 
 
-[tracking_issue]: https://github.com/zellij-org/zellij/issues/1753
-[handle_panic]: https://docs.rs/zellij-utils/latest/zellij_utils/errors/fn.handle_panic.html
+[tracking_issue]: https://github.com/swarm-org/swarm/issues/1753
+[handle_panic]: https://docs.rs/swarm-utils/latest/swarm_utils/errors/fn.handle_panic.html
 [miette]: https://crates.io/crates/miette
 [anyhow]: https://crates.io/crates/anyhow
 [thiserror]: https://crates.io/crates/thiserror
 [context]: https://docs.rs/anyhow/latest/anyhow/trait.Context.html
 [result]: https://doc.rust-lang.org/stable/std/result/enum.Result.html
-[fatal]: https://docs.rs/zellij-utils/latest/zellij_utils/errors/trait.FatalError.html#tymethod.fatal
-[non_fatal]: https://docs.rs/zellij-utils/latest/zellij_utils/errors/trait.FatalError.html#tymethod.non_fatal
-[1]: https://github.com/zellij-org/zellij/commit/99e2bef8c68bd166cf89e90c8ffe8c02272ab4d3
+[fatal]: https://docs.rs/swarm-utils/latest/swarm_utils/errors/trait.FatalError.html#tymethod.fatal
+[non_fatal]: https://docs.rs/swarm-utils/latest/swarm_utils/errors/trait.FatalError.html#tymethod.non_fatal
+[1]: https://github.com/swarm-org/swarm/commit/99e2bef8c68bd166cf89e90c8ffe8c02272ab4d3
 [2]: https://doc.rust-lang.org/stable/std/io/enum.ErrorKind.html#variant.NotFound
-[3]: https://github.com/zellij-org/zellij/issues/1753
-[pr1881]: https://github.com/zellij-org/zellij/pull/1881
+[3]: https://github.com/swarm-org/swarm/issues/1753
+[pr1881]: https://github.com/swarm-org/swarm/pull/1881

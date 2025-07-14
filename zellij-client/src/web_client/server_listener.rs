@@ -18,7 +18,7 @@ use zellij_utils::{
     setup::Setup,
 };
 
-pub fn zellij_server_listener(
+pub fn swarm_server_listener(
     os_input: Box<dyn ClientOsApi>,
     connection_table: Arc<Mutex<ConnectionTable>>,
     session_name: Option<String>,
@@ -53,7 +53,7 @@ pub fn zellij_server_listener(
                             log::error!("Failed to generate unique session name, bailing.");
                             return;
                         };
-                        let mut sock_dir = zellij_utils::consts::ZELLIJ_SOCK_DIR.clone();
+                        let mut sock_dir = zellij_utils::consts::SWARM_SOCK_DIR.clone();
                         sock_dir.push(session_name.clone());
                         sock_dir.to_str().unwrap().to_owned()
                     };
@@ -83,7 +83,7 @@ pub fn zellij_server_listener(
                         .to_owned();
 
                     let is_web_client = true;
-                    let (first_message, zellij_ipc_pipe) = session_manager.spawn_session_if_needed(
+                    let (first_message, swarm_ipc_pipe) = session_manager.spawn_session_if_needed(
                         &session_name,
                         path,
                         client_attributes,
@@ -94,7 +94,7 @@ pub fn zellij_server_listener(
                         reconnect_info.as_ref().and_then(|r| r.layout.clone()),
                     );
 
-                    os_input.connect_to_server(&zellij_ipc_pipe);
+                    os_input.connect_to_server(&swarm_ipc_pipe);
                     os_input.send_to_server(first_message);
 
                     let mut args_for_report = CliArgs::default();

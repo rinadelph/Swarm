@@ -7,7 +7,7 @@ tabs:
           Fixed: 1
         run:
           plugin:
-            location: "zellij:tab-bar"
+            location: "swarm:tab-bar"
         borderless: true
       - direction: Vertical
         parts:
@@ -31,5 +31,5 @@ tabs:
           Fixed: 2
         run:
           plugin:
-            location: "zellij:status-bar"
+            location: "swarm:status-bar"
         borderless: true

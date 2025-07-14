@@ -55,7 +55,7 @@ impl PluginConfig {
                 userspace_configuration: run_plugin.configuration.clone(),
                 initial_cwd: run_plugin.initial_cwd.clone(),
             }),
-            RunPluginLocation::Zellij(tag) => {
+            RunPluginLocation::Swarm(tag) => {
                 let tag = tag.to_string();
                 if tag == "status-bar"
                     || tag == "tab-bar"
@@ -71,7 +71,7 @@ impl PluginConfig {
                     Some(PluginConfig {
                         path: PathBuf::from(&tag),
                         _allow_exec_host_cmd: run_plugin._allow_exec_host_cmd,
-                        location: RunPluginLocation::parse(&format!("zellij:{}", tag), None)
+                        location: RunPluginLocation::parse(&format!("swarm:{}", tag), None)
                             .ok()?,
                         userspace_configuration: run_plugin.configuration.clone(),
                         initial_cwd: run_plugin.initial_cwd.clone(),
@@ -91,14 +91,14 @@ impl PluginConfig {
     }
     /// Resolve wasm plugin bytes for the plugin path and given plugin directory.
     ///
-    /// If zellij was built without the 'disable_automatic_asset_installation' feature, builtin
-    /// plugins (Starting with 'zellij:' in the layout file) are loaded directly from the
+    /// If swarm was built without the 'disable_automatic_asset_installation' feature, builtin
+    /// plugins (Starting with 'swarm:' in the layout file) are loaded directly from the
     /// binary-internal asset map. Otherwise:
     ///
     /// Attempts to first resolve the plugin path as an absolute path, then adds a ".wasm"
     /// extension to the path and resolves that, finally we use the plugin directory joined with
     /// the path with an appended ".wasm" extension. So if our path is "tab-bar" and the given
-    /// plugin dir is "/home/bob/.zellij/plugins" the lookup chain will be this:
+    /// plugin dir is "/home/bob/.swarm/plugins" the lookup chain will be this:
     ///
     /// ```bash
     ///   /tab-bar
@@ -115,7 +115,7 @@ impl PluginConfig {
             &self.path.with_extension("wasm"),
             &plugin_dir.join(&self.path).with_extension("wasm"),
         ];
-        // Throw out dupes, because it's confusing to read that zellij checked the same plugin
+        // Throw out dupes, because it's confusing to read that swarm checked the same plugin
         // location multiple times. Do NOT sort the vector here, because it will break the lookup!
         let mut paths = paths_arr.to_vec();
         paths.dedup();
@@ -168,14 +168,14 @@ impl PluginConfig {
             if cfg!(feature = "disable_automatic_asset_installation")
                 && ASSET_MAP.contains_key(&PathBuf::from("plugins").join(&plugin_path))
             {
-                return Err(ZellijError::BuiltinPluginMissing {
+                return Err(SwarmError::BuiltinPluginMissing {
                     plugin_path,
                     plugin_dir: plugin_dir.to_owned(),
                     source: last_err.unwrap_err(),
                 })
                 .context("failed to load a plugin");
             } else {
-                return Err(ZellijError::BuiltinPluginNonexistent {
+                return Err(SwarmError::BuiltinPluginNonexistent {
                     plugin_path,
                     source: last_err.unwrap_err(),
                 })
@@ -187,7 +187,7 @@ impl PluginConfig {
     }
 
     pub fn is_builtin(&self) -> bool {
-        matches!(self.location, RunPluginLocation::Zellij(_))
+        matches!(self.location, RunPluginLocation::Swarm(_))
     }
 }
 
@@ -197,7 +197,7 @@ pub enum PluginsConfigError {
     DuplicatePlugins(PluginTag),
     #[error("Failed to parse url: {0:?}")]
     InvalidUrl(#[from] url::ParseError),
-    #[error("Only 'file:', 'http(s):' and 'zellij:' url schemes are supported for plugin lookup. '{0}' does not match either.")]
+    #[error("Only 'file:', 'http(s):' and 'swarm:' url schemes are supported for plugin lookup. '{0}' does not match either.")]
     InvalidUrlScheme(Url),
     #[error("Could not find plugin at the path: '{0:?}'")]
     InvalidPluginLocation(PathBuf),

@@ -16,7 +16,7 @@ use std::{
 use url::Url;
 use wasmtime::{Engine, Instance, Linker, Module, Store};
 use wasmtime_wasi::{preview1::WasiP1Ctx, DirPerms, FilePerms, WasiCtxBuilder};
-use zellij_utils::consts::ZELLIJ_PLUGIN_ARTIFACT_DIR;
+use zellij_utils::consts::SWARM_PLUGIN_ARTIFACT_DIR;
 
 use crate::{
     logging_pipe::LoggingPipe, screen::ScreenInstruction, thread_bus::ThreadSenders,
@@ -25,7 +25,7 @@ use crate::{
 
 use zellij_utils::plugin_api::action::ProtobufPluginConfiguration;
 use zellij_utils::{
-    consts::{ZELLIJ_CACHE_DIR, ZELLIJ_SESSION_CACHE_DIR, ZELLIJ_TMP_DIR},
+    consts::{SWARM_CACHE_DIR, SWARM_SESSION_CACHE_DIR, SWARM_TMP_DIR},
     data::{InputMode, PluginCapabilities},
     errors::prelude::*,
     input::command::TerminalAction,
@@ -342,10 +342,10 @@ impl<'a> PluginLoader<'a> {
         default_mode: InputMode,
         keybinds: Keybinds,
     ) -> Result<Self> {
-        let plugin_own_data_dir = ZELLIJ_SESSION_CACHE_DIR
+        let plugin_own_data_dir = SWARM_SESSION_CACHE_DIR
             .join(Url::from(&plugin.location).to_string())
             .join(format!("{}-{}", plugin_id, client_id));
-        let plugin_own_cache_dir = ZELLIJ_SESSION_CACHE_DIR
+        let plugin_own_cache_dir = SWARM_SESSION_CACHE_DIR
             .join(Url::from(&plugin.location).to_string())
             .join(format!("plugin_cache"));
         create_plugin_fs_entries(&plugin_own_data_dir, &plugin_own_cache_dir)?;
@@ -534,7 +534,7 @@ impl<'a> PluginLoader<'a> {
         log::info!(
             "Loaded plugin '{}' from cache folder at '{}' in {:?}",
             self.plugin_path.display(),
-            ZELLIJ_CACHE_DIR.display(),
+            SWARM_CACHE_DIR.display(),
             timer.elapsed(),
         );
         display_loading_stage!(
@@ -562,7 +562,7 @@ impl<'a> PluginLoader<'a> {
         let (wasm_bytes, cached_path) = self.plugin_bytes_and_cache_path()?;
         let timer = std::time::Instant::now();
         let err_context = || "failed to recover cache dir";
-        let module = fs::create_dir_all(ZELLIJ_PLUGIN_ARTIFACT_DIR.as_path())
+        let module = fs::create_dir_all(SWARM_PLUGIN_ARTIFACT_DIR.as_path())
             .map_err(anyError::new)
             .and_then(|_| {
                 // compile module
@@ -778,7 +778,7 @@ impl<'a> PluginLoader<'a> {
                     .iter()
                     .map(ToString::to_string)
                     .collect();
-                let cached_path = ZELLIJ_PLUGIN_ARTIFACT_DIR.join(&hash);
+                let cached_path = SWARM_PLUGIN_ARTIFACT_DIR.join(&hash);
                 self.wasm_blob_on_hd = Some((wasm_bytes.clone(), cached_path.clone()));
                 Ok((wasm_bytes, cached_path))
             },
@@ -839,7 +839,7 @@ impl<'a> PluginLoader<'a> {
             &self.plugin_cwd,
             &self.plugin_own_data_dir,
             &self.plugin_own_cache_dir,
-            &ZELLIJ_TMP_DIR,
+            &SWARM_TMP_DIR,
             &self.plugin.location.to_string(),
             self.plugin_id,
             stdin_pipe.clone(),
@@ -906,8 +906,8 @@ fn create_plugin_fs_entries(
     fs::create_dir_all(&plugin_own_cache_dir)
         .with_context(|| format!("failed to create cache dir in {plugin_own_cache_dir:?}"))
         .with_context(err_context)?;
-    fs::create_dir_all(ZELLIJ_TMP_DIR.as_path())
-        .with_context(|| format!("failed to create tmpdir at {:?}", &ZELLIJ_TMP_DIR.as_path()))
+    fs::create_dir_all(SWARM_TMP_DIR.as_path())
+        .with_context(|| format!("failed to create tmpdir at {:?}", &SWARM_TMP_DIR.as_path()))
         .with_context(err_context)?;
     Ok(())
 }

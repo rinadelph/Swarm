@@ -118,7 +118,7 @@ impl PaneGroups {
     }
     fn launch_plugin(&self, screen_size: Size, client_id: &ClientId) {
         if let Ok(run_plugin) =
-            RunPluginOrAlias::from_url("zellij:multiple-select", &None, None, None)
+            RunPluginOrAlias::from_url("swarm:multiple-select", &None, None, None)
         {
             let tab_index = 1;
             let size = Size::default();

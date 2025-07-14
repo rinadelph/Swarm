@@ -4351,7 +4351,7 @@ fn tab_with_nested_uneven_layout() {
 
 #[test]
 fn pane_bracketed_paste_ignored_when_not_in_bracketed_paste_mode() {
-    // regression test for: https://github.com/zellij-org/zellij/issues/1687
+    // regression test for: https://github.com/swarm-org/swarm/issues/1687
     let size = Size {
         cols: 121,
         rows: 20,
@@ -7494,7 +7494,7 @@ fn layout_with_plugins_and_commands_swaped_properly() {
     let base_layout = r#"
         layout {
             pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
+                plugin location="swarm:tab-bar"
             }
             pane split_direction="vertical" {
                 pane command="command1"
@@ -7502,7 +7502,7 @@ fn layout_with_plugins_and_commands_swaped_properly() {
                 pane command="command2"
             }
             pane size=2 borderless=true {
-                plugin location="zellij:status-bar"
+                plugin location="swarm:status-bar"
             }
         }
     "#;
@@ -7514,13 +7514,13 @@ fn layout_with_plugins_and_commands_swaped_properly() {
             swap_tiled_layout {
                 tab {
                     pane size=2 borderless=true {
-                        plugin location="zellij:status-bar"
+                        plugin location="swarm:status-bar"
                     }
                     pane command="command2"
                     pane command="command1"
                     pane
                     pane size=1 borderless=true {
-                        plugin location="zellij:tab-bar"
+                        plugin location="swarm:tab-bar"
                     }
                 }
             }
@@ -7542,11 +7542,11 @@ fn layout_with_plugins_and_commands_swaped_properly() {
     let new_floating_terminal_ids = vec![];
     let mut new_plugin_ids = HashMap::new();
     new_plugin_ids.insert(
-        RunPluginOrAlias::from_url("zellij:tab-bar", &None, None, None).unwrap(),
+        RunPluginOrAlias::from_url("swarm:tab-bar", &None, None, None).unwrap(),
         vec![1],
     );
     new_plugin_ids.insert(
-        RunPluginOrAlias::from_url("zellij:status-bar", &None, None, None).unwrap(),
+        RunPluginOrAlias::from_url("swarm:status-bar", &None, None, None).unwrap(),
         vec![2],
     );
 
@@ -7594,7 +7594,7 @@ fn base_layout_is_included_in_swap_layouts() {
     let base_layout = r#"
         layout {
             pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
+                plugin location="swarm:tab-bar"
             }
             pane split_direction="vertical" {
                 pane command="command1"
@@ -7602,7 +7602,7 @@ fn base_layout_is_included_in_swap_layouts() {
                 pane command="command2"
             }
             pane size=2 borderless=true {
-                plugin location="zellij:status-bar"
+                plugin location="swarm:status-bar"
             }
         }
     "#;
@@ -7614,13 +7614,13 @@ fn base_layout_is_included_in_swap_layouts() {
             swap_tiled_layout {
                 tab {
                     pane size=2 borderless=true {
-                        plugin location="zellij:status-bar"
+                        plugin location="swarm:status-bar"
                     }
                     pane command="command2"
                     pane command="command1"
                     pane
                     pane size=1 borderless=true {
-                        plugin location="zellij:tab-bar"
+                        plugin location="swarm:tab-bar"
                     }
                 }
             }
@@ -7640,11 +7640,11 @@ fn base_layout_is_included_in_swap_layouts() {
     let new_floating_terminal_ids = vec![];
     let mut new_plugin_ids = HashMap::new();
     new_plugin_ids.insert(
-        RunPluginOrAlias::from_url("zellij:tab-bar", &None, None, None).unwrap(),
+        RunPluginOrAlias::from_url("swarm:tab-bar", &None, None, None).unwrap(),
         vec![1],
     );
     new_plugin_ids.insert(
-        RunPluginOrAlias::from_url("zellij:status-bar", &None, None, None).unwrap(),
+        RunPluginOrAlias::from_url("swarm:status-bar", &None, None, None).unwrap(),
         vec![2],
     );
 
@@ -7693,7 +7693,7 @@ fn swap_layouts_including_command_panes_absent_from_existing_layout() {
     let base_layout = r#"
         layout {
             pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
+                plugin location="swarm:tab-bar"
             }
             pane split_direction="vertical" {
                 pane
@@ -7701,7 +7701,7 @@ fn swap_layouts_including_command_panes_absent_from_existing_layout() {
                 pane
             }
             pane size=2 borderless=true {
-                plugin location="zellij:status-bar"
+                plugin location="swarm:status-bar"
             }
         }
     "#;
@@ -7713,13 +7713,13 @@ fn swap_layouts_including_command_panes_absent_from_existing_layout() {
             swap_tiled_layout {
                 tab {
                     pane size=2 borderless=true {
-                        plugin location="zellij:status-bar"
+                        plugin location="swarm:status-bar"
                     }
                     pane command="command2"
                     pane command="command1"
                     pane
                     pane size=1 borderless=true {
-                        plugin location="zellij:tab-bar"
+                        plugin location="swarm:tab-bar"
                     }
                 }
             }
@@ -7735,11 +7735,11 @@ fn swap_layouts_including_command_panes_absent_from_existing_layout() {
     let new_floating_terminal_ids = vec![];
     let mut new_plugin_ids = HashMap::new();
     new_plugin_ids.insert(
-        RunPluginOrAlias::from_url("zellij:tab-bar", &None, None, None).unwrap(),
+        RunPluginOrAlias::from_url("swarm:tab-bar", &None, None, None).unwrap(),
         vec![1],
     );
     new_plugin_ids.insert(
-        RunPluginOrAlias::from_url("zellij:status-bar", &None, None, None).unwrap(),
+        RunPluginOrAlias::from_url("swarm:status-bar", &None, None, None).unwrap(),
         vec![2],
     );
 
@@ -7787,7 +7787,7 @@ fn swap_layouts_not_including_command_panes_present_in_existing_layout() {
     let base_layout = r#"
         layout {
             pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
+                plugin location="swarm:tab-bar"
             }
             pane split_direction="vertical" {
                 pane command="command1"
@@ -7795,7 +7795,7 @@ fn swap_layouts_not_including_command_panes_present_in_existing_layout() {
                 pane command="command2"
             }
             pane size=2 borderless=true {
-                plugin location="zellij:status-bar"
+                plugin location="swarm:status-bar"
             }
         }
     "#;
@@ -7807,13 +7807,13 @@ fn swap_layouts_not_including_command_panes_present_in_existing_layout() {
             swap_tiled_layout {
                 tab {
                     pane size=2 borderless=true {
-                        plugin location="zellij:status-bar"
+                        plugin location="swarm:status-bar"
                     }
                     pane
                     pane
                     pane
                     pane size=1 borderless=true {
-                        plugin location="zellij:tab-bar"
+                        plugin location="swarm:tab-bar"
                     }
                 }
             }
@@ -7833,11 +7833,11 @@ fn swap_layouts_not_including_command_panes_present_in_existing_layout() {
     let new_floating_terminal_ids = vec![];
     let mut new_plugin_ids = HashMap::new();
     new_plugin_ids.insert(
-        RunPluginOrAlias::from_url("zellij:tab-bar", &None, None, None).unwrap(),
+        RunPluginOrAlias::from_url("swarm:tab-bar", &None, None, None).unwrap(),
         vec![1],
     );
     new_plugin_ids.insert(
-        RunPluginOrAlias::from_url("zellij:status-bar", &None, None, None).unwrap(),
+        RunPluginOrAlias::from_url("swarm:status-bar", &None, None, None).unwrap(),
         vec![2],
     );
 
@@ -7901,13 +7901,13 @@ fn swap_layouts_including_plugin_panes_absent_from_existing_layout() {
             swap_tiled_layout {
                 tab {
                     pane size=2 borderless=true {
-                        plugin location="zellij:status-bar"
+                        plugin location="swarm:status-bar"
                     }
                     pane
                     pane
                     pane
                     pane size=1 borderless=true {
-                        plugin location="zellij:tab-bar"
+                        plugin location="swarm:tab-bar"
                     }
                 }
             }
@@ -7965,7 +7965,7 @@ fn swap_layouts_not_including_plugin_panes_present_in_existing_layout() {
     let base_layout = r#"
         layout {
             pane size=1 borderless=true {
-                plugin location="zellij:tab-bar"
+                plugin location="swarm:tab-bar"
             }
             pane split_direction="vertical" {
                 pane command="command1"
@@ -7973,7 +7973,7 @@ fn swap_layouts_not_including_plugin_panes_present_in_existing_layout() {
                 pane command="command2"
             }
             pane size=2 borderless=true {
-                plugin location="zellij:status-bar"
+                plugin location="swarm:status-bar"
             }
         }
     "#;
@@ -8007,11 +8007,11 @@ fn swap_layouts_not_including_plugin_panes_present_in_existing_layout() {
     let new_floating_terminal_ids = vec![];
     let mut new_plugin_ids = HashMap::new();
     new_plugin_ids.insert(
-        RunPluginOrAlias::from_url("zellij:tab-bar", &None, None, None).unwrap(),
+        RunPluginOrAlias::from_url("swarm:tab-bar", &None, None, None).unwrap(),
         vec![1],
     );
     new_plugin_ids.insert(
-        RunPluginOrAlias::from_url("zellij:status-bar", &None, None, None).unwrap(),
+        RunPluginOrAlias::from_url("swarm:status-bar", &None, None, None).unwrap(),
         vec![2],
     );
 
@@ -8540,13 +8540,13 @@ fn floating_layout_with_plugins_and_commands_swaped_properly() {
         layout {
             floating_panes {
                 pane x=0 y=0 {
-                    plugin location="zellij:tab-bar"
+                    plugin location="swarm:tab-bar"
                 }
                 pane x=0 y=10 command="command1"
                 pane
                 pane x=50 y=10 command="command2"
                 pane x=50 y=0 {
-                    plugin location="zellij:status-bar"
+                    plugin location="swarm:status-bar"
                 }
             }
         }
@@ -8557,13 +8557,13 @@ fn floating_layout_with_plugins_and_commands_swaped_properly() {
             swap_floating_layout {
                 floating_panes {
                     pane x=0 y=0 {
-                        plugin location="zellij:status-bar"
+                        plugin location="swarm:status-bar"
                     }
                     pane x=0 y=10 command="command2"
                     pane
                     pane x=50 y=10 command="command1"
                     pane x=50 y=0 {
-                        plugin location="zellij:tab-bar"
+                        plugin location="swarm:tab-bar"
                     }
                 }
             }
@@ -8583,11 +8583,11 @@ fn floating_layout_with_plugins_and_commands_swaped_properly() {
     let new_terminal_ids = vec![(4, None)];
     let mut new_plugin_ids = HashMap::new();
     new_plugin_ids.insert(
-        RunPluginOrAlias::from_url("zellij:tab-bar", &None, None, None).unwrap(),
+        RunPluginOrAlias::from_url("swarm:tab-bar", &None, None, None).unwrap(),
         vec![1],
     );
     new_plugin_ids.insert(
-        RunPluginOrAlias::from_url("zellij:status-bar", &None, None, None).unwrap(),
+        RunPluginOrAlias::from_url("swarm:status-bar", &None, None, None).unwrap(),
         vec![2],
     );
 
@@ -8636,13 +8636,13 @@ fn base_floating_layout_is_included_in_swap_layouts() {
         layout {
             floating_panes {
                 pane x=0 y=0 {
-                    plugin location="zellij:tab-bar"
+                    plugin location="swarm:tab-bar"
                 }
                 pane x=0 y=10 command="command1"
                 pane
                 pane x=50 y=10 command="command2"
                 pane x=50 y=0 {
-                    plugin location="zellij:status-bar"
+                    plugin location="swarm:status-bar"
                 }
             }
         }
@@ -8653,13 +8653,13 @@ fn base_floating_layout_is_included_in_swap_layouts() {
             swap_floating_layout {
                 floating_panes {
                     pane x=0 y=0 {
-                        plugin location="zellij:status-bar"
+                        plugin location="swarm:status-bar"
                     }
                     pane x=0 y=10 command="command2"
                     pane
                     pane x=50 y=10 command="command1"
                     pane x=50 y=0 {
-                        plugin location="zellij:tab-bar"
+                        plugin location="swarm:tab-bar"
                     }
                 }
             }
@@ -8679,11 +8679,11 @@ fn base_floating_layout_is_included_in_swap_layouts() {
     let new_terminal_ids = vec![(4, None)];
     let mut new_plugin_ids = HashMap::new();
     new_plugin_ids.insert(
-        RunPluginOrAlias::from_url("zellij:tab-bar", &None, None, None).unwrap(),
+        RunPluginOrAlias::from_url("swarm:tab-bar", &None, None, None).unwrap(),
         vec![1],
     );
     new_plugin_ids.insert(
-        RunPluginOrAlias::from_url("zellij:status-bar", &None, None, None).unwrap(),
+        RunPluginOrAlias::from_url("swarm:status-bar", &None, None, None).unwrap(),
         vec![2],
     );
 
@@ -8733,13 +8733,13 @@ fn swap_floating_layouts_including_command_panes_absent_from_existing_layout() {
         layout {
             floating_panes {
                 pane {
-                    plugin location="zellij:tab-bar"
+                    plugin location="swarm:tab-bar"
                 }
                 pane
                 pane
                 pane
                 pane {
-                    plugin location="zellij:status-bar"
+                    plugin location="swarm:status-bar"
                 }
             }
         }
@@ -8752,13 +8752,13 @@ fn swap_floating_layouts_including_command_panes_absent_from_existing_layout() {
             swap_floating_layout {
                 floating_panes {
                     pane {
-                        plugin location="zellij:status-bar"
+                        plugin location="swarm:status-bar"
                     }
                     pane x=0 y=0 command="command1"
                     pane x=10 y=10 command="command2"
                     pane
                     pane {
-                        plugin location="zellij:tab-bar"
+                        plugin location="swarm:tab-bar"
                     }
                 }
             }
@@ -8774,11 +8774,11 @@ fn swap_floating_layouts_including_command_panes_absent_from_existing_layout() {
     let new_terminal_ids = vec![(4, None)];
     let mut new_plugin_ids = HashMap::new();
     new_plugin_ids.insert(
-        RunPluginOrAlias::from_url("zellij:tab-bar", &None, None, None).unwrap(),
+        RunPluginOrAlias::from_url("swarm:tab-bar", &None, None, None).unwrap(),
         vec![1],
     );
     new_plugin_ids.insert(
-        RunPluginOrAlias::from_url("zellij:status-bar", &None, None, None).unwrap(),
+        RunPluginOrAlias::from_url("swarm:status-bar", &None, None, None).unwrap(),
         vec![2],
     );
 
@@ -8827,13 +8827,13 @@ fn swap_floating_layouts_not_including_command_panes_present_in_existing_layout(
         layout {
             floating_panes {
                 pane {
-                    plugin location="zellij:tab-bar"
+                    plugin location="swarm:tab-bar"
                 }
                 pane command="command1"
                 pane
                 pane command="command2"
                 pane {
-                    plugin location="zellij:status-bar"
+                    plugin location="swarm:status-bar"
                 }
             }
         }
@@ -8846,13 +8846,13 @@ fn swap_floating_layouts_not_including_command_panes_present_in_existing_layout(
             swap_floating_layout {
                 floating_panes {
                     pane {
-                        plugin location="zellij:status-bar"
+                        plugin location="swarm:status-bar"
                     }
                     pane
                     pane
                     pane
                     pane {
-                        plugin location="zellij:tab-bar"
+                        plugin location="swarm:tab-bar"
                     }
                 }
             }
@@ -8872,11 +8872,11 @@ fn swap_floating_layouts_not_including_command_panes_present_in_existing_layout(
     let new_terminal_ids = vec![(4, None)];
     let mut new_plugin_ids = HashMap::new();
     new_plugin_ids.insert(
-        RunPluginOrAlias::from_url("zellij:tab-bar", &None, None, None).unwrap(),
+        RunPluginOrAlias::from_url("swarm:tab-bar", &None, None, None).unwrap(),
         vec![1],
     );
     new_plugin_ids.insert(
-        RunPluginOrAlias::from_url("zellij:status-bar", &None, None, None).unwrap(),
+        RunPluginOrAlias::from_url("swarm:status-bar", &None, None, None).unwrap(),
         vec![2],
     );
 
@@ -8935,11 +8935,11 @@ fn swap_floating_layouts_including_plugin_panes_absent_from_existing_layout() {
             swap_floating_layout {
                 floating_panes {
                     pane {
-                        plugin location="zellij:status-bar"
+                        plugin location="swarm:status-bar"
                     }
                     pane
                     pane {
-                        plugin location="zellij:tab-bar"
+                        plugin location="swarm:tab-bar"
                     }
                 }
             }
@@ -8998,11 +8998,11 @@ fn swap_floating_layouts_not_including_plugin_panes_present_in_existing_layout()
         layout {
             floating_panes {
                 pane {
-                    plugin location="zellij:tab-bar"
+                    plugin location="swarm:tab-bar"
                 }
                 pane
                 pane {
-                    plugin location="zellij:status-bar"
+                    plugin location="swarm:status-bar"
                 }
             }
         }
@@ -9035,11 +9035,11 @@ fn swap_floating_layouts_not_including_plugin_panes_present_in_existing_layout()
     let new_terminal_ids = vec![(4, None)];
     let mut new_plugin_ids = HashMap::new();
     new_plugin_ids.insert(
-        RunPluginOrAlias::from_url("zellij:tab-bar", &None, None, None).unwrap(),
+        RunPluginOrAlias::from_url("swarm:tab-bar", &None, None, None).unwrap(),
         vec![1],
     );
     new_plugin_ids.insert(
-        RunPluginOrAlias::from_url("zellij:status-bar", &None, None, None).unwrap(),
+        RunPluginOrAlias::from_url("swarm:status-bar", &None, None, None).unwrap(),
         vec![2],
     );
 

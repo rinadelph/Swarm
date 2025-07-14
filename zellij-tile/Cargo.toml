@@ -3,7 +3,7 @@ name = "zellij-tile"
 version = "0.43.0"
 authors = ["Brooks J Rady <b.j.rady@gmail.com>"]
 edition = "2021"
-description = "A small client-side library for writing Zellij plugins"
+description = "A small client-side library for writing Swarm plugins"
 license = "MIT"
 
 [dependencies]

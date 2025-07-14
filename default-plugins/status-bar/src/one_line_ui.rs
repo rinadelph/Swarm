@@ -1467,7 +1467,7 @@ fn share_key(keymap: &[(KeyWithModifier, Vec<Action>)]) -> Vec<KeyWithModifier> 
     let mut matching = keymap.iter().find_map(|(key, acvec)| {
         let has_match = acvec
             .iter()
-            .find(|a| a.launches_plugin("zellij:share"))
+            .find(|a| a.launches_plugin("swarm:share"))
             .is_some();
         if has_match {
             Some(key.clone())
@@ -1505,7 +1505,7 @@ fn about_key(keymap: &[(KeyWithModifier, Vec<Action>)]) -> Vec<KeyWithModifier> 
     let mut matching = keymap.iter().find_map(|(key, acvec)| {
         let has_match = acvec
             .iter()
-            .find(|a| a.launches_plugin("zellij:about"))
+            .find(|a| a.launches_plugin("swarm:about"))
             .is_some();
         if has_match {
             Some(key.clone())
