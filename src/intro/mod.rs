@@ -122,65 +122,75 @@ impl IntroApp {
     }
 
     fn render_swarm_banner(&self, cols: u16, rows: u16) -> io::Result<()> {
-        let banner = r#"
-███████╗██╗    ██╗ █████╗ ██████╗ ███╗   ███╗
-██╔════╝██║    ██║██╔══██╗██╔══██╗████╗ ████║  
-███████╗██║ █╗ ██║███████║██████╔╝██╔████╔██║
-╚════██║██║███╗██║██╔══██║██╔══██╗██║╚██╔╝██║
-███████║╚███╔███╔╝██║  ██║██║  ██║██║ ╚═╝ ██║
-╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝
-"#;
+        let banner_lines = vec![
+            "███████╗██╗    ██╗ █████╗ ██████╗ ███╗   ███╗",
+            "██╔════╝██║    ██║██╔══██╗██╔══██╗████╗ ████║",
+            "███████╗██║ █╗ ██║███████║██████╔╝██╔████╔██║",
+            "╚════██║██║███╗██║██╔══██║██╔══██╗██║╚██╔╝██║",
+            "███████║╚███╔███╔╝██║  ██║██║  ██║██║ ╚═╝ ██║",
+            "╚══════╝ ╚══╝╚══╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝",
+        ];
 
-        let medium_banner = r#"
- ▗▄▄▖▗▖ ▗▖ ▗▄▖ ▗▄▄▖▗▖  ▗▖
-▗▘   ▐▌ ▐▌▗▞▀▖▗▘  ▘▐▛▚▞▜▌  
-▝▀▚▖ ▐▌ ▐▌▐▛▀▜▌▝▀▚▖ ▐▌  ▐▌
-   ▐▌▐▙▄▟▌▐▌ ▐▌   ▐▌▐▌  ▐▌
-▗▄▄▞▘ ▜▛▀▘ ▝▙▄▞▘▗▄▄▞▘▐▌  ▐▌
-"#;
+        let medium_banner_lines = vec![
+            "███ █   █ █▀▀█ █▀▀█ █▀▄▀█",
+            "▀▀█ █▄█▄█ █▄▄█ █▄▄▀ █ ▀ █",
+            "▀▀▀ ▀ ▀ ▀ ▀  ▀ ▀ ▀▀ ▀   ▀",
+        ];
 
-        let small_banner = "S W A R M";
+        let small_banner_lines = vec!["S W A R M"];
         
-        let (banner_to_use, is_small) = if cols > 100 && rows > 12 {
-            (banner, false)
-        } else if cols > 50 && rows > 8 {
-            (medium_banner, false)
+        let (lines_to_use, start_row) = if cols >= 50 && rows >= 12 {
+            (&banner_lines, 2)
+        } else if cols >= 30 && rows >= 8 {
+            (&medium_banner_lines, 3)
         } else {
-            (small_banner, true)
+            (&small_banner_lines, 4)
         };
         
-        let banner_lines: Vec<&str> = banner_to_use.lines().collect();
-        let start_row = if is_small { 3 } else { 2 };
+        // Calculate the maximum line width for proper centering
+        let max_width = lines_to_use.iter().map(|line| line.len()).max().unwrap_or(0);
         
-        for (i, line) in banner_lines.iter().enumerate() {
-            if !line.trim().is_empty() {
+        // Only render if the banner fits in the terminal width
+        if max_width <= cols as usize {
+            for (i, line) in lines_to_use.iter().enumerate() {
                 let col = (cols as usize).saturating_sub(line.len()) / 2;
                 print!("{}\x1b[96m{}\x1b[0m", 
                        cursor::Goto((col + 1) as u16, (start_row + i) as u16), 
                        line);
             }
+        } else {
+            // Fallback to simple text if banner is too wide
+            let fallback = "SWARM";
+            let col = (cols as usize).saturating_sub(fallback.len()) / 2;
+            print!("{}\x1b[96;1m{}\x1b[0m", 
+                   cursor::Goto((col + 1) as u16, start_row as u16), 
+                   fallback);
         }
         
         // Subtitle
         let subtitle = "Terminal Workspace for Developers";
-        let subtitle_row = start_row + banner_lines.len() + 1;
-        let subtitle_col = (cols as usize).saturating_sub(subtitle.len()) / 2;
-        print!("{}\x1b[37m{}\x1b[0m", 
-               cursor::Goto((subtitle_col + 1) as u16, subtitle_row as u16), 
-               subtitle);
+        let subtitle_row = start_row + lines_to_use.len() + 1;
+        
+        // Only show subtitle if it fits
+        if subtitle.len() <= cols as usize {
+            let subtitle_col = (cols as usize).saturating_sub(subtitle.len()) / 2;
+            print!("{}\x1b[37m{}\x1b[0m", 
+                   cursor::Goto((subtitle_col + 1) as u16, subtitle_row as u16), 
+                   subtitle);
+        }
         
         Ok(())
     }
 
     fn render_welcome_menu(&self, cols: u16, rows: u16) -> io::Result<()> {
-        let banner_height = if cols > 100 && rows > 12 {
-            8
-        } else if cols > 50 && rows > 8 {
-            7
+        let banner_height = if cols >= 50 && rows >= 12 {
+            8  // 6 lines for banner + 2 for spacing and subtitle
+        } else if cols >= 30 && rows >= 8 {
+            6  // 3 lines for banner + 3 for spacing and subtitle
         } else {
-            3
+            4  // 1 line for banner + 3 for spacing and subtitle
         };
-        let menu_start_row = 3 + banner_height;
+        let menu_start_row = 2 + banner_height;
         
         let menu_items = vec![
             "1. Getting Started Guide",
