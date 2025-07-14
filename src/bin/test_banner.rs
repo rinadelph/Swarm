@@ -24,22 +24,20 @@ fn main() {
 }
 
 fn test_banner_rendering(cols: u16, rows: u16) {
-    // Updated clean ASCII banner
+    // New sleek minimal banner
     let banner_lines = vec![
-        "  SSS   W   W   AAA   RRR   M   M",
-        " S   S  W   W  A   A  R  R  MM MM",
-        "  SSS   W W W  AAAAA  RRR   M M M",
-        "     S  WW WW  A   A  R R   M   M",
-        "  SSS   W   W  A   A  R  R  M   M",
+        "┌─┐  ┬ ┬  ┌─┐  ┬─┐  ┌┬┐",
+        "└─┐  ││││  ├─┤  ├┬┘  ││││",
+        "└─┘  └┴┘  ┴ ┴  ┴└─  ┴ ┴",
     ];
 
     let medium_banner_lines = vec![
-        " SSS  W W  AAA  RRR  M M",
-        "S     W W A   A R R  M M",
-        " SSS  WWW AAAAA RRR  M M",
+        "╔═╗ ╦ ╦ ╔═╗ ╦═╗ ╔╦╗",
+        "╚═╗ ║║║ ╠═╣ ╠╦╝ ║║║",
+        "╚═╝ ╚╩╝ ╩ ╩ ╩╚═ ╩ ╩",
     ];
 
-    let small_banner_lines = vec!["S W A R M"];
+    let small_banner_lines = vec!["[ S W A R M ]"];
     
     let (lines_to_use, start_row) = if cols >= 40 && rows >= 10 {
         (&banner_lines, 2)
