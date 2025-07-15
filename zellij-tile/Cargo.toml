@@ -1,6 +1,6 @@
 [package]
 name = "zellij-tile"
-version = "0.0.5"
+version = "0.0.6"
 authors = ["Brooks J Rady <b.j.rady@gmail.com>"]
 edition = "2021"
 description = "A small client-side library for writing Swarm plugins"

@@ -1,6 +1,6 @@
 [package]
 name = "zellij-client"
-version = "0.0.5"
+version = "0.0.6"
 authors = ["Kunal Mohan <kunalmohan99@gmail.com>"]
 edition = "2021"
 description = "The client-side library for Swarm"

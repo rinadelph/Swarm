@@ -332,20 +332,8 @@ fn best_effort_shortcut_list(help: &ModeInfo, tip: TipFn, max_len: usize) -> Lin
 }
 
 pub fn keybinds(help: &ModeInfo, tip_name: &str, max_width: usize) -> LinePart {
-    // It is assumed that there is at least one TIP data in the TIPS HasMap.
-    let tip_body = TIPS
-        .get(tip_name)
-        .unwrap_or_else(|| TIPS.get("quicknav").unwrap());
-
-    let full_shortcut_list = full_shortcut_list(help, tip_body.full);
-    if full_shortcut_list.len <= max_width {
-        return full_shortcut_list;
-    }
-    let shortened_shortcut_list = shortened_shortcut_list(help, tip_body.medium);
-    if shortened_shortcut_list.len <= max_width {
-        return shortened_shortcut_list;
-    }
-    best_effort_shortcut_list(help, tip_body.short, max_width)
+    // Return empty LinePart to disable tips
+    LinePart::default()
 }
 
 pub fn text_copied_hint(copy_destination: CopyDestination) -> LinePart {

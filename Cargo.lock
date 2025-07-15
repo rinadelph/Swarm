@@ -3815,7 +3815,7 @@ dependencies = [
 
 [[package]]
 name = "session-manager"
-version = "0.0.5"
+version = "0.0.6"
 dependencies = [
  "ansi_term",
  "chrono",
@@ -4137,7 +4137,7 @@ dependencies = [
 
 [[package]]
 name = "swarm"
-version = "0.0.5"
+version = "0.0.6"
 dependencies = [
  "anyhow",
  "clap",
@@ -5847,7 +5847,7 @@ dependencies = [
 
 [[package]]
 name = "zellij-client"
-version = "0.0.5"
+version = "0.0.6"
 dependencies = [
  "anyhow",
  "axum",
@@ -5887,7 +5887,7 @@ dependencies = [
 
 [[package]]
 name = "zellij-server"
-version = "0.0.5"
+version = "0.0.6"
 dependencies = [
  "ansi_term",
  "anyhow",
@@ -5933,7 +5933,7 @@ dependencies = [
 
 [[package]]
 name = "zellij-tile"
-version = "0.0.5"
+version = "0.0.6"
 dependencies = [
  "clap",
  "prost",
@@ -5953,7 +5953,7 @@ dependencies = [
 
 [[package]]
 name = "zellij-utils"
-version = "0.0.5"
+version = "0.0.6"
 dependencies = [
  "anyhow",
  "async-std",
