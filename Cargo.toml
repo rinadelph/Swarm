@@ -54,6 +54,7 @@ members = [
     "default-plugins/share",
     "default-plugins/multiple-select",
     "default-plugins/intro-screen",
+    "default-plugins/my-custom-manager",
     "zellij-client",
     "zellij-server",
     "zellij-utils",

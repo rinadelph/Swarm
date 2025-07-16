@@ -134,6 +134,7 @@ mod not_wasm {
             add_plugin!(assets, "share.wasm");
             add_plugin!(assets, "multiple-select.wasm");
             add_plugin!(assets, "intro-screen.wasm");
+            add_plugin!(assets, "my-custom-manager.wasm");
             assets
         };
     }

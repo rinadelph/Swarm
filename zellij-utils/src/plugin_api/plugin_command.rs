@@ -295,11 +295,11 @@ impl TryFrom<ProtobufPluginCommand> for PluginCommand {
                     Ok(PluginCommand::GetPluginIds)
                 }
             },
-            Some(CommandName::GetSwarmVersion) => {
+            Some(CommandName::GetZellijVersion) => {
                 if protobuf_plugin_command.payload.is_some() {
-                    Err("GetSwarmVersion should not have a payload")
+                    Err("GetZellijVersion should not have a payload")
                 } else {
-                    Ok(PluginCommand::GetSwarmVersion)
+                    Ok(PluginCommand::GetZellijVersion)
                 }
             },
             Some(CommandName::OpenFile) => match protobuf_plugin_command.payload {
@@ -676,11 +676,11 @@ impl TryFrom<ProtobufPluginCommand> for PluginCommand {
                 }
                 Ok(PluginCommand::UndoRenameTab)
             },
-            Some(CommandName::QuitSwarm) => {
+            Some(CommandName::QuitZellij) => {
                 if protobuf_plugin_command.payload.is_some() {
-                    return Err("QuitSwarm should not have a payload");
+                    return Err("QuitZellij should not have a payload");
                 }
-                Ok(PluginCommand::QuitSwarm)
+                Ok(PluginCommand::QuitZellij)
             },
             Some(CommandName::PreviousSwapLayout) => {
                 if protobuf_plugin_command.payload.is_some() {
@@ -1769,8 +1769,8 @@ impl TryFrom<PluginCommand> for ProtobufPluginCommand {
                 name: CommandName::GetPluginIds as i32,
                 payload: None,
             }),
-            PluginCommand::GetSwarmVersion => Ok(ProtobufPluginCommand {
-                name: CommandName::GetSwarmVersion as i32,
+            PluginCommand::GetZellijVersion => Ok(ProtobufPluginCommand {
+                name: CommandName::GetZellijVersion as i32,
                 payload: None,
             }),
             PluginCommand::OpenFile(file_to_open, context) => Ok(ProtobufPluginCommand {
@@ -2027,8 +2027,8 @@ impl TryFrom<PluginCommand> for ProtobufPluginCommand {
                 name: CommandName::UndoRenameTab as i32,
                 payload: None,
             }),
-            PluginCommand::QuitSwarm => Ok(ProtobufPluginCommand {
-                name: CommandName::QuitSwarm as i32,
+            PluginCommand::QuitZellij => Ok(ProtobufPluginCommand {
+                name: CommandName::QuitZellij as i32,
                 payload: None,
             }),
             PluginCommand::PreviousSwapLayout => Ok(ProtobufPluginCommand {

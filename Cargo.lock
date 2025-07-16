@@ -2701,6 +2701,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "my-custom-manager"
+version = "0.0.6"
+dependencies = [
+ "ansi_term",
+ "unicode-width 0.1.10",
+ "zellij-tile",
+]
+
+[[package]]
 name = "names"
 version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"

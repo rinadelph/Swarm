@@ -1086,6 +1086,9 @@ pub enum InputMode {
     /// `Tmux` mode allows for basic tmux keybindings functionality
     #[serde(alias = "tmux")]
     Tmux,
+    /// `Swarm` mode allows for Swarm AI agent functionality
+    #[serde(alias = "swarm")]
+    Swarm,
 }
 
 impl Default for InputMode {
@@ -1176,6 +1179,7 @@ impl FromStr for InputMode {
             "move" | "Move" => Ok(InputMode::Move),
             "prompt" | "Prompt" => Ok(InputMode::Prompt),
             "tmux" | "Tmux" => Ok(InputMode::Tmux),
+            "swarm" | "Swarm" => Ok(InputMode::Swarm),
             "entersearch" | "Entersearch" | "EnterSearch" => Ok(InputMode::EnterSearch),
             e => Err(ConversionError::UnknownInputMode(e.into())),
         }
@@ -1868,7 +1872,7 @@ impl ClientInfo {
 #[derive(Debug, Clone, PartialEq, Eq, Hash, Deserialize, Serialize)]
 pub struct PluginIds {
     pub plugin_id: u32,
-    pub swarm_pid: u32,
+    pub zellij_pid: u32,
     pub initial_cwd: PathBuf,
     pub client_id: ClientId,
 }
@@ -2357,7 +2361,7 @@ pub enum PluginCommand {
     Unsubscribe(HashSet<EventType>),
     SetSelectable(bool),
     GetPluginIds,
-    GetSwarmVersion,
+    GetZellijVersion,
     OpenFile(FileToOpen, Context),
     OpenFileFloating(FileToOpen, Option<FloatingPaneCoordinates>, Context),
     OpenTerminal(FileToOpen), // only used for the path as cwd
@@ -2407,7 +2411,7 @@ pub enum PluginCommand {
     ToggleActiveTabSync,
     CloseFocusedTab,
     UndoRenameTab,
-    QuitSwarm,
+    QuitZellij,
     PreviousSwapLayout,
     NextSwapLayout,
     GoToTabName(String),

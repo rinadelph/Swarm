@@ -529,7 +529,7 @@ pub enum EventType {
     Key = 3,
     /// / A mouse event happened while the user is focused on this plugin's pane
     Mouse = 4,
-    /// / A timer expired set by the `set_timeout` method exported by `swarm-tile`.
+    /// / A timer expired set by the `set_timeout` method exported by `zellij-tile`.
     Timer = 5,
     /// / Text was copied to the clipboard anywhere in the app
     CopyToClipboard = 6,
@@ -541,13 +541,13 @@ pub enum EventType {
     Visible = 9,
     /// / A message from one of the plugin's workers
     CustomMessage = 10,
-    /// / A file was created somewhere in the Swarm CWD folder
+    /// / A file was created somewhere in the Zellij CWD folder
     FileSystemCreate = 11,
-    /// / A file was accessed somewhere in the Swarm CWD folder
+    /// / A file was accessed somewhere in the Zellij CWD folder
     FileSystemRead = 12,
-    /// / A file was modified somewhere in the Swarm CWD folder
+    /// / A file was modified somewhere in the Zellij CWD folder
     FileSystemUpdate = 13,
-    /// / A file was deleted somewhere in the Swarm CWD folder
+    /// / A file was deleted somewhere in the Zellij CWD folder
     FileSystemDelete = 14,
     PermissionRequestResult = 15,
     SessionUpdate = 16,

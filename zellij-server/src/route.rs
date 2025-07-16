@@ -44,6 +44,17 @@ pub(crate) fn route_action(
     client_keybinds: Keybinds,
     default_mode: InputMode,
 ) -> Result<bool> {
+    // DEBUG: Log all actions being routed to file
+    if let Ok(mut file) = std::fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open("/tmp/swarm_debug.log") {
+        use std::io::Write;
+        let _ = writeln!(file, "[{}] DEBUG: route_action called with action: {:?} for client: {}", 
+            std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs(), 
+            action, client_id);
+    }
+    
     let mut should_break = false;
     let err_context = || format!("failed to route action for client {client_id}");
 
@@ -675,6 +686,20 @@ pub(crate) fn route_action(
             should_open_in_place,
             skip_cache,
         ) => {
+            // DEBUG: Log when LaunchOrFocusPlugin action is triggered to file
+            if let Ok(mut file) = std::fs::OpenOptions::new()
+                .create(true)
+                .append(true)
+                .open("/tmp/swarm_debug.log") {
+                use std::io::Write;
+                let _ = writeln!(file, "[{}] DEBUG: LaunchOrFocusPlugin action triggered for plugin: {:?}", 
+                    std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs(),
+                    run_plugin);
+                let _ = writeln!(file, "[{}] DEBUG: should_float={}, move_to_focused_tab={}", 
+                    std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs(),
+                    should_float, move_to_focused_tab);
+            }
+            
             senders
                 .send_to_screen(ScreenInstruction::LaunchOrFocusPlugin(
                     run_plugin,
@@ -967,17 +992,50 @@ pub(crate) fn route_thread_main(
                         session_data.read().to_anyhow().with_context(err_context)?;
                     match instruction {
                         ClientToServerMsg::Key(key, raw_bytes, is_kitty_keyboard_protocol) => {
+                            // DEBUG: Log key input received to file
+                            if let Ok(mut file) = std::fs::OpenOptions::new()
+                                .create(true)
+                                .append(true)
+                                .open("/tmp/swarm_debug.log") {
+                                use std::io::Write;
+                                let _ = writeln!(file, "[{}] DEBUG: Key received: {:?}, raw_bytes: {:?}, kitty: {}", 
+                                    std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs(),
+                                    key, raw_bytes, is_kitty_keyboard_protocol);
+                            }
+                            
                             if let Some(rlocked_sessions) = rlocked_sessions.as_ref() {
                                 match rlocked_sessions.get_client_keybinds_and_mode(&client_id) {
                                     Some((keybinds, input_mode, default_input_mode)) => {
-                                        for action in keybinds
+                                        if let Ok(mut file) = std::fs::OpenOptions::new()
+                                            .create(true)
+                                            .append(true)
+                                            .open("/tmp/swarm_debug.log") {
+                                            use std::io::Write;
+                                            let _ = writeln!(file, "[{}] DEBUG: Current mode: {:?}, default_mode: {:?}", 
+                                                std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs(),
+                                                input_mode, default_input_mode);
+                                        }
+                                        
+                                        let actions = keybinds
                                             .get_actions_for_key_in_mode_or_default_action(
                                                 &input_mode,
                                                 &key,
                                                 raw_bytes,
                                                 default_input_mode,
                                                 is_kitty_keyboard_protocol,
-                                            )
+                                            );
+                                        
+                                        if let Ok(mut file) = std::fs::OpenOptions::new()
+                                            .create(true)
+                                            .append(true)
+                                            .open("/tmp/swarm_debug.log") {
+                                            use std::io::Write;
+                                            let _ = writeln!(file, "[{}] DEBUG: Actions for key: {:?}", 
+                                                std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs(),
+                                                actions);
+                                        }
+                                        
+                                        for action in actions
                                         {
                                             if route_action(
                                                 action,

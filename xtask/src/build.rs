@@ -42,7 +42,7 @@ pub fn build(sh: &Shell, flags: flags::Build) -> anyhow::Result<()> {
         //
         // [1]: https://github.com/swarm-org/swarm/pull/2711#issuecomment-1695015818
         {
-            let swarm_utils_basedir = crate::project_root().join("swarm-utils");
+            let swarm_utils_basedir = crate::project_root().join("zellij-utils");
             let _pd = sh.push_dir(swarm_utils_basedir);
 
             let prost_asset_dir = sh.current_dir().join("assets").join("prost");
@@ -57,6 +57,7 @@ pub fn build(sh: &Shell, flags: flags::Build) -> anyhow::Result<()> {
             let mut needs_regeneration = false;
             prost.out_dir(prost_asset_dir);
             prost.include_file("generated_plugin_api.rs");
+            prost.protoc_arg("--experimental_allow_proto3_optional");
             let mut proto_files = vec![];
             for entry in std::fs::read_dir(&protobuf_source_dir).unwrap() {
                 let entry_path = entry.unwrap().path();

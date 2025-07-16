@@ -1,6 +1,7 @@
 use ansi_term::{unstyled_len, ANSIStrings};
 use zellij_tile::prelude::actions::Action;
 use zellij_tile::prelude::*;
+use std::collections::BTreeSet;
 
 use crate::color_elements;
 use crate::{
@@ -27,6 +28,7 @@ pub enum KeyAction {
     Session,
     Move,
     Tmux,
+    Swarm,
 }
 
 #[derive(Debug, Copy, Clone)]
@@ -54,6 +56,7 @@ impl KeyShortcut {
             KeyAction::Session => String::from("SESSION"),
             KeyAction::Move => String::from("MOVE"),
             KeyAction::Tmux => String::from("TMUX"),
+            KeyAction::Swarm => String::from("SWARM"),
         }
     }
     pub fn with_shortened_modifiers(&self, common_modifiers: &Vec<KeyModifier>) -> String {
@@ -112,6 +115,7 @@ impl KeyShortcut {
             KeyAction::Session => String::from("Se"),
             KeyAction::Move => String::from("Mo"),
             KeyAction::Tmux => String::from("Tm"),
+            KeyAction::Swarm => String::from("Sw"),
         }
     }
 }
@@ -490,7 +494,8 @@ pub fn mode_switch_keys(mode_info: &ModeInfo) -> Vec<KeyWithModifier> {
                         | InputMode::Resize
                         | InputMode::Move
                         | InputMode::Scroll
-                        | InputMode::Session => Some(key.clone()),
+                        | InputMode::Session
+                        | InputMode::Swarm => Some(key.clone()),
                         _ => None,
                     };
                 }
@@ -597,6 +602,7 @@ fn get_key_shortcut_for_mode<'a>(
         InputMode::Move => KeyAction::Move,
         InputMode::Scroll | InputMode::Search | InputMode::EnterSearch => KeyAction::Search,
         InputMode::Session => KeyAction::Session,
+        InputMode::Swarm => KeyAction::Swarm,
     };
     for shortcut in shortcuts.iter_mut() {
         if shortcut.action == key_action {
@@ -619,6 +625,14 @@ pub fn first_line(
     let mut default_keys = vec![
         KeyShortcut::new(
             KeyMode::Unselected,
+            KeyAction::Swarm,
+            to_char(action_key(
+                binds,
+                &[Action::SwitchToMode(InputMode::Swarm)],
+            )),
+        ),
+        KeyShortcut::new(
+            KeyMode::UnselectedAlternate,
             KeyAction::Lock,
             to_char(action_key(
                 binds,
@@ -626,17 +640,17 @@ pub fn first_line(
             )),
         ),
         KeyShortcut::new(
-            KeyMode::UnselectedAlternate,
+            KeyMode::Unselected,
             KeyAction::Pane,
             to_char(action_key(binds, &[Action::SwitchToMode(InputMode::Pane)])),
         ),
         KeyShortcut::new(
-            KeyMode::Unselected,
+            KeyMode::UnselectedAlternate,
             KeyAction::Tab,
             to_char(action_key(binds, &[Action::SwitchToMode(InputMode::Tab)])),
         ),
         KeyShortcut::new(
-            KeyMode::UnselectedAlternate,
+            KeyMode::Unselected,
             KeyAction::Resize,
             to_char(action_key(
                 binds,
@@ -644,12 +658,12 @@ pub fn first_line(
             )),
         ),
         KeyShortcut::new(
-            KeyMode::Unselected,
+            KeyMode::UnselectedAlternate,
             KeyAction::Move,
             to_char(action_key(binds, &[Action::SwitchToMode(InputMode::Move)])),
         ),
         KeyShortcut::new(
-            KeyMode::UnselectedAlternate,
+            KeyMode::Unselected,
             KeyAction::Search,
             to_char(action_key(
                 binds,
@@ -657,7 +671,7 @@ pub fn first_line(
             )),
         ),
         KeyShortcut::new(
-            KeyMode::Unselected,
+            KeyMode::UnselectedAlternate,
             KeyAction::Session,
             to_char(action_key(
                 binds,
@@ -665,7 +679,7 @@ pub fn first_line(
             )),
         ),
         KeyShortcut::new(
-            KeyMode::UnselectedAlternate,
+            KeyMode::Unselected,
             KeyAction::Quit,
             to_char(action_key(binds, &[Action::Quit])),
         ),

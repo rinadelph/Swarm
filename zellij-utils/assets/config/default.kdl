@@ -151,6 +151,37 @@ keybinds {
             SwitchToMode "Normal"
         }
     }
+    swarm {
+        bind "Ctrl a" { SwitchToMode "Normal"; }
+        bind "1" {
+            LaunchOrFocusPlugin "session-manager" {
+                floating true
+                move_to_focused_tab true
+            };
+            SwitchToMode "Normal"
+        }
+        bind "2" {
+            LaunchOrFocusPlugin "session-manager" {
+                floating true
+                move_to_focused_tab true
+            };
+            SwitchToMode "Normal"
+        }
+        bind "3" {
+            LaunchOrFocusPlugin "session-manager" {
+                floating true
+                move_to_focused_tab true
+            };
+            SwitchToMode "Normal"
+        }
+        bind "4" {
+            LaunchOrFocusPlugin "session-manager" {
+                floating true
+                move_to_focused_tab true
+            };
+            SwitchToMode "Normal"
+        }
+    }
     tmux {
         bind "[" { SwitchToMode "Scroll"; }
         bind "Ctrl b" { Write 2; SwitchToMode "Normal"; }
@@ -209,6 +240,9 @@ keybinds {
     }
     shared_except "tab" "locked" {
         bind "Ctrl t" { SwitchToMode "Tab"; }
+    }
+    shared_except "swarm" "locked" {
+        bind "Ctrl a" { SwitchToMode "Swarm"; }
     }
     shared_except "move" "locked" {
         bind "Ctrl h" { SwitchToMode "Move"; }

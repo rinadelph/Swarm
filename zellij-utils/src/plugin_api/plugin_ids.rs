@@ -1,5 +1,5 @@
 pub use super::generated_api::api::plugin_ids::{
-    PluginIds as ProtobufPluginIds, SwarmVersion as ProtobufSwarmVersion,
+    PluginIds as ProtobufPluginIds, ZellijVersion as ProtobufZellijVersion,
 };
 use crate::data::PluginIds;
 
@@ -11,7 +11,7 @@ impl TryFrom<ProtobufPluginIds> for PluginIds {
     fn try_from(protobuf_plugin_ids: ProtobufPluginIds) -> Result<Self, &'static str> {
         Ok(PluginIds {
             plugin_id: protobuf_plugin_ids.plugin_id as u32,
-            swarm_pid: protobuf_plugin_ids.swarm_pid as u32,
+            zellij_pid: protobuf_plugin_ids.zellij_pid as u32,
             initial_cwd: PathBuf::from(protobuf_plugin_ids.initial_cwd),
             client_id: protobuf_plugin_ids.client_id as u16,
         })
@@ -23,18 +23,18 @@ impl TryFrom<PluginIds> for ProtobufPluginIds {
     fn try_from(plugin_ids: PluginIds) -> Result<Self, &'static str> {
         Ok(ProtobufPluginIds {
             plugin_id: plugin_ids.plugin_id as i32,
-            swarm_pid: plugin_ids.swarm_pid as i32,
+            zellij_pid: plugin_ids.zellij_pid as i32,
             initial_cwd: plugin_ids.initial_cwd.display().to_string(),
             client_id: plugin_ids.client_id as u32,
         })
     }
 }
 
-impl TryFrom<&str> for ProtobufSwarmVersion {
+impl TryFrom<&str> for ProtobufZellijVersion {
     type Error = &'static str;
-    fn try_from(swarm_version: &str) -> Result<Self, &'static str> {
-        Ok(ProtobufSwarmVersion {
-            version: swarm_version.to_owned(),
+    fn try_from(zellij_version: &str) -> Result<Self, &'static str> {
+        Ok(ProtobufZellijVersion {
+            version: zellij_version.to_owned(),
         })
     }
 }

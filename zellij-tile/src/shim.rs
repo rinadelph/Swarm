@@ -12,7 +12,7 @@ use zellij_utils::plugin_api::plugin_command::{
     CreateTokenResponse, ListTokensResponse, ProtobufPluginCommand, RenameWebTokenResponse,
     RevokeAllWebTokensResponse, RevokeTokenResponse,
 };
-use zellij_utils::plugin_api::plugin_ids::{ProtobufPluginIds, ProtobufSwarmVersion};
+use zellij_utils::plugin_api::plugin_ids::{ProtobufPluginIds, ProtobufZellijVersion};
 
 pub use super::ui_components::*;
 pub use prost::{self, *};
@@ -66,15 +66,15 @@ pub fn get_plugin_ids() -> PluginIds {
     PluginIds::try_from(protobuf_plugin_ids).unwrap()
 }
 
-/// Returns the version of the running Swarm instance - can be useful to check plugin compatibility
-pub fn get_swarm_version() -> String {
-    let plugin_command = PluginCommand::GetSwarmVersion;
+/// Returns the version of the running Zellij instance - can be useful to check plugin compatibility
+pub fn get_zellij_version() -> String {
+    let plugin_command = PluginCommand::GetZellijVersion;
     let protobuf_plugin_command: ProtobufPluginCommand = plugin_command.try_into().unwrap();
     object_to_stdout(&protobuf_plugin_command.encode_to_vec());
     unsafe { host_run_plugin_command() };
-    let protobuf_swarm_version =
-        ProtobufSwarmVersion::decode(bytes_from_stdin().unwrap().as_slice()).unwrap();
-    protobuf_swarm_version.version
+    let protobuf_zellij_version =
+        ProtobufZellijVersion::decode(bytes_from_stdin().unwrap().as_slice()).unwrap();
+    protobuf_zellij_version.version
 }
 
 // Host Functions
@@ -702,9 +702,9 @@ pub fn undo_rename_tab() {
     unsafe { host_run_plugin_command() };
 }
 
-/// Compeltely quit Swarm for this and all other connected clients
-pub fn quit_swarm() {
-    let plugin_command = PluginCommand::QuitSwarm;
+/// Compeltely quit Zellij for this and all other connected clients
+pub fn quit_zellij() {
+    let plugin_command = PluginCommand::QuitZellij;
     let protobuf_plugin_command: ProtobufPluginCommand = plugin_command.try_into().unwrap();
     object_to_stdout(&protobuf_plugin_command.encode_to_vec());
     unsafe { host_run_plugin_command() };

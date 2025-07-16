@@ -1,0 +1,13 @@
+[package]
+name = "my-custom-manager"
+version = "0.0.6"
+authors = ["Your Name <your@email.com>"]
+edition = "2018"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+ansi_term = "0.12.1"
+zellij-tile = { path = "../../zellij-tile" }
+unicode-width = "0.1.10"

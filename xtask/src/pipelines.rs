@@ -334,7 +334,7 @@ pub fn publish(sh: &Shell, flags: flags::Publish) -> anyhow::Result<()> {
         // Update default config
         sh.copy_file(
             project_dir
-                .join("swarm-utils")
+                .join("zellij-utils")
                 .join("assets")
                 .join("config")
                 .join("default.kdl"),
@@ -382,7 +382,7 @@ pub fn publish(sh: &Shell, flags: flags::Publish) -> anyhow::Result<()> {
 
                 let more_args = match *crate_name {
                     // This is needed for swarm to pick up the plugins from the assets included in
-                    // the released swarm-utils binary
+                    // the released zellij-utils binary
                     "." => Some("--no-default-features"),
                     _ => None,
                 };

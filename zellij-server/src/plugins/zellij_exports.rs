@@ -49,7 +49,7 @@ use zellij_utils::{
     },
     plugin_api::{
         plugin_command::ProtobufPluginCommand,
-        plugin_ids::{ProtobufPluginIds, ProtobufSwarmVersion},
+        plugin_ids::{ProtobufPluginIds, ProtobufZellijVersion},
     },
 };
 
@@ -101,7 +101,7 @@ fn host_run_plugin_command(mut caller: Caller<'_, PluginEnv>) {
                     PluginCommand::Unsubscribe(event_list) => unsubscribe(env, event_list)?,
                     PluginCommand::SetSelectable(selectable) => set_selectable(env, selectable),
                     PluginCommand::GetPluginIds => get_plugin_ids(env),
-                    PluginCommand::GetSwarmVersion => get_swarm_version(env),
+                    PluginCommand::GetZellijVersion => get_zellij_version(env),
                     PluginCommand::OpenFile(file_to_open, context) => {
                         open_file(env, file_to_open, context)
                     },
@@ -214,7 +214,7 @@ fn host_run_plugin_command(mut caller: Caller<'_, PluginEnv>) {
                     PluginCommand::ToggleActiveTabSync => toggle_active_tab_sync(env),
                     PluginCommand::CloseFocusedTab => close_focused_tab(env),
                     PluginCommand::UndoRenameTab => undo_rename_tab(env),
-                    PluginCommand::QuitSwarm => quit_swarm(env),
+                    PluginCommand::QuitZellij => quit_zellij(env),
                     PluginCommand::PreviousSwapLayout => previous_swap_layout(env),
                     PluginCommand::NextSwapLayout => next_swap_layout(env),
                     PluginCommand::GoToTabName(tab_name) => go_to_tab_name(env, tab_name),
@@ -617,7 +617,7 @@ fn request_permission(env: &PluginEnv, permissions: Vec<PermissionType>) -> Resu
 fn get_plugin_ids(env: &PluginEnv) {
     let ids = PluginIds {
         plugin_id: env.plugin_id,
-        swarm_pid: process::id(),
+        zellij_pid: process::id(),
         initial_cwd: env.plugin_cwd.clone(),
         client_id: env.client_id,
     };
@@ -636,14 +636,14 @@ fn get_plugin_ids(env: &PluginEnv) {
         .non_fatal();
 }
 
-fn get_swarm_version(env: &PluginEnv) {
-    let protobuf_swarm_version = ProtobufSwarmVersion {
+fn get_zellij_version(env: &PluginEnv) {
+    let protobuf_zellij_version = ProtobufZellijVersion {
         version: VERSION.to_owned(),
     };
-    wasi_write_object(env, &protobuf_swarm_version.encode_to_vec())
+    wasi_write_object(env, &protobuf_zellij_version.encode_to_vec())
         .with_context(|| {
             format!(
-                "failed to request swarm version from host for plugin {}",
+                "failed to request zellij version from host for plugin {}",
                 env.name()
             )
         })
@@ -1771,7 +1771,7 @@ fn undo_rename_tab(env: &PluginEnv) {
     apply_action!(action, error_msg, env);
 }
 
-fn quit_swarm(env: &PluginEnv) {
+fn quit_zellij(env: &PluginEnv) {
     let error_msg = || format!("failed to quit swarm in plugin {}", env.name());
     let action = Action::Quit;
     apply_action!(action, error_msg, env);
@@ -2619,7 +2619,7 @@ fn check_command_permission(
         | PluginCommand::ToggleActiveTabSync
         | PluginCommand::CloseFocusedTab
         | PluginCommand::UndoRenameTab
-        | PluginCommand::QuitSwarm
+        | PluginCommand::QuitZellij
         | PluginCommand::PreviousSwapLayout
         | PluginCommand::NextSwapLayout
         | PluginCommand::GoToTabName(..)

@@ -147,7 +147,7 @@ impl SwarmPlugin for State {
                 BareKey::Char('5') if key.has_no_modifiers() => toggle_active_tab_sync(),
                 BareKey::Char('6') if key.has_no_modifiers() => close_focused_tab(),
                 BareKey::Char('7') if key.has_no_modifiers() => undo_rename_tab(),
-                BareKey::Char('8') if key.has_no_modifiers() => quit_swarm(),
+                BareKey::Char('8') if key.has_no_modifiers() => quit_zellij(),
                 BareKey::Char('a') if key.has_modifiers(&[KeyModifier::Ctrl]) => {
                     previous_swap_layout()
                 },

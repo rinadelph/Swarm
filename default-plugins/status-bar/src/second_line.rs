@@ -246,6 +246,12 @@ fn get_keys_and_hints(mi: &ModeInfo) -> Vec<(String, String, Vec<KeyWithModifier
         (s("Detach"), s("Detach"), action_key(&km, &[Action::Detach])),
         (s("Session Manager"), s("Manager"), action_key(&km, &[A::LaunchOrFocusPlugin(Default::default(), true, true, false, false), TO_NORMAL])), // not entirely accurate
         (s("Select pane"), s("Select"), to_normal_key),
+    ]} else if mi.mode == IM::Swarm { vec![
+        (s("Agents"), s("Agents"), vec![KeyWithModifier::new(BareKey::Char('1'))]),
+        (s("MCP"), s("MCP"), vec![KeyWithModifier::new(BareKey::Char('2'))]),
+        (s("Hooks"), s("Hooks"), vec![KeyWithModifier::new(BareKey::Char('3'))]),
+        (s("Settings"), s("Settings"), vec![KeyWithModifier::new(BareKey::Char('4'))]),
+        (s("Back"), s("Back"), to_normal_key),
     ]} else if mi.mode == IM::Tmux { vec![
         (s("Move focus"), s("Move"), action_key_group(&km, &[
             &[A::MoveFocus(Dir::Left)], &[A::MoveFocus(Dir::Down)],
@@ -332,6 +338,19 @@ fn best_effort_shortcut_list(help: &ModeInfo, tip: TipFn, max_len: usize) -> Lin
 }
 
 pub fn keybinds(help: &ModeInfo, tip_name: &str, max_width: usize) -> LinePart {
+    // DEBUG: Add logging to verify this function is called - write to file
+    if let Ok(mut file) = std::fs::OpenOptions::new()
+        .create(true)
+        .append(true)
+        .open("/tmp/swarm_debug.log") {
+        use std::io::Write;
+        let _ = writeln!(file, "[{}] DEBUG: keybinds function called - TIPS DISABLED", 
+            std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs());
+        let _ = writeln!(file, "[{}] DEBUG: mode={:?}, tip_name={}, max_width={}", 
+            std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs(),
+            help.mode, tip_name, max_width);
+    }
+    
     // Return empty LinePart to disable tips
     LinePart::default()
 }

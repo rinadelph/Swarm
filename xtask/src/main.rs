@@ -79,23 +79,27 @@ fn workspace_members() -> &'static Vec<WorkspaceMember> {
                 build: true,
             },
             WorkspaceMember {
-                crate_name: "swarm-utils",
+                crate_name: "default-plugins/my-custom-manager",
+                build: true,
+            },
+            WorkspaceMember {
+                crate_name: "zellij-utils",
                 build: false,
             },
             WorkspaceMember {
-                crate_name: "swarm-tile-utils",
+                crate_name: "zellij-tile-utils",
                 build: false,
             },
             WorkspaceMember {
-                crate_name: "swarm-tile",
+                crate_name: "zellij-tile",
                 build: false,
             },
             WorkspaceMember {
-                crate_name: "swarm-client",
+                crate_name: "zellij-client",
                 build: false,
             },
             WorkspaceMember {
-                crate_name: "swarm-server",
+                crate_name: "zellij-server",
                 build: false,
             },
             WorkspaceMember {
@@ -146,7 +150,7 @@ fn project_root() -> PathBuf {
 }
 
 fn asset_dir() -> PathBuf {
-    crate::project_root().join("swarm-utils").join("assets")
+    crate::project_root().join("zellij-utils").join("assets")
 }
 
 pub fn cargo() -> anyhow::Result<PathBuf> {
