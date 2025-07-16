@@ -161,7 +161,7 @@ keybinds {
             SwitchToMode "Normal"
         }
         bind "2" {
-            LaunchOrFocusPlugin "session-manager" {
+            LaunchOrFocusPlugin "my-custom-manager" {
                 floating true
                 move_to_focused_tab true
             };
@@ -270,6 +270,7 @@ plugins {
     plugin-manager location="swarm:plugin-manager"
     about location="swarm:about"
     intro-screen location="swarm:intro-screen"
+    mcp-manager location="swarm:mcp-manager"
 }
 
 // Plugins to load in the background when a new session starts

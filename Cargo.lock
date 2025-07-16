@@ -2704,8 +2704,7 @@ dependencies = [
 name = "my-custom-manager"
 version = "0.0.8"
 dependencies = [
- "ansi_term",
- "unicode-width 0.1.10",
+ "serde",
  "zellij-tile",
 ]
 
@@ -4146,7 +4145,7 @@ dependencies = [
 
 [[package]]
 name = "swarm"
-version = "0.0.8"
+version = "0.0.9"
 dependencies = [
  "anyhow",
  "clap",
@@ -5856,7 +5855,7 @@ dependencies = [
 
 [[package]]
 name = "zellij-client"
-version = "0.0.8"
+version = "0.0.9"
 dependencies = [
  "anyhow",
  "axum",
@@ -5896,7 +5895,7 @@ dependencies = [
 
 [[package]]
 name = "zellij-server"
-version = "0.0.8"
+version = "0.0.9"
 dependencies = [
  "ansi_term",
  "anyhow",
@@ -5942,7 +5941,7 @@ dependencies = [
 
 [[package]]
 name = "zellij-tile"
-version = "0.0.8"
+version = "0.0.9"
 dependencies = [
  "clap",
  "prost",
@@ -5962,7 +5961,7 @@ dependencies = [
 
 [[package]]
 name = "zellij-utils"
-version = "0.0.8"
+version = "0.0.9"
 dependencies = [
  "anyhow",
  "async-std",
