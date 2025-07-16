@@ -68,6 +68,7 @@ impl PluginConfig {
                     || tag == "share"
                     || tag == "multiple-select"
                     || tag == "intro-screen"
+                    || tag == "my-custom-manager"
                 {
                     Some(PluginConfig {
                         path: PathBuf::from(&tag),

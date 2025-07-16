@@ -139,17 +139,28 @@ fn move_plugin_to_assets(sh: &Shell, plugin_name: &str) -> anyhow::Result<()> {
         .with_extension("wasm");
 
     // Get plugin path
-    let plugin = PathBuf::from(
+    let target_dir = PathBuf::from(
         std::env::var_os("CARGO_TARGET_DIR")
             .unwrap_or(crate::project_root().join("target").into_os_string()),
     )
     .join("wasm32-wasip1")
-    .join("release")
-    .join(plugin_name)
-    .with_extension("wasm");
+    .join("release");
+    
+    // Try with the original name first
+    let mut plugin = target_dir
+        .join(plugin_name)
+        .with_extension("wasm");
+    
+    // If not found, try with underscores instead of hyphens
+    if !plugin.is_file() {
+        let plugin_filename = plugin_name.replace("-", "_");
+        plugin = target_dir
+            .join(plugin_filename)
+            .with_extension("wasm");
+    }
 
     if !plugin.is_file() {
-        return Err(anyhow::anyhow!("No plugin found at '{}'", plugin.display()))
+        return Err(anyhow::anyhow!("No plugin found at '{}' or with underscores", plugin.display()))
             .with_context(err_context);
     }
 

@@ -147,7 +147,12 @@ impl SwarmPlugin for State {
         self.cols = cols;
         
         // Clear screen
-        println!("\u{1b}[2J");
+        print!("\u{1b}[2J\u{1b}[H");
+        
+        // Debug: Show that plugin is running
+        println!("MCP Manager Plugin v0.0.9 - Running!");
+        println!("Screen size: {}x{}", cols, rows);
+        println!("");
         
         // Render header
         self.render_header();
@@ -589,8 +594,10 @@ impl State {
     }
     
     fn render_header(&self) {
-        let title = " MCP Manager ";
-        println!("{:^width$}", title, width = self.cols);
+        let title = "=== MCP Manager ===";
+        let padding = (self.cols.saturating_sub(title.len())) / 2;
+        println!("{}{}", " ".repeat(padding), title);
+        println!("{}", "=".repeat(self.cols));
         println!();
     }
     
