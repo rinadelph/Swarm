@@ -1,7 +1,6 @@
 use ansi_term::{unstyled_len, ANSIStrings};
 use zellij_tile::prelude::actions::Action;
 use zellij_tile::prelude::*;
-use std::collections::BTreeSet;
 
 use crate::color_elements;
 use crate::{

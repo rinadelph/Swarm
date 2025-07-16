@@ -9,7 +9,7 @@ use zellij_tile_utils::palette_match;
 
 use crate::{
     action_key, action_key_group, style_key_with_modifier,
-    tip::{data::TIPS, TipFn},
+    tip::{TipBody, TipFn},
     LinePart, MORE_MSG, TO_NORMAL,
 };
 
@@ -338,21 +338,44 @@ fn best_effort_shortcut_list(help: &ModeInfo, tip: TipFn, max_len: usize) -> Lin
 }
 
 pub fn keybinds(help: &ModeInfo, tip_name: &str, max_width: usize) -> LinePart {
-    // DEBUG: Add logging to verify this function is called - write to file
-    if let Ok(mut file) = std::fs::OpenOptions::new()
-        .create(true)
-        .append(true)
-        .open("/tmp/swarm_debug.log") {
-        use std::io::Write;
-        let _ = writeln!(file, "[{}] DEBUG: keybinds function called - TIPS DISABLED", 
-            std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs());
-        let _ = writeln!(file, "[{}] DEBUG: mode={:?}, tip_name={}, max_width={}", 
-            std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs(),
-            help.mode, tip_name, max_width);
-    }
+    use crate::tip::data::TIPS;
     
-    // Return empty LinePart to disable tips
-    LinePart::default()
+    // Simple tip function that returns empty for now
+    let simple_tip: TipFn = |_| LinePart::default();
+    
+    let tip = TIPS.get(tip_name).map(|t| {
+        match max_width {
+            0..=500 => t.short,
+            501..=1000 => t.medium,
+            _ => t.full,
+        }
+    }).unwrap_or(simple_tip);
+    
+    // We have 3 cases to handle:
+    // 1. If the mode is "Normal" or "Locked", we print a list of tips (see second_line::*_mode_shortcut_list)
+    // 2. In all other modes we print the keybindings
+    // 3. If the user set a non-colliding mode, we show which mode we're in (no keybindings, no tips)
+    
+    let line_part = if help.keybinds.is_empty() {
+        // This indicates the user set configuration options that disable the keybindings
+        let line_part = LinePart::default();
+        return line_part;
+    } else if help.mode == InputMode::Locked {
+        locked_interface_indication(help.style.colors)
+    } else {
+        let line_part = full_shortcut_list(help, tip);
+        if line_part.len > max_width {
+            let line_part = shortened_shortcut_list(help, tip);
+            if line_part.len > max_width {
+                best_effort_shortcut_list(help, tip, max_width)
+            } else {
+                line_part
+            }
+        } else {
+            line_part
+        }
+    };
+    line_part
 }
 
 pub fn text_copied_hint(copy_destination: CopyDestination) -> LinePart {
