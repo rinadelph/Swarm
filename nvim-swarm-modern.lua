@@ -197,6 +197,16 @@ require("lazy").setup({
       })
     end,
   },
+
+  -- Claude Code Integration (MCP Server)
+  {
+    dir = '/home/alejandro/VPS/CCIde/nvim-gemini-ccide',
+    name = 'nvim-gemini-ccide',
+    config = function()
+      require('nvim-gemini-ccide').setup()
+      -- That's it! The plugin now auto-starts by default
+    end,
+  },
 })
 
 -- Key mappings
@@ -237,6 +247,16 @@ map('v', '>', '>gv', { desc = 'Indent right' })
 map('v', 'J', ":m '>+1<CR>gv=gv", { desc = 'Move selection down' })
 map('v', 'K', ":m '<-2<CR>gv=gv", { desc = 'Move selection up' })
 
+-- MCP Server (Claude Integration)
+map('n', '<leader>ms', ':MCPStart<CR>', { desc = 'Start MCP server for Claude' })
+map('n', '<leader>mx', ':MCPStop<CR>', { desc = 'Stop MCP server' })
+map('n', '<leader>m?', ':MCPStatus<CR>', { desc = 'Check MCP server status' })
+map('n', '<leader>mt', ':MCPTest<CR>', { desc = 'Test MCP tools' })
+
+-- MCP Monitor
+map('n', '<leader>mm', ':MCPMonitor<CR>', { desc = 'Start MCP monitor' })
+map('n', '<leader>mM', ':MCPMonitorStop<CR>', { desc = 'Stop MCP monitor' })
+
 -- Auto commands
 vim.api.nvim_create_autocmd("TextYankPost", {
   desc = "Highlight yanked text",
@@ -255,3 +275,255 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 print("🚀 Swarm Neovim loaded! Press <Space>ff to find files, <Ctrl-e> to toggle explorer")
+print("🤖 MCP Server auto-starting... Use <Space>m? for status, /ide in Claude to connect")
+
+-- IPC Test Function
+function TestIPCServer()
+  local log_file = "/tmp/nvim_ipc_test.log"
+  
+  -- Clear log
+  vim.fn.system("echo '=== IPC Test Log ===' > " .. log_file)
+  
+  local function log(msg)
+    local file = io.open(log_file, "a")
+    if file then
+      file:write(os.date("[%H:%M:%S] ") .. msg .. "\n")
+      file:close()
+    end
+  end
+  
+  log("Starting IPC test server...")
+  
+  -- Import tools
+  local ok, tools = pcall(require, 'nvim-gemini-ccide.tools')
+  if not ok then
+    vim.notify("Failed to load tools module!", vim.log.levels.ERROR)
+    return
+  end
+  
+  local job_id = vim.fn.jobstart({
+    "python3", "/home/alejandro/VPS/CCIde/nvim-gemini-ccide/test_ipc_server.py"
+  }, {
+    on_stdout = function(_, data, _)
+      for _, line in ipairs(data) do
+        if line ~= "" then
+          log("STDOUT: " .. line)
+          
+          -- Handle NVIM_REQUEST
+          if line:match("^NVIM_REQUEST:") then
+            local json_str = line:sub(14)
+            log("Processing request: " .. json_str)
+            
+            local ok, request = pcall(vim.json.decode, json_str)
+            if ok and request then
+              local handler = tools.get_handler(request.tool)
+              if handler then
+                local result = handler(request.args or {})
+                local response = vim.json.encode({
+                  id = request.id,
+                  result = result
+                })
+                log("Sending response: " .. response)
+                vim.fn.chansend(job_id, response .. "\n")
+              else
+                log("No handler for tool: " .. request.tool)
+              end
+            end
+          end
+        end
+      end
+    end,
+    on_stderr = function(_, data, _)
+      for _, line in ipairs(data) do
+        if line ~= "" then
+          log("STDERR: " .. line)
+        end
+      end
+    end,
+    on_exit = function(_, code, _)
+      log("Process exited with code: " .. code)
+    end,
+    stdout_buffered = false,
+    stderr_buffered = false,
+  })
+  
+  if job_id > 0 then
+    vim.notify("IPC test started! Check log: " .. log_file, vim.log.levels.INFO)
+    
+    -- Open test file
+    vim.cmd("edit test_file.txt")
+    vim.cmd("normal! ggVG")  -- Select all
+    
+    -- Open log monitor
+    vim.fn.system("tmux new-window -n ipc_log 'tail -f " .. log_file .. "'")
+  else
+    vim.notify("Failed to start IPC test!", vim.log.levels.ERROR)
+  end
+end
+
+-- Add command for IPC test
+vim.api.nvim_create_user_command('TestIPC', TestIPCServer, { desc = 'Run IPC test server' })
+
+-- Continuous MCP Monitor Function
+function StartMCPMonitor()
+  local log_file = "/tmp/nvim_mcp_monitor.log"
+  
+  -- Import tools
+  local ok, tools = pcall(require, 'nvim-gemini-ccide.tools')
+  if not ok then
+    vim.notify("Failed to load tools module!", vim.log.levels.ERROR)
+    return
+  end
+  
+  -- Store job ID globally so we can stop it later
+  if vim.g.mcp_monitor_job and vim.fn.jobwait({vim.g.mcp_monitor_job}, 0)[1] == -1 then
+    vim.notify("MCP Monitor already running!", vim.log.levels.WARN)
+    return
+  end
+  
+  vim.g.mcp_monitor_job = vim.fn.jobstart({
+    "python3", "/home/alejandro/VPS/CCIde/nvim-gemini-ccide/continuous_ipc_monitor.py"
+  }, {
+    on_stdout = function(_, data, _)
+      for _, line in ipairs(data) do
+        if line ~= "" and line:match("^NVIM_REQUEST:") then
+          local json_str = line:sub(14)
+          local ok, request = pcall(vim.json.decode, json_str)
+          if ok and request then
+            local handler = tools.get_handler(request.tool)
+            if handler then
+              local result = handler(request.args or {})
+              local response = vim.json.encode({
+                id = request.id,
+                result = result
+              })
+              vim.fn.chansend(vim.g.mcp_monitor_job, response .. "\n")
+            end
+          end
+        end
+      end
+    end,
+    on_stderr = function(_, data, _)
+      -- Monitor stderr shows menu and status
+      for _, line in ipairs(data) do
+        if line ~= "" and not line:match("^====") and not line:match("^Press") and not line:match("^Auto-refresh") then
+          -- Only show important messages
+          if line:match("ERROR") or line:match("WARN") then
+            vim.notify(line, vim.log.levels.WARN)
+          end
+        end
+      end
+    end,
+    on_exit = function(_, code, _)
+      vim.notify("MCP Monitor stopped (exit code: " .. code .. ")", vim.log.levels.INFO)
+      vim.g.mcp_monitor_job = nil
+    end,
+    stdout_buffered = false,
+    stderr_buffered = false,
+  })
+  
+  if vim.g.mcp_monitor_job > 0 then
+    vim.notify("MCP Monitor started! Check log: " .. log_file, vim.log.levels.INFO)
+    
+    -- Open log monitor in new tmux window
+    vim.fn.system("tmux new-window -n mcp_monitor 'tail -f " .. log_file .. "'")
+    
+    -- Open monitor control in another tmux pane
+    vim.fn.system("tmux split-window -v -t mcp_monitor 'echo \"MCP Monitor Controls:\"; echo \"1-8: Test tools\"; echo \"a: Toggle auto mode\"; echo \"q: Quit\"; echo \"\"; cat > " .. vim.g.mcp_monitor_job .. "'")
+  else
+    vim.notify("Failed to start MCP Monitor!", vim.log.levels.ERROR)
+  end
+end
+
+function StopMCPMonitor()
+  if vim.g.mcp_monitor_job then
+    vim.fn.jobstop(vim.g.mcp_monitor_job)
+    vim.g.mcp_monitor_job = nil
+    vim.notify("MCP Monitor stopped", vim.log.levels.INFO)
+  else
+    vim.notify("MCP Monitor not running", vim.log.levels.WARN)
+  end
+end
+
+-- Add commands for MCP Monitor
+vim.api.nvim_create_user_command('MCPMonitor', StartMCPMonitor, { desc = 'Start continuous MCP monitor' })
+vim.api.nvim_create_user_command('MCPMonitorStop', StopMCPMonitor, { desc = 'Stop MCP monitor' })
+
+-- Simple Auto-polling Monitor
+function StartAutoMonitor()
+  local log_file = "/tmp/nvim_mcp_monitor.log"
+  
+  -- Import tools
+  local ok, tools = pcall(require, 'nvim-gemini-ccide.tools')
+  if not ok then
+    vim.notify("Failed to load tools module!", vim.log.levels.ERROR)
+    return
+  end
+  
+  -- Stop existing monitor
+  if vim.g.auto_monitor_job then
+    vim.fn.jobstop(vim.g.auto_monitor_job)
+  end
+  if vim.g.auto_monitor_timer then
+    vim.fn.timer_stop(vim.g.auto_monitor_timer)
+  end
+  
+  -- Start simple monitor
+  vim.g.auto_monitor_job = vim.fn.jobstart({
+    "python3", "/home/alejandro/VPS/CCIde/nvim-gemini-ccide/simple_monitor.py"
+  }, {
+    on_stdout = function(_, data, _)
+      -- Just log everything
+    end,
+    on_stderr = function(_, data, _)
+      -- Monitor logs
+    end,
+    stdout_buffered = false,
+    stderr_buffered = false,
+  })
+  
+  -- Auto-poll function
+  local function poll_tools()
+    if not vim.g.auto_monitor_job then
+      return
+    end
+    
+    -- Get current state
+    local selection = tools.get_handler('getCurrentSelection')({})
+    local editors = tools.get_handler('getOpenEditors')({})
+    local diagnostics = tools.get_handler('getDiagnostics')({uri = ""})
+    
+    -- Send to monitor
+    local data = {
+      time = os.date("%H:%M:%S"),
+      selection = vim.json.decode(selection.content[1].text),
+      editors = vim.json.decode(editors.content[1].text),
+      diagnostics = vim.json.decode(diagnostics.content[1].text)
+    }
+    
+    vim.fn.chansend(vim.g.auto_monitor_job, vim.json.encode(data) .. "\n")
+  end
+  
+  -- Start polling timer (every 1 second)
+  vim.g.auto_monitor_timer = vim.fn.timer_start(1000, poll_tools, {['repeat'] = -1})
+  
+  vim.notify("Auto monitor started! Log: " .. log_file, vim.log.levels.INFO)
+  
+  -- Open log viewer
+  vim.fn.system("tmux new-window -n auto_monitor 'tail -f " .. log_file .. "'")
+end
+
+function StopAutoMonitor()
+  if vim.g.auto_monitor_job then
+    vim.fn.jobstop(vim.g.auto_monitor_job)
+    vim.g.auto_monitor_job = nil
+  end
+  if vim.g.auto_monitor_timer then
+    vim.fn.timer_stop(vim.g.auto_monitor_timer)
+    vim.g.auto_monitor_timer = nil
+  end
+  vim.notify("Auto monitor stopped", vim.log.levels.INFO)
+end
+
+vim.api.nvim_create_user_command('AutoMonitor', StartAutoMonitor, { desc = 'Start auto-polling monitor' })
+vim.api.nvim_create_user_command('AutoMonitorStop', StopAutoMonitor, { desc = 'Stop auto-polling monitor' })

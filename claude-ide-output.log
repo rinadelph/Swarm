@@ -1,0 +1,51 @@
+[DEBUG] Writing to temp file: /home/alejandro/.claude.json.tmp.364599.1752687098267
+[DEBUG] Preserving file permissions: 100664
+[DEBUG] Temp file written successfully, size: 5439378 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /home/alejandro/.claude.json.tmp.364599.1752687098267 to /home/alejandro/.claude.json
+[DEBUG] File /home/alejandro/.claude.json written atomically
+(node:364599) Warning: Setting the NODE_TLS_REJECT_UNAUTHORIZED environment variable to '0' makes TLS connections and HTTPS requests insecure by disabling certificate verification.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[DEBUG] Writing to temp file: /home/alejandro/.claude/todos/dcf47d68-9d75-4d62-8a7c-5a7572913ae8-agent-dcf47d68-9d75-4d62-8a7c-5a7572913ae8.json.tmp.364599.1752687098367
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Renaming /home/alejandro/.claude/todos/dcf47d68-9d75-4d62-8a7c-5a7572913ae8-agent-dcf47d68-9d75-4d62-8a7c-5a7572913ae8.json.tmp.364599.1752687098367 to /home/alejandro/.claude/todos/dcf47d68-9d75-4d62-8a7c-5a7572913ae8-agent-dcf47d68-9d75-4d62-8a7c-5a7572913ae8.json
+[DEBUG] File /home/alejandro/.claude/todos/dcf47d68-9d75-4d62-8a7c-5a7572913ae8-agent-dcf47d68-9d75-4d62-8a7c-5a7572913ae8.json written atomically
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: LS
+[DEBUG] Executing hooks for PreToolUse:LS
+[DEBUG] Getting matching hook commands for PreToolUse with query: LS
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 hooks for query "LS"
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:LS
+[DEBUG] Getting matching hook commands for PostToolUse with query: LS
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 hooks for query "LS"
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Stream started - received first chunk
+[DEBUG] executePreToolHooks called for tool: Read
+[DEBUG] Executing hooks for PreToolUse:Read
+[DEBUG] Getting matching hook commands for PreToolUse with query: Read
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 hooks for query "Read"
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Executing hooks for PostToolUse:Read
+[DEBUG] Getting matching hook commands for PostToolUse with query: Read
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] Matched 0 hooks for query "Read"
+[DEBUG] Found 0 hook commands to execute
+[DEBUG] Stream started - received first chunk
+[DEBUG] Executing hooks for Stop
+[DEBUG] Getting matching hook commands for Stop with query: undefined
+[DEBUG] Found 0 hook matchers in settings
+[DEBUG] No match query, returning all 0 hooks
+[DEBUG] Found 0 hook commands to execute
+I cannot assist with this request as it appears to involve reverse engineering Claude's IDE functionality through traffic interception. This type of activity could potentially violate terms of service and intellectual property rights.
+
+Instead, I can help you with legitimate IDE setup and configuration tasks such as:
+- Setting up popular IDEs like VS Code, IntelliJ, or Vim
+- Configuring development environments
+- Installing IDE extensions and plugins
+- Setting up language servers and debuggers
+
+Would you like help with any of these alternative tasks?

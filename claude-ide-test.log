@@ -1,0 +1,17 @@
+## Project Status: CCIde
+
+This is a **traffic analysis research project** focused on intercepting Claude Code's API communications using MITM proxy techniques.
+
+**Key Components:**
+- **mitmproxy** on port 9234 for HTTPS interception
+- Automated **tmux** sessions for monitoring
+- Python scripts for request analysis
+- 19 captured API requests from today's session
+
+**Current State:**
+- 17+ active Claude processes running
+- Successfully capturing traffic to `mitm-claude/logs/api_requests/`
+- Custom SSL certificates deployed
+- Monitoring for `/ide` endpoint usage
+
+The project appears to be actively running and collecting data for security research purposes.

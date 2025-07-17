@@ -1,0 +1,155 @@
+cd /home/alejandro/VPS/CCIde
+# Set proxy environment
+export HTTP_PROXY='http://localhost:9234'
+export HTTPS_PROXY='http://localhost:9234'
+export NODE_EXTRA_CA_CERTS='/home/alejandro/.mitmproxy/mitmproxy-ca-cert.pem'
+export NODE_TLS_REJECT_UNAUTHORIZED='0'
+# Now run: claude --debug
+# Then type: /ide
+             /////////////                alejandro@pop-os
+         /////////////////////            ----------------
+      ///////*767////////////////         OS: Pop!_OS 22.04 LTS x86_64
+    //////7676767676*//////////////       Host: MS-7E47 1.1
+   /////76767//7676767//////////////      Kernel: 6.12.10-76061203-generic
+  /////767676///*76767///////////////     Uptime: 3 days, 25 mins
+ ///////767676///76767.///7676*///////    Packages: 2248 (dpkg), 21 (flatpak),
+/////////767676//76767///767676////////   Shell: bash 5.1.16
+//////////76767676767////76767/////////   Resolution: 3840x2160, 4096x2304
+///////////76767676//////7676//////////   DE: GNOME 42.9
+////////////,7676,///////767///////////   WM: Mutter
+/////////////*7676///////76////////////   WM Theme: Pop
+///////////////7676////////////////////   Theme: Pop-dark [GTK2/3]
+ ///////////////7676///767////////////    Icons: Pop [GTK2/3]
+  //////////////////////'////////////     Terminal: tmux
+   //////.7676767676767676767,//////      CPU: AMD Ryzen 9 9950X (32) @ 5.752GH
+    /////767676767676767676767/////       GPU: NVIDIA 01:00.0 NVIDIA Corporatio
+      ///////////////////////////         GPU: AMD ATI 74:00.0 Device 13c0
+         /////////////////////            Memory: 15225MiB / 61789MiB
+             /////////////
+
+
+
+
+
+📁 ~/VPS/CCIde ❯ cd /home/alejandro/VPS/CCIde
+
+📁 ~/VPS/CCIde ❯ # Set proxy environment
+
+📁 ~/VPS/CCIde ❯ export HTTP_PROXY='http://localhost:9234'
+
+📁 ~/VPS/CCIde ❯ export HTTPS_PROXY='http://localhost:9234'
+
+📁 ~/VPS/CCIde ❯ export NODE_EXTRA_CA_CERTS='/home/alejandro/.mitmproxy/mitmprox
+y-ca-cert.pem'
+
+📁 ~/VPS/CCIde ❯ export NODE_TLS_REJECT_UNAUTHORIZED='0'
+
+📁 ~/VPS/CCIde ❯ # Now run: claude --debug
+
+📁 ~/VPS/CCIde ❯ # Then type: /ide
+
+📁 ~/VPS/CCIde ❯ claude --debug
+[DEBUG] Writing to temp file: /home/alejandro/.claude.json.tmp.356106.1752686046
+284
+[DEBUG] Preserving file permissions: 100664
+[DEBUG] Temp file written successfully, size: 5597867 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /home/alejandro/.claude.json.tmp.356106.1752686046284 to /home/
+alejandro/.claude.json
+[DEBUG] File /home/alejandro/.claude.json written atomically
+(node:356106) Warning: Setting the NODE_TLS_REJECT_UNAUTHORIZED environment vari
+able to '0' makes TLS connections and HTTPS requests insecure by disabling certi
+ficate verification.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[DEBUG] Writing to temp file: /home/alejandro/.claude.json.tmp.356106.1752686077
+131
+[DEBUG] Preserving file permissions: 100664
+[DEBUG] Temp file written successfully, size: 5597866 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /home/alejandro/.claude.json.tmp.356106.1752686077131 to /home/
+alejandro/.claude.json
+[DEBUG] File /home/alejandro/.claude.json written atomically
+╭──────────────────────────────────────────────────────────────────────────────╮
+│                                                                              │
+│ Do you trust the files in this folder?                                       │
+│                                                                              │
+│ /home/alejandro/VPS/CCIde                                                    │
+│                                                                              │
+│ Claude Code may read files in this folder. Reading untrusted files may lead  │
+│ Claude Code to behave in unexpected ways.                                    │
+│                                                                              │
+│ With your permission Claude Code may execute files in this folder. Executing │
+│  untrusted code is unsafe.                                                   │
+│                                                                              │
+│ https://docs.anthropic.com/s/claude-code-security                            │
+│                                                                              │
+│ ❯ 1. Yes, proceed                                                            │
+│   2. No, exit                                                                │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+   Enter to confirm · Esc to exit
+[DEBUG] Writing to temp file: /home/alejandro/.claude/todos/a0dcf41d-f4c8-4a58-9
+9d3-e7a8c4f888ed-agent-a0dcf41d-f4c8-4a58-99d3-e7a8c4f888ed.json.tmp.356106.1752
+686077235
+[DEBUG] Temp file written successfully, size: 2 bytes
+[DEBUG] Renaming /home/alejandro/.claude/todos/a0dcf41d-f4c8-4a58-99d3-e7a8c4f88
+8ed-agent-a0dcf41d-f4c8-4a58-99d3-e7a8c4f888ed.json.tmp.356106.1752686077235 to
+/home/alejandro/.claude/todos/a0dcf41d-f4c8-4a58-99d3-e7a8c4f888ed-agent-a0dcf41
+d-f4c8-4a58-99d3-e7a8c4f888ed.json
+[DEBUG] File /home/alejandro/.claude/todos/a0dcf41d-f4c8-4a58-99d3-e7a8c4f888ed-
+agent-a0dcf41d-f4c8-4a58-99d3-e7a8c4f888ed.json written atomically
+[DEBUG] Writing to temp file: /home/alejandro/.claude.json.tmp.356106.1752686077
+297
+[DEBUG] Preserving file permissions: 100664
+[DEBUG] Temp file written successfully, size: 5597866 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /home/alejandro/.claude.json.tmp.356106.1752686077297 to /home/
+alejandro/.claude.json
+[DEBUG] File /home/alejandro/.claude.json written atomically
+╭───────────────────────────────────────────────────╮
+│ ✻ Welcome to Claude Code!                         │
+│                                                   │
+│   /help for help, /status for your current setup  │
+│                                                   │
+│   cwd: /home/alejandro/VPS/CCIde                  │
+╰───────────────────────────────────────────────────╯
+
+ Tips for getting started:
+
+ 1. Run /init to create a CLAUDE.md file with instructions for Claude
+ 2. Use Claude to help with file analysis, editing, bash commands and git
+ 3. Be as specific as you would with another engineer for the best results
+
+ ※ Tip: Hit shift+tab to cycle between default mode, auto-accept edit mode, and
+ plan mode
+[DEBUG] Writing to temp file: /home/alejandro/.claude.json.tmp.356106.1752686077
+531
+[DEBUG] Preserving file permissions: 100664
+[DEBUG] Temp file written successfully, size: 5597866 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /home/alejandro/.claude.json.tmp.356106.1752686077531 to /home/
+alejandro/.claude.json
+[DEBUG] File /home/alejandro/.claude.json written atomically
+[DEBUG] Writing to temp file: /home/alejandro/.claude.json.tmp.356106.1752686077
+576
+[DEBUG] Preserving file permissions: 100664
+[DEBUG] Temp file written successfully, size: 5597866 bytes
+[DEBUG] Applied original permissions to temp file
+[DEBUG] Renaming /home/alejandro/.claude.json.tmp.356106.1752686077576 to /home/
+alejandro/.claude.json
+[DEBUG] File /home/alejandro/.claude.json written atomically
+[DEBUG] AutoUpdaterWrapper: Installation type: unknown, using native: false
+[DEBUG] AutoUpdater: Detected installation type: unknown
+[DEBUG] AutoUpdater: Unknown installation type, falling back to config
+
+╭──────────────────────────────────────────────────────────────────────────────╮
+│ > /ide                                                                       │
+│                                                                              │
+╰──────────────────────────────────────────────────────────────────────────────╯
+  /ide     Manage IDE integrations and show status
+
+
+
+
+
+

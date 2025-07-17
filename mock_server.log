@@ -1,0 +1,3 @@
+2025-07-16 14:57:17,021 - INFO - Starting mock WebSocket server on ws://localhost:8765
+2025-07-16 14:57:17,030 - INFO - server listening on 127.0.0.1:8765
+2025-07-16 14:57:17,030 - INFO - server listening on [::1]:8765
