@@ -123,8 +123,21 @@ tail -f /tmp/swarm_debug.log
 ### Current Status
 The MCP manager plugin (my-custom-manager) is being triggered according to debug logs but may not be displaying properly.
 
-### Root Cause
-The plugin was correctly triggered but wasn't rendering. Added debug output to verify plugin execution.
+### Root Cause and Fix
+The plugin was being triggered but not loading because:
+1. **Missing from plugin registry**: The plugin name "my-custom-manager" wasn't in the list of recognized built-in plugins in `/home/alejandro/VPS/zellij/zellij-utils/src/input/plugins.rs`
+2. **Build system issue**: The xtask build system wasn't handling the hyphen-to-underscore conversion for WASM file names properly
+
+### Solution Applied
+1. Added "my-custom-manager" to the plugin list in `plugins.rs`:
+   ```rust
+   || tag == "my-custom-manager"
+   ```
+2. Fixed build system to handle both naming conventions (with hyphens and underscores)
+3. Removed duplicate "mcp-manager" entry from xtask configuration
+4. **Fixed plugin structure**: Changed from library (`lib.rs`) to binary (`main.rs`) - WASM plugins must be built as binaries, not libraries
+   - Renamed `src/lib.rs` to `src/main.rs`
+   - Removed `[lib]` section from `Cargo.toml`
 
 ### Debug Steps
 1. Check if plugin WASM exists:

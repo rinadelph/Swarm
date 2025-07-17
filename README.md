@@ -29,6 +29,24 @@
 
 [Swarm](#origin-of-the-name) is a terminal workspace designed for vibecoders who thrive in command-line environments. Built on the robust foundation of Zellij, Swarm transforms your terminal into a powerful development ecosystem with modern tooling and collaborative features.
 
+## 🚀 Version 0.0.10 Released!
+
+### What's New:
+- **MCP Manager Plugin**: A powerful plugin for managing Model Context Protocol servers
+  - Dynamic argument configuration for each MCP type
+  - Template-based setup (Agent MCP, FileSystem, Git, Python, Node.js)
+  - Smart command building with proper flag handling
+  - Directory browser for path arguments (Ctrl+D)
+  - Background tmux session management
+  - Python virtual environment support
+- **Architecture Documentation**: Comprehensive guides for understanding and extending Swarm
+- **Plugin Development Guide**: Learn how to create your own Swarm plugins
+
+### Coming Soon:
+- **Full MCP Integration**: Native support for Claude and other AI assistants
+- **Agent Orchestration**: Manage multiple AI agents working in parallel
+- **Enhanced Collaboration**: Real-time code sharing and pair programming features
+
 Swarm is crafted for developers who demand both simplicity and sophistication - delivering an exceptional out-of-the-box experience while providing advanced customization for power users. Whether you're coding solo or collaborating with a team, Swarm adapts to your workflow.
 
 Swarm features include deep customizability through layouts, true multiplayer collaboration, innovative UX elements like floating and stacked panes, and an extensible plugin system supporting any language that compiles to WebAssembly. From beginners taking their first steps in terminal-based development to seasoned vibecoders orchestrating complex workflows, Swarm empowers every type of developer.
